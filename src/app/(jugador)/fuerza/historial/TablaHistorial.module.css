@@ -1,0 +1,58 @@
+/* Tabla del historial — copiada del diseño original de la v1.
+   Usa los colores de PantallaDatos (--gray-*). */
+
+.tarjeta {
+  margin-bottom: 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.tabla thead {
+  background: var(--gray-50);
+}
+
+.tabla th {
+  padding: 8px;
+  border-bottom: 1px solid var(--gray-200);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--gray-500);
+}
+
+.tabla td {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--gray-100);
+  font-weight: 500;
+  color: var(--gray-700);
+}
+
+.tabla tr:last-child td {
+  border-bottom: none;
+}
+
+.tabla tbody tr:hover {
+  background: var(--gray-50);
+}
+
+.destacado {
+  font-weight: 700;
+}
+
+.tabla td.vacio {
+  padding: 24px;
+  text-align: center;
+  color: var(--gray-400);
+}

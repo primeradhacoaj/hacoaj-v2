@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import CommentBox from "@/components/CommentBox";
 import Icono from "@/components/Icono";
 import PantallaDatos from "@/components/PantallaDatos";
+import TarjetaJugador from "@/components/TarjetaJugador";
 import { useSesion } from "@/components/SesionProvider";
 import { obtenerMiFuerza } from "@/lib/data/fuerza";
 import {
@@ -13,7 +14,6 @@ import {
   esNuevo,
   marcarComoVisto,
 } from "@/lib/fuerza";
-import { iniciales } from "@/lib/sesion";
 import { cx } from "@/lib/cx";
 import MetricasEjercicio from "./MetricasEjercicio";
 import styles from "./MiFuerza.module.css";
@@ -87,25 +87,13 @@ function Contenido({ sesion, estado }) {
 
   return (
     <>
-      {/* Tarjeta del jugador */}
-      <div className={styles.jugador}>
-        <div className={styles.jugadorInterior}>
-          <div className={styles.avatar}>{iniciales(sesion.nombre)}</div>
-          <div className={styles.jugadorInfo}>
-            <div className={styles.jugadorNombre}>{sesion.nombre}</div>
-            <div className={styles.jugadorSub}>Mi fuerza</div>
-            <div className={styles.etiquetas}>
-              {sesion.posicion && (
-                <span className={styles.etiqueta}>📍 {sesion.posicion}</span>
-              )}
-              {sesion.piernaHabil && (
-                <span className={styles.etiqueta}>🦶 {sesion.piernaHabil}</span>
-              )}
-              <span className={styles.etiqueta}>⚖ {peso ? peso : "--"} kg</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <TarjetaJugador
+        nombre={sesion.nombre}
+        subtitulo="Mi fuerza"
+        posicion={sesion.posicion}
+        piernaHabil={sesion.piernaHabil}
+        peso={peso}
+      />
 
       {/* Press de pecho */}
       <div className={styles.seccion}>

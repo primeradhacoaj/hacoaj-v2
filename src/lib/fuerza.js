@@ -9,10 +9,10 @@ export function aNumero(valor) {
   return Number.isNaN(numero) ? null : numero;
 }
 
-// Número con decimales fijos, o "--" si no hay dato.
-export function formatear(valor, decimales) {
+// Número con decimales fijos, o `vacio` ("--" por defecto) si no hay dato.
+export function formatear(valor, decimales, vacio = "--") {
   const numero = aNumero(valor);
-  return numero === null ? "--" : numero.toFixed(decimales);
+  return numero === null ? vacio : numero.toFixed(decimales);
 }
 
 // Fecha para mostrar. Google Sheets a veces entrega un número de serie

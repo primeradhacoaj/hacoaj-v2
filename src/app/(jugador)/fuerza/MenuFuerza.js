@@ -1,15 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import Aviso from "@/components/Aviso";
 import HeroSeccion from "@/components/HeroSeccion";
 import Icono from "@/components/Icono";
 import MenuItem from "@/components/MenuItem";
 import PerfilChip from "@/components/PerfilChip";
 import SectionLabel from "@/components/SectionLabel";
 import { useSesion } from "@/components/SesionProvider";
-import { AVISO_MIGRANDO } from "@/lib/menus";
-import { useAviso } from "@/lib/useAviso";
 import styles from "./MenuFuerza.module.css";
 
 // Silueta de una barra con pesas, de fondo en el encabezado (copiada de la v1).
@@ -29,7 +26,6 @@ const BARRA = (
 // (diseño original de la v1).
 export default function MenuFuerza() {
   const { sesion } = useSesion();
-  const { mensaje, visible, mostrar } = useAviso();
 
   return (
     <div className={styles.pagina}>
@@ -71,8 +67,6 @@ export default function MenuFuerza() {
             titulo="Mi historial"
             descripcion="Todos tus registros de fuerza"
             href="/fuerza/historial"
-            disponible={false}
-            onNoDisponible={() => mostrar(AVISO_MIGRANDO)}
           />
         </nav>
 
@@ -85,7 +79,6 @@ export default function MenuFuerza() {
         </div>
       </main>
 
-      <Aviso mensaje={mensaje} visible={visible} />
     </div>
   );
 }

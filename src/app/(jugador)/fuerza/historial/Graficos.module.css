@@ -1,0 +1,16 @@
+.vacio {
+  padding: 16px;
+  font-size: 13px;
+  text-align: center;
+  color: #94a3b8;
+}
+
+/* Puntos y barras que se pueden tocar */
+.punto {
+  cursor: pointer;
+}
+
+.punto:focus-visible {
+  outline: 2px solid #024099;
+  outline-offset: 2px;
+}

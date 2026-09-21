@@ -1,0 +1,231 @@
+/* Historial de fuerza — copiado del diseño original de la v1.
+   Usa los colores de PantallaDatos (--blue-*, --gray-*). */
+
+/* ── Alternadores (Tabla/Gráficos y Sentadilla/Pecho) ── */
+.alternador {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.boton {
+  padding: 7px 16px;
+  border: 1px solid var(--gray-200);
+  border-radius: 99px;
+  background: #fff;
+  color: var(--gray-500);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.activo {
+  background: var(--blue-900);
+  border-color: var(--blue-900);
+  color: #fff;
+}
+
+/* ── Encabezado de cada bloque ── */
+.seccion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.punto {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.pecho {
+  background: var(--blue-600);
+}
+
+.sentadilla {
+  background: #c9a83e;
+}
+
+.seccionTitulo {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gray-500);
+}
+
+/* ── Tarjetas de los gráficos ── */
+.tarjeta {
+  margin-bottom: 16px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.tarjetaAngosta {
+  padding: 12px 0;
+}
+
+.tarjetaAncha {
+  padding: 16px;
+}
+
+.leyenda {
+  display: flex;
+  gap: 12px;
+  padding: 0 16px 8px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.leyendaCombo {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.muestraBarra {
+  display: inline-block;
+  width: 12px;
+  height: 10px;
+  margin-right: 4px;
+  border-radius: 2px;
+  background: #00296b;
+  vertical-align: middle;
+}
+
+.muestraLinea {
+  display: inline-block;
+  width: 12px;
+  height: 3px;
+  margin-right: 4px;
+  border-radius: 2px;
+  background: #c9a83e;
+  vertical-align: middle;
+}
+
+/* ── Carga y error ── */
+.cargando {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 48px 0;
+  color: var(--gray-400);
+}
+
+.cargandoTexto {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.error {
+  padding: 48px 0;
+  font-size: 13px;
+  text-align: center;
+  color: #ef4444;
+}
+
+/* ── Exportar ── */
+.exportar {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+
+.botonExportar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  background: var(--blue-900);
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.botonExportar:hover {
+  background: var(--blue-800);
+}
+
+.botonExportar:active {
+  transform: scale(0.97);
+}
+
+.botonExportar:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+/* ── Volver ── */
+.volverContenedor {
+  margin-top: 8px;
+  text-align: center;
+}
+
+.volver {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 99px;
+  color: var(--gray-400);
+  font-size: 12px;
+  font-weight: 600;
+  transition: background 0.15s, color 0.15s;
+}
+
+.volver:hover {
+  background: var(--gray-200);
+  color: var(--gray-600);
+}
+
+/* ── Globito con el detalle de un punto ── */
+.globito {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  z-index: 1000;
+  max-width: 300px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  background: var(--blue-900);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.6;
+  text-align: center;
+  white-space: pre-line;
+  box-shadow: 0 4px 20px rgba(0, 41, 107, 0.3);
+  opacity: 0;
+  transform: translateX(-50%) translateY(60px);
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.globitoVisible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boton,
+  .botonExportar,
+  .volver,
+  .globito {
+    transition: none;
+  }
+}
