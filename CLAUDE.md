@@ -32,6 +32,19 @@ No mencionar la materia en nombres, README ni commits del repo (debe verse profe
 
 **Importante:** esta versión de Next.js tiene cambios respecto de lo que conoce el modelo. Antes de escribir código, leer la guía relevante en `node_modules/next/dist/docs/` (ver `AGENTS.md`).
 
+## Diseño (decidido)
+
+La v1 tenía 3 generaciones de diseño mezcladas (44 templates HTML sin herencia, cada uno con su CSS). En v2 hay UN solo sistema:
+
+- **Base: el diseño "A" de la v1** (jugador moderno): encabezado azul con degradé y esquinas redondeadas, cards blancas de radio 18px, sombras suaves.
+- **Tomado del diseño "C"** (fuerza/pliegues): semáforo verde/amarillo/rojo para estados, tarjetas de métricas y barras de progreso.
+- **Tomado del diseño "B"** (técnico): barra superior fija y layout ancho para escritorio.
+- **Una sola tipografía: Plus Jakarta Sans** (`next/font`, variable `--font-sans`). Sin Playfair, DM Sans ni Inter.
+- **Dorado solo como acento puntual** (un punto, una letra, un subrayado). No usarlo en fondos grandes ni botones: no representa nada importante. El color principal es el azul navy. El rosa del panel técnico de la v1 se descarta.
+- Los colores, radios, sombras y anchos están como variables CSS en `src/app/globals.css`. Usar siempre `var(--...)`, nunca colores sueltos.
+- Jugador = mobile-first (ancho `--width-jugador`, 480px). Técnico = pensado para escritorio (`--width-tecnico`, 1200px) pero usable en celular.
+- Estilos de cada pieza con CSS Modules (`*.module.css`).
+
 ## Usuarios y roles (igual que en v1)
 
 - `jugador`: ve sus datos personales, mediciones de fuerza, pliegues, peso, rutinas y comentarios del entrenador.
@@ -98,7 +111,10 @@ Pendiente aparte, en el repo viejo: `vapid_private.pem` está versionado en su h
 
 - [x] Repo creado y proyecto Next.js base (App Router, JS, CSS común)
 - [x] Cuenta de Vercel creada y vinculada a GitHub
-- [ ] Primer commit/push y primer deploy en Vercel
-- [ ] Proyecto de Supabase y modelado de tablas
+- [x] Primer commit/push y primer deploy en Vercel (producción: `hacoaj-v2.vercel.app`, rama `main`, deploy automático en cada push)
+- [x] Paso 1 de React: tokens de diseño en `globals.css`, tipografía única, layout raíz y pantalla de inicio propia
+- [ ] Paso 2: componentes reutilizables (card, botón, encabezado, mensaje sin datos, Comentario del Chano)
+- [ ] Pasos 3 a 8: login, menú por rol, Pesos, Fuerza y Pliegues, Torneo, paneles técnico/admin (con datos falsos)
+- [ ] Proyecto de Supabase y modelado de tablas (después de tener las pantallas)
 - [ ] Login y roles
 - [ ] Migración de pantallas
