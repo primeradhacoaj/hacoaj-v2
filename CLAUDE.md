@@ -155,7 +155,10 @@ Pendiente aparte, en el repo viejo: `vapid_private.pem` está versionado en su h
   - Mejoras sobre la v1 (mismo aspecto): las opciones se pueden elegir con el teclado (en la v1 los radios estaban con `display:none`); en el buscador de zona, reescribir el texto descarta la zona elegida antes (antes quedaba guardada sin verse).
   - Unificado: la barra superior de ambos formularios ("← Menú" / "← Encuestas" en la v1) es "← Volver" → `/encuestas`.
   - **Falta:** las pantallas del técnico que leen estas respuestas (`menu_encuestas_tecnico`, `wellness_tecnico`, `post_partido_tecnico`).
-- [ ] Siguientes: Torneo, Pesos, pantallas del técnico/admin (con datos falsos)
+- [x] Torneo (jugador), primera parte: menú `/torneo` (`menu_torneo.html`; se habilitó "Promocional 2026" en el menú) y tabla de posiciones `/torneo/posiciones` (`tabla_posiciones.html`, componente de servidor). Datos de prueba ficticios en `src/lib/data/torneo.js` (`obtenerPosiciones`, misma forma que el `_leer_posiciones` de la v1). Las demás opciones del menú (Mis estadísticas, Partidos, Fixture, Goleadores, Planteles, Jugadores, Equipos) figuran `disponible: false` hasta portarlas.
+  - Piezas compartidas nuevas: `PieVolver` (pie "Volver" + "Primera D · Hacoaj", extraído de `SubmenuSeccion`), `PantallaTorneo` (encabezado bajo `HeroSeccion sinPerfil` + contenido de 520 px + pie; usar en fixture, goleadores, etc.). `SubmenuSeccion` ahora acepta varias listas (`secciones`) y `SectionLabel` `separada` acepta píxeles.
+  - Inconsistencia de la v1 corregida: la tabla de posiciones volvía a "Equipo" (`/estadisticas-equipo`); ahora vuelve a "Torneo".
+- [ ] Siguientes: resto de Torneo (fixture, goleadores, partidos, estadísticas, planteles, jugadores, equipos), Pesos, pantallas del técnico/admin (con datos falsos)
 - [ ] Proyecto de Supabase y modelado de tablas (después de tener las pantallas)
 - [ ] Login y roles
 - [ ] Migración de pantallas

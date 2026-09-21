@@ -1,28 +1,35 @@
 import Image from "next/image";
 import Link from "next/link";
 import Icono from "@/components/Icono";
+import { cx } from "@/lib/cx";
 import styles from "./HeroSeccion.module.css";
 
-// Encabezado compacto de los submenús del jugador (Mi fuerza, Mi composición
-// corporal…), copiado de la v1: botón "Menú", escudo, título y subtítulo.
+// Encabezado compacto de las pantallas del jugador (Mi fuerza, Composición
+// corporal, Torneo…), copiado de la v1: botón para volver, escudo, título y
+// subtítulo.
 //
 // Props:
-//   volverHref  a dónde lleva el botón "Menú" (por defecto "/menu")
-//   seccion     texto chico sobre el título (ej. "Sección · Fuerza")
+//   volverHref   a dónde lleva el botón para volver (por defecto "/menu")
+//   volverTexto  texto del botón ("Menú" por defecto)
+//   seccion      texto chico sobre el título (ej. "Sección · Fuerza")
 //   titulo, subtitulo
-//   decoracion  dibujo opcional de fondo (un <svg>)
+//   decoracion   dibujo opcional de fondo (un <svg>)
 //   estiloDecoracion  (opcional) posición y tamaño propios del dibujo,
 //                     ej. { right: -10, bottom: 12, width: 220, height: 90 }
+//   sinPerfil    versión más baja, para pantallas SIN la tarjeta del jugador
+//                superpuesta (tablas, fixture…)
 export default function HeroSeccion({
   volverHref = "/menu",
+  volverTexto = "Menú",
   seccion,
   titulo,
   subtitulo,
   decoracion,
   estiloDecoracion,
+  sinPerfil = false,
 }) {
   return (
-    <header className={styles.hero}>
+    <header className={cx(styles.hero, sinPerfil && styles.sinPerfil)}>
       {decoracion && (
         <div className={styles.decoracion} style={estiloDecoracion}>
           {decoracion}
@@ -30,9 +37,13 @@ export default function HeroSeccion({
       )}
 
       <div className={styles.fila}>
-        <Link href={volverHref} className={styles.volver} aria-label="Volver al menú">
+        <Link
+          href={volverHref}
+          className={styles.volver}
+          aria-label={`Volver a ${volverTexto}`}
+        >
           <Icono nombre="flechaIzquierda" tamano={16} strokeWidth={2.4} />
-          Menú
+          {volverTexto}
         </Link>
         <span className={styles.escudo}>
           <Image src="/escudo.png" alt="CNH" width={18} height={22} priority />

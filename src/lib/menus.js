@@ -63,7 +63,6 @@ export const MENU_JUGADOR = [
         descripcion: "Estadísticas del torneo y tu rendimiento",
         icono: "torneo",
         href: "/torneo",
-        disponible: false,
       },
     ],
   },

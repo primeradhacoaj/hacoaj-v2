@@ -18,40 +18,6 @@
   gap: 10px;
 }
 
-.pie {
-  margin-top: 28px;
-  text-align: center;
-}
-
-.volver {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 11px 18px;
-  border: 1px solid var(--line);
-  border-radius: 99px;
-  background: var(--surface);
-  color: var(--ink-500);
-  font-size: 13px;
-  font-weight: 600;
-  transition: color 0.15s, border-color 0.15s;
-}
-
-.volver:hover {
-  color: var(--navy-700);
-  border-color: rgba(0, 41, 107, 0.18);
-}
-
-.version {
-  display: block;
-  margin-top: 14px;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: var(--ink-400);
-}
-
 @media (min-width: 600px) {
   .pagina {
     background:
