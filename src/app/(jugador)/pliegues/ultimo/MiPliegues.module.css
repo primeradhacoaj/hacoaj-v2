@@ -1,0 +1,79 @@
+/* Pantalla "Mi último registro de pliegues" — copiada del diseño original de la v1.
+   Usa los colores de PantallaDatos (--blue-*, --gray-*). */
+
+/* ── Carga y error ── */
+.cargando {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 60vh;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--gray-200);
+  border-top-color: var(--blue-700);
+  border-radius: 50%;
+  animation: girar 0.7s linear infinite;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.cargandoTexto {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-500);
+}
+
+.error {
+  padding-top: 40px;
+  font-size: 13px;
+  text-align: center;
+  color: #ef4444;
+}
+
+/* ── Encabezado y tarjeta de la medición ── */
+.seccion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+.punto {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--blue-600);
+}
+
+.seccionTitulo {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gray-500);
+}
+
+.tarjeta {
+  margin-bottom: 12px;
+  padding: 20px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 41, 107, 0.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 2s;
+  }
+}

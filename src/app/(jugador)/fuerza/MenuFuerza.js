@@ -1,13 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import HeroSeccion from "@/components/HeroSeccion";
-import Icono from "@/components/Icono";
-import MenuItem from "@/components/MenuItem";
-import PerfilChip from "@/components/PerfilChip";
-import SectionLabel from "@/components/SectionLabel";
-import { useSesion } from "@/components/SesionProvider";
-import styles from "./MenuFuerza.module.css";
+import SubmenuMedicion from "@/components/SubmenuMedicion";
 
 // Silueta de una barra con pesas, de fondo en el encabezado (copiada de la v1).
 const BARRA = (
@@ -22,63 +15,19 @@ const BARRA = (
   </svg>
 );
 
-// Submenú "Mi fuerza": elegir entre el último registro y el historial
-// (diseño original de la v1).
+// Submenú "Mi fuerza": elegir entre el último registro y el historial.
 export default function MenuFuerza() {
-  const { sesion } = useSesion();
-
   return (
-    <div className={styles.pagina}>
-      <HeroSeccion
-        seccion="Sección · Fuerza"
-        titulo="Mi fuerza"
-        subtitulo="Pecho, sentadilla y evolución"
-        decoracion={BARRA}
-      />
-
-      <PerfilChip
-        compacto
-        saludo="Jugador"
-        nombre={sesion.nombre}
-        pildora={
-          <>
-            <Icono nombre="fuerza" tamano={13} strokeWidth={2} />
-            Fuerza
-          </>
-        }
-      />
-
-      <main className={styles.contenido}>
-        <SectionLabel nota="2 vistas">Tus registros</SectionLabel>
-
-        <nav className={styles.lista} aria-label="Registros de fuerza">
-          <MenuItem
-            grande
-            destacado
-            icono="analytics"
-            titulo="Mi último registro"
-            descripcion="Ver tu medición más reciente"
-            href="/fuerza/ultimo"
-          />
-          <MenuItem
-            grande
-            icono="encuestas"
-            tono="navy"
-            titulo="Mi historial"
-            descripcion="Todos tus registros de fuerza"
-            href="/fuerza/historial"
-          />
-        </nav>
-
-        <div className={styles.pie}>
-          <Link href="/menu" className={styles.volver}>
-            <Icono nombre="flechaIzquierda" tamano={14} strokeWidth={2.4} />
-            Volver al menú
-          </Link>
-          <span className={styles.version}>Primera D · Hacoaj</span>
-        </div>
-      </main>
-
-    </div>
+    <SubmenuMedicion
+      seccion="Sección · Fuerza"
+      titulo="Mi fuerza"
+      subtitulo="Pecho, sentadilla y evolución"
+      decoracion={BARRA}
+      iconoPildora="fuerza"
+      textoPildora="Fuerza"
+      ultimoHref="/fuerza/ultimo"
+      historialHref="/fuerza/historial"
+      historialDescripcion="Todos tus registros de fuerza"
+    />
   );
 }

@@ -3,8 +3,10 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import CommentBox from "@/components/CommentBox";
+import Glosario from "@/components/Glosario";
 import Icono from "@/components/Icono";
 import PantallaDatos from "@/components/PantallaDatos";
+import SinDatos from "@/components/SinDatos";
 import TarjetaJugador from "@/components/TarjetaJugador";
 import { useSesion } from "@/components/SesionProvider";
 import { obtenerMiFuerza } from "@/lib/data/fuerza";
@@ -17,6 +19,33 @@ import {
 import { cx } from "@/lib/cx";
 import MetricasEjercicio from "./MetricasEjercicio";
 import styles from "./MiFuerza.module.css";
+
+// Texto del glosario (copiado de la v1)
+const GLOSARIO = [
+  {
+    sigla: "VMP",
+    texto:
+      "Velocidad Media Propulsiva. Qué tan rápido movés la carga en la fase activa del ejercicio. A mayor velocidad, mayor intensidad relativa.",
+  },
+  {
+    sigla: "RM est.",
+    texto:
+      "Repetición Máxima estimada. El peso máximo que podrías mover una sola vez, calculado a partir de la carga usada y la velocidad medida.",
+    formula: "RM = carga × factor(VMP)",
+  },
+  {
+    sigla: "F. Rel.",
+    texto:
+      "Fuerza relativa. Relaciona tu fuerza máxima con tu peso corporal. Cuanto más alto, mejor rendimiento por kilo de tu cuerpo.",
+    formula: "F.R. = RM estimado ÷ peso corporal",
+  },
+  {
+    sigla: "F. x%",
+    texto:
+      "Porcentajes de tu RM estimado. Indican la carga que deberías usar según el tipo de trabajo (60%, 75%, 80%)",
+    formula: "F x% = RM estimado × x / 100",
+  },
+];
 
 // Objetivos de fuerza relativa (RM estimado ÷ peso corporal)
 const OBJETIVO_PECHO = 1.3;
@@ -162,66 +191,7 @@ function Contenido({ sesion, estado }) {
         <div className={styles.rutinasFlecha}>›</div>
       </Link>
 
-      <Glosario />
+      <Glosario items={GLOSARIO} />
     </>
-  );
-}
-
-function SinDatos() {
-  return (
-    <div className={styles.sinDatos}>
-      <div className={styles.sinDatosIcono}>
-        <Icono nombre="encuestas" tamano={18} />
-      </div>
-      <span>Sin datos cargados</span>
-    </div>
-  );
-}
-
-// Explica qué significa cada dato (texto copiado de la v1)
-function Glosario() {
-  const items = [
-    {
-      sigla: "VMP",
-      texto:
-        "Velocidad Media Propulsiva. Qué tan rápido movés la carga en la fase activa del ejercicio. A mayor velocidad, mayor intensidad relativa.",
-    },
-    {
-      sigla: "RM est.",
-      texto:
-        "Repetición Máxima estimada. El peso máximo que podrías mover una sola vez, calculado a partir de la carga usada y la velocidad medida.",
-      formula: "RM = carga × factor(VMP)",
-    },
-    {
-      sigla: "F. Rel.",
-      texto:
-        "Fuerza relativa. Relaciona tu fuerza máxima con tu peso corporal. Cuanto más alto, mejor rendimiento por kilo de tu cuerpo.",
-      formula: "F.R. = RM estimado ÷ peso corporal",
-    },
-    {
-      sigla: "F. x%",
-      texto:
-        "Porcentajes de tu RM estimado. Indican la carga que deberías usar según el tipo de trabajo (60%, 75%, 80%)",
-      formula: "F x% = RM estimado × x / 100",
-    },
-  ];
-
-  return (
-    <div className={styles.glosario}>
-      <div className={styles.glosarioTitulo}>¿Qué significa cada dato?</div>
-      <div className={styles.glosarioLista}>
-        {items.map((item) => (
-          <div key={item.sigla} className={styles.glosarioItem}>
-            <div className={styles.glosarioSigla}>{item.sigla}</div>
-            <div className={styles.glosarioTexto}>
-              {item.texto}
-              {item.formula && (
-                <div className={styles.glosarioFormula}>{item.formula}</div>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
   );
 }

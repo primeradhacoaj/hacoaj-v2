@@ -1,4 +1,5 @@
-/* Métricas de un ejercicio — copiadas del diseño original de la v1.
+/* Métricas de un ejercicio (lo propio de fuerza) — diseño original de la v1.
+   Las baldosas, la insignia de estado y la fecha son componentes compartidos.
    Usa los colores de PantallaDatos (--blue-*, --gray-*, --green…). */
 
 .nuevo {
@@ -14,70 +15,6 @@
   font-weight: 700;
   letter-spacing: 0.6px;
   text-transform: uppercase;
-}
-
-.rejilla {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 18px;
-}
-
-.baldosa {
-  position: relative;
-  padding: 14px 10px 12px;
-  background: var(--gray-50);
-  border: 1px solid var(--gray-200);
-  border-radius: 12px;
-  text-align: center;
-}
-
-.destacada {
-  background: var(--blue-900);
-  border-color: var(--blue-900);
-}
-
-.baldosaPct {
-  background: var(--blue-50);
-  border-color: var(--blue-100);
-}
-
-.valor {
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  line-height: 1;
-  color: var(--blue-900);
-}
-
-.valorPct {
-  font-size: 18px;
-  color: var(--blue-700);
-}
-
-.unidad {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0;
-  color: var(--gray-500);
-}
-
-.etiqueta {
-  margin-top: 6px;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  color: var(--gray-500);
-}
-
-.destacada .valor {
-  color: #fff;
-}
-
-.destacada .unidad,
-.destacada .etiqueta {
-  color: rgba(255, 255, 255, 0.6);
 }
 
 /* Variación del RM contra el test anterior (esquina de la baldosa oscura) */
@@ -199,53 +136,7 @@
   background: var(--red);
 }
 
+/* Espacio de la insignia de estado (la insignia es InsigniaEstado) */
 .estado {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
   margin-top: 8px;
-  padding: 3px 9px;
-  border-radius: 99px;
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.estado-green {
-  background: var(--green-soft);
-  color: #065f46;
-}
-
-.estado-yellow {
-  background: var(--yellow-soft);
-  color: #92400e;
-}
-
-.estado-red {
-  background: var(--red-soft);
-  color: #991b1b;
-}
-
-.fecha {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--gray-100);
-  font-size: 11px;
-  color: var(--gray-400);
-}
-
-@media (min-width: 540px) {
-  .rejilla {
-    gap: 10px;
-  }
-
-  .valor {
-    font-size: 26px;
-  }
-
-  .valorPct {
-    font-size: 18px;
-  }
 }

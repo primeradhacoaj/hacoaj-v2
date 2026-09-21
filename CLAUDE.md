@@ -139,7 +139,11 @@ Pendiente aparte, en el repo viejo: `vapid_private.pem` está versionado en su h
   - Unificado entre pantallas "C": la barra superior (`TopNav`: "← Volver" + "Salir") y los colores de los puntos (pecho azul `--blue-600`, sentadilla dorado `#c9a83e`). `TarjetaJugador` es compartida por las pantallas de datos.
   - Componentes compartidos nuevos para las pantallas de datos (diseño "C" de la v1): `PantallaDatos` (barra `TopNav` + columna + colores `--blue-*`/`--gray-*`), `HeroSeccion` (encabezado compacto de submenús), `CommentBox` (comentario del Chano con el diseño de la v1). Reutilizarlos en Pliegues, Rutinas, Wellness, etc.
   - Inconsistencia de la v1 corregida: `--gray-400` se usaba sin estar definido; ahora vale `#94a3b8` (el gris que se buscaba).
-- [ ] Siguientes: Pliegues (menú, última medición, historial), Rutinas, Encuestas, Torneo, Pesos, pantallas del técnico/admin (con datos falsos)
+- [x] Pliegues (jugador): submenú `/pliegues` y última medición `/pliegues/ultimo` (`menu_pliegues.html` y `pliegues.html`), con datos de prueba en `src/lib/data/pliegues.js` (misma forma que el viejo `/api/mi-pliegue`) y la lógica de la v1 en `src/lib/pliegues.js` (estado según la sumatoria de 6 pliegues: <50 bueno, 50-60 regular, >60 alto; frase de cuánto falta para el peso ideal). Incluye las tarjetas de PDFs de pautas nutricionales y suplementación (`public/rutinas/`).
+  - **Falta:** `/pliegues/historial` (`historial_pliegues.html`), hoy muestra el aviso "se está migrando".
+  - Piezas compartidas creadas para las pantallas de mediciones (en la v1 estaban copiadas en cada archivo): `SubmenuMedicion` (los submenús de fuerza y pliegues son el mismo componente), `Baldosa`/`RejillaBaldosas`, `InsigniaEstado`, `FechaTest`, `SinDatos`, `Glosario`, `TarjetaRecurso` (PDFs; se reutiliza en Rutinas), `TarjetaJugador`, `CommentBox`. Al portar una pantalla nueva de mediciones, usar estas piezas y no copiar CSS.
+  - El punto de color de "Composición corporal" usa el mismo azul que el de pecho (`--blue-600`), para unificar la v1.
+- [ ] Siguientes: historial de pliegues, Rutinas, Encuestas, Torneo, Pesos, pantallas del técnico/admin (con datos falsos)
 - [ ] Proyecto de Supabase y modelado de tablas (después de tener las pantallas)
 - [ ] Login y roles
 - [ ] Migración de pantallas

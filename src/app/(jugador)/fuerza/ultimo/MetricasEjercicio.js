@@ -1,3 +1,6 @@
+import Baldosa, { RejillaBaldosas } from "@/components/Baldosa";
+import FechaTest from "@/components/FechaTest";
+import InsigniaEstado from "@/components/InsigniaEstado";
 import {
   aNumero,
   diferencia,
@@ -45,55 +48,40 @@ export default function MetricasEjercicio({
     { etiqueta: "Fuerza 80%", valor: rmNumero !== null ? rmNumero * 0.8 : null },
   ];
 
-  const fechaTexto = fechaLegible(fecha);
-
   return (
     <>
       {esNuevo && <div className={styles.nuevo}>✦ Nuevas métricas</div>}
 
-      <div className={styles.rejilla}>
-        <div className={styles.baldosa}>
-          <div className={styles.valor}>
-            {formatear(vmp, 2)}
-            <span className={styles.unidad}> m/s</span>
-          </div>
-          <div className={styles.etiqueta}>VMP</div>
-        </div>
-        <div className={styles.baldosa}>
-          <div className={styles.valor}>
-            {formatear(cargaExterna, 0)}
-            <span className={styles.unidad}> kg</span>
-          </div>
-          <div className={styles.etiqueta}>Carga</div>
-        </div>
-        <div className={cx(styles.baldosa, styles.destacada)}>
-          {deltaRm !== null && (
-            <span
-              className={cx(styles.deltaRm, deltaRm > 0 ? styles.sube : styles.baja)}
-            >
-              {deltaRm > 0 ? "+" : ""}
-              {deltaRm.toFixed(0)} kg
-            </span>
-          )}
-          <div className={styles.valor}>
-            {formatear(rm, 0)}
-            <span className={styles.unidad}> kg</span>
-          </div>
-          <div className={styles.etiqueta}>RM est.</div>
-        </div>
-      </div>
+      <RejillaBaldosas>
+        <Baldosa valor={formatear(vmp, 2)} unidad="m/s" etiqueta="VMP" />
+        <Baldosa valor={formatear(cargaExterna, 0)} unidad="kg" etiqueta="Carga" />
+        <Baldosa
+          variante="destacada"
+          valor={formatear(rm, 0)}
+          unidad="kg"
+          etiqueta="RM est."
+          adorno={
+            deltaRm !== null && (
+              <span className={cx(styles.deltaRm, deltaRm > 0 ? styles.sube : styles.baja)}>
+                {deltaRm > 0 ? "+" : ""}
+                {deltaRm.toFixed(0)} kg
+              </span>
+            )
+          }
+        />
+      </RejillaBaldosas>
 
-      <div className={styles.rejilla}>
+      <RejillaBaldosas>
         {porcentajes.map((p) => (
-          <div key={p.etiqueta} className={cx(styles.baldosa, styles.baldosaPct)}>
-            <div className={cx(styles.valor, styles.valorPct)}>
-              {formatear(p.valor, 1)}
-              <span className={styles.unidad}> kg</span>
-            </div>
-            <div className={styles.etiqueta}>{p.etiqueta}</div>
-          </div>
+          <Baldosa
+            key={p.etiqueta}
+            variante="porcentaje"
+            valor={formatear(p.valor, 1)}
+            unidad="kg"
+            etiqueta={p.etiqueta}
+          />
         ))}
-      </div>
+      </RejillaBaldosas>
 
       <div className={styles.progreso}>
         <div className={styles.progresoCabecera}>
@@ -124,12 +112,12 @@ export default function MetricasEjercicio({
             style={{ width: `${porcentaje}%` }}
           />
         </div>
-        <div className={cx(styles.estado, styles[`estado-${estado.tono}`])}>
-          {estado.texto}
+        <div className={styles.estado}>
+          <InsigniaEstado tono={estado.tono}>{estado.texto}</InsigniaEstado>
         </div>
       </div>
 
-      {fechaTexto && <div className={styles.fecha}>📅 Test: {fechaTexto}</div>}
+      <FechaTest fecha={fechaLegible(fecha)} />
     </>
   );
 }

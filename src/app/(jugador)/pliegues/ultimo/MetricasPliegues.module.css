@@ -1,0 +1,45 @@
+/* Métricas de pliegues — copiadas del diseño original de la v1.
+   Usa los colores de PantallaDatos (--blue-*, --gray-*). */
+
+.comentarioPeso {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--blue-100);
+  border-radius: 10px;
+  background: var(--blue-50);
+  color: var(--gray-700);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.bloqueEstado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+  padding: 12px;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  background: var(--gray-50);
+}
+
+.textos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.titulo {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-700);
+}
+
+.subtitulo {
+  font-size: 11px;
+  color: var(--gray-500);
+}

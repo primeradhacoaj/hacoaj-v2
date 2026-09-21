@@ -11,16 +11,23 @@ import styles from "./HeroSeccion.module.css";
 //   seccion     texto chico sobre el título (ej. "Sección · Fuerza")
 //   titulo, subtitulo
 //   decoracion  dibujo opcional de fondo (un <svg>)
+//   estiloDecoracion  (opcional) posición y tamaño propios del dibujo,
+//                     ej. { right: -10, bottom: 12, width: 220, height: 90 }
 export default function HeroSeccion({
   volverHref = "/menu",
   seccion,
   titulo,
   subtitulo,
   decoracion,
+  estiloDecoracion,
 }) {
   return (
     <header className={styles.hero}>
-      {decoracion && <div className={styles.decoracion}>{decoracion}</div>}
+      {decoracion && (
+        <div className={styles.decoracion} style={estiloDecoracion}>
+          {decoracion}
+        </div>
+      )}
 
       <div className={styles.fila}>
         <Link href={volverHref} className={styles.volver} aria-label="Volver al menú">

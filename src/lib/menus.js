@@ -41,7 +41,7 @@ export const MENU_JUGADOR = [
         descripcion: "Pliegues y composición corporal",
         icono: "composicion",
         href: "/pliegues",
-        disponible: false,
+        disponible: true,
       },
       {
         id: "encuestas",
