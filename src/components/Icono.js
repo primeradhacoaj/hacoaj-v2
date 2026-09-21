@@ -7,6 +7,9 @@
 //   tamano  ancho y alto en píxeles (22 por defecto)
 const ICONOS = {
   flecha: "M9 6l6 6-6 6",
+  flechaIzquierda: "M15 18l-6-6 6-6",
+  documento:
+    "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M16 13H8 M16 17H8 M10 9H8",
   salir: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4 M16 17l5-5-5-5 M21 12H9",
   campana:
     "M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9 M13.73 21a2 2 0 0 1-3.46 0",

@@ -1,0 +1,58 @@
+.barra {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  padding: 0 20px;
+  background: var(--navy-900);
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.marca img {
+  width: 21px;
+  height: 26px;
+}
+
+.marca span {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #fff;
+}
+
+.enlaces {
+  display: flex;
+  gap: 4px;
+}
+
+.enlaces a,
+.enlaces button {
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: rgba(255, 255, 255, 0.65);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.enlaces a:hover,
+.enlaces button:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.barra :focus-visible {
+  outline-color: #fff;
+}

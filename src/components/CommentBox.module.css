@@ -1,14 +1,48 @@
+/* Comentario del entrenador — copiado del diseño original de la v1 */
+
+.tarjeta {
+  margin-bottom: 16px;
+  padding: 18px 20px;
+  background: #fff;
+  border-radius: 18px;
+  border-left: 4px solid #00296b;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 41, 107, 0.04);
+}
+
 .titulo {
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-weight: 800;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--ink-500);
+  color: #00296b;
+}
+
+.item {
+  margin-top: 10px;
+}
+
+.item:first-of-type {
+  margin-top: 0;
+}
+
+.subtitulo {
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: #64748b;
 }
 
 .texto {
-  font-size: 15px;
-  color: var(--ink-700);
+  font-size: 13px;
+  line-height: 1.55;
+  color: #475569;
   white-space: pre-line; /* respeta los saltos de línea que escriba el técnico */
+}
+
+.vacio {
+  font-style: italic;
+  color: #94a3b8;
 }

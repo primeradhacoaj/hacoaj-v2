@@ -3,7 +3,7 @@ import Button from "@/components/Button";
 import Card from "@/components/Card";
 import CommentBox from "@/components/CommentBox";
 import EmptyState from "@/components/EmptyState";
-import PageHeader from "@/components/PageHeader";
+import TopNav from "@/components/TopNav";
 import styles from "./page.module.css";
 
 export const metadata = {
@@ -15,9 +15,7 @@ export const metadata = {
 export default function ComponentesPage() {
   return (
     <div className={styles.pagina}>
-      <PageHeader titulo="Componentes" volverHref="/" fija={false}>
-        <span>Salir</span>
-      </PageHeader>
+      <TopNav volverHref="/" />
 
       <main className={styles.contenido}>
         <Seccion titulo="Badge" nota="Etiquetas chicas. El puntito dorado es opcional.">
@@ -56,8 +54,16 @@ export default function ComponentesPage() {
         </Seccion>
 
         <Seccion titulo="CommentBox" nota="Con comentario y sin comentario (vacío).">
-          <CommentBox comentario="Muy buena progresión en el press de pecho. Seguimos con el plan y en 4 semanas volvemos a medir." />
-          <CommentBox comentario="" />
+          <CommentBox
+            items={[
+              {
+                subtitulo: "Press de pecho",
+                texto:
+                  "Muy buena progresión en el press de pecho. Seguimos con el plan y en 4 semanas volvemos a medir.",
+              },
+            ]}
+          />
+          <CommentBox items={[]} />
         </Seccion>
       </main>
     </div>

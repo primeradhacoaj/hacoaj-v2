@@ -1,0 +1,66 @@
+/* Submenú "Mi fuerza" — copiado del diseño original de la v1 */
+
+.pagina {
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+}
+
+.contenido {
+  padding: 24px 16px calc(var(--safe-bottom) + 32px);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pie {
+  margin-top: 28px;
+  text-align: center;
+}
+
+.volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 18px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: var(--surface);
+  color: var(--ink-500);
+  font-size: 13px;
+  font-weight: 600;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.volver:hover {
+  color: var(--navy-700);
+  border-color: rgba(0, 41, 107, 0.18);
+}
+
+.version {
+  display: block;
+  margin-top: 14px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--ink-400);
+}
+
+@media (min-width: 600px) {
+  .pagina {
+    background:
+      radial-gradient(60% 40% at 50% 0%, rgba(0, 41, 107, 0.08), rgba(0, 41, 107, 0) 70%),
+      var(--bg);
+  }
+
+  .contenido {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+}

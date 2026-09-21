@@ -33,7 +33,7 @@ export const MENU_JUGADOR = [
         descripcion: "Tus métricas de pecho y sentadilla",
         icono: "fuerza",
         href: "/fuerza",
-        disponible: false,
+        disponible: true,
       },
       {
         id: "composicion",

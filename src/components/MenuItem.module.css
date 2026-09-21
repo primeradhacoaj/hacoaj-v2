@@ -127,6 +127,27 @@
   border-color: var(--line);
 }
 
+/* Opción principal de un submenú */
+.destacado {
+  background: linear-gradient(180deg, #fffdf5 0%, #ffffff 100%);
+  border-color: rgba(201, 168, 62, 0.3);
+}
+
+/* Versión de los submenús: un poco más alta */
+.grande {
+  padding: 16px 14px;
+}
+
+.grande .icono {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+}
+
+.grande .oro {
+  box-shadow: inset 0 0 0 1px rgba(201, 168, 62, 0.2);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .item {
     transition: none;

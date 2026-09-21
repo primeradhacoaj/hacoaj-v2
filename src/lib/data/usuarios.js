@@ -7,13 +7,20 @@
 // Estos usuarios son ficticios y solo existen para probar el diseño.
 
 const USUARIOS_DE_PRUEBA = [
-  { usuario: "jugador", contrasena: "demo", nombre: "Juan Pérez", rol: "jugador" },
+  {
+    usuario: "jugador",
+    contrasena: "demo",
+    nombre: "Juan Pérez",
+    rol: "jugador",
+    posicion: "Volante",
+    piernaHabil: "Derecha",
+  },
   { usuario: "tecnico", contrasena: "demo", nombre: "Cuerpo Técnico", rol: "tecnico" },
   { usuario: "admin", contrasena: "demo", nombre: "Administración", rol: "administrador" },
 ];
 
 // Intenta iniciar sesión. Devuelve:
-//   { ok: true, usuario: { usuario, nombre, rol } }
+//   { ok: true, usuario: { usuario, nombre, rol, posicion, piernaHabil } }
 //   { ok: false, error: "mensaje para mostrar" }
 // Es `async` a propósito: la versión real va a tardar en responder (red).
 export async function iniciarSesion(usuario, contrasena) {
@@ -33,6 +40,8 @@ export async function iniciarSesion(usuario, contrasena) {
       usuario: encontrado.usuario,
       nombre: encontrado.nombre,
       rol: encontrado.rol,
+      posicion: encontrado.posicion,
+      piernaHabil: encontrado.piernaHabil,
     },
   };
 }

@@ -12,6 +12,8 @@ import styles from "./MenuItem.module.css";
 //   disponible       true por defecto. Si es false no navega: al tocarla llama
 //                    a `onNoDisponible` (que muestra un aviso)
 //   pronto           muestra la etiqueta "Pronto" y el estilo apagado de la v1
+//   destacado        resalta la opción principal (fondo y borde dorados suaves)
+//   grande           versión más alta, usada en los submenús
 //   onNoDisponible   función a ejecutar al tocar una opción no disponible
 export default function MenuItem({
   icono,
@@ -21,9 +23,16 @@ export default function MenuItem({
   href,
   disponible = true,
   pronto = false,
+  destacado = false,
+  grande = false,
   onNoDisponible,
 }) {
-  const clases = cx(styles.item, pronto && styles.apagado);
+  const clases = cx(
+    styles.item,
+    pronto && styles.apagado,
+    destacado && styles.destacado,
+    grande && styles.grande,
+  );
 
   const contenido = (
     <>

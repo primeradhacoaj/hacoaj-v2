@@ -1,0 +1,346 @@
+/* Pantalla "Mi último registro de fuerza" — copiada del diseño original de la v1.
+   Usa los colores de PantallaDatos (--blue-*, --gray-*…). */
+
+/* ── Carga y error ── */
+.cargando {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 60vh;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--gray-200);
+  border-top-color: var(--blue-700);
+  border-radius: 50%;
+  animation: girar 0.7s linear infinite;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.cargandoTexto {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-500);
+}
+
+.error {
+  padding-top: 40px;
+  font-size: 13px;
+  text-align: center;
+  color: #ef4444;
+}
+
+/* ── Tarjeta del jugador ── */
+.jugador {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 20px;
+  padding: 24px;
+  border-radius: 20px;
+  background: var(--blue-900);
+}
+
+.jugador::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.jugador::after {
+  content: "";
+  position: absolute;
+  bottom: -60px;
+  left: -20px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.jugadorInterior {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  background: var(--blue-700);
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.jugadorInfo {
+  flex: 1;
+}
+
+.jugadorNombre {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.jugadorSub {
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 9px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* ── Encabezado de cada ejercicio ── */
+.seccion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+.punto {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.pecho {
+  background: #60a5fa;
+}
+
+.sentadilla {
+  background: #f59e0b;
+}
+
+.seccionTitulo {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gray-500);
+}
+
+.ejercicio {
+  margin-bottom: 12px;
+  padding: 20px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 41, 107, 0.06);
+}
+
+.sinDatos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 32px 20px;
+  color: var(--gray-400);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.sinDatosIcono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--gray-100);
+}
+
+/* ── Acceso directo a rutinas ── */
+.rutinas {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 18px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 41, 107, 0.04);
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.rutinas:hover {
+  transform: translateY(-1px);
+  border-color: rgba(0, 41, 107, 0.18);
+  box-shadow: 0 4px 18px rgba(0, 41, 107, 0.1);
+}
+
+.rutinasIcono {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: rgba(201, 168, 62, 0.12);
+  color: #c9a83e;
+}
+
+.rutinasTexto {
+  flex: 1;
+  min-width: 0;
+}
+
+.rutinasTitulo {
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--blue-900);
+}
+
+.rutinasDesc {
+  margin-top: 3px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gray-500);
+}
+
+.rutinasFlecha {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gray-400);
+}
+
+/* ── "¿Qué significa cada dato?" ── */
+.glosario {
+  margin-top: 8px;
+  padding: 20px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 41, 107, 0.04);
+}
+
+.glosarioTitulo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gray-700);
+}
+
+.glosarioTitulo::before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 2px;
+  border-radius: 99px;
+  background: var(--blue-600);
+}
+
+.glosarioLista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.glosarioItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.glosarioSigla {
+  flex-shrink: 0;
+  margin-top: 1px;
+  padding: 4px 9px;
+  border-radius: 6px;
+  background: var(--blue-50);
+  color: var(--blue-700);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.glosarioTexto {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--gray-600);
+}
+
+.glosarioFormula {
+  margin-top: 5px;
+  padding: 7px 12px;
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  background: var(--gray-50);
+  color: var(--blue-900);
+  font-family: monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+@media (min-width: 540px) {
+  .jugadorNombre {
+    font-size: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 2s;
+  }
+
+  .rutinas {
+    transition: none;
+  }
+}
