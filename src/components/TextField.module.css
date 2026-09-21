@@ -1,0 +1,57 @@
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.etiqueta {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.contenedor {
+  display: flex;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.contenedor:focus-within {
+  border-color: var(--navy-600);
+  box-shadow: 0 0 0 3px rgba(10, 83, 181, 0.15);
+}
+
+.conError {
+  border-color: var(--danger);
+}
+
+.conError:focus-within {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(208, 72, 72, 0.15);
+}
+
+.entrada {
+  flex: 1;
+  min-width: 0;
+  min-height: 48px;
+  padding: 0 16px;
+  border: 0;
+  background: transparent;
+  font-size: 16px; /* 16px evita el zoom automático de iPhone al enfocar */
+  outline: none;
+}
+
+.entrada::placeholder {
+  color: var(--ink-400);
+}
+
+.error {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--danger-ink);
+}

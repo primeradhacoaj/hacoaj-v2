@@ -1,0 +1,56 @@
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.titulo {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.texto {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--ink-500);
+}
+
+.errorGeneral {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--danger-soft);
+  color: var(--danger-ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.verBoton {
+  margin-right: 8px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--navy-700);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.verBoton:hover {
+  background: var(--navy-50);
+}
+
+.ayuda {
+  padding-top: 14px;
+  border-top: 1px solid var(--line-2);
+  font-size: 12px;
+  color: var(--ink-400);
+  text-align: center;
+}
+
+.exito {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}

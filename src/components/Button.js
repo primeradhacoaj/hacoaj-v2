@@ -12,12 +12,15 @@ import styles from "./Button.module.css";
 //   href      si está, navega a esa ruta
 //   type      "button" (por defecto) | "submit" | "reset" — solo si no hay href
 //   disabled  deshabilita el botón — solo si no hay href
+//   onClick   función a ejecutar al hacer clic — solo si no hay href, y solo
+//             cuando el botón se usa dentro de un componente de cliente
 export default function Button({
   variante = "principal",
   bloque = false,
   href,
   type = "button",
   disabled = false,
+  onClick,
   children,
 }) {
   const clases = cx(styles.boton, styles[variante], bloque && styles.bloque);
@@ -31,7 +34,7 @@ export default function Button({
   }
 
   return (
-    <button type={type} disabled={disabled} className={clases}>
+    <button type={type} disabled={disabled} onClick={onClick} className={clases}>
       {children}
     </button>
   );

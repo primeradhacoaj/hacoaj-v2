@@ -4,63 +4,7 @@
   flex-direction: column;
 }
 
-.hero {
-  background: linear-gradient(160deg, var(--navy-950), var(--navy-800));
-  color: #fff;
-  padding: calc(var(--safe-top) + 48px) 24px 72px;
-  border-radius: 0 0 32px 32px;
-  box-shadow: var(--shadow-hero);
-}
-
-.heroInner {
-  max-width: var(--width-jugador);
-  margin: 0 auto;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 40px;
-}
-
-.brandText {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.15;
-}
-
-.eyebrow {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.65);
-}
-
-.club {
-  font-size: 20px;
-  font-weight: 800;
-}
-
-.title {
-  font-size: clamp(40px, 12vw, 56px);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.05;
-}
-
-/* Único toque dorado de la pantalla */
-.accent {
-  color: var(--gold-500);
-}
-
-.subtitle {
-  margin-top: 12px;
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.78);
-}
-
+/* La card sube y se superpone al encabezado azul */
 .content {
   width: 100%;
   max-width: var(--width-jugador);
@@ -78,4 +22,8 @@
   margin-top: 6px;
   font-size: 14px;
   color: var(--ink-500);
+}
+
+.accion {
+  margin-top: 16px;
 }

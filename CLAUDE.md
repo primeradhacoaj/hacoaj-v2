@@ -80,6 +80,12 @@ Usuarios, Fuerza Sentadilla, Fuerza Pecho, Pliegues, Pesos, Accesos, Partidos, P
 - Formaciones de partido: definirlas en **un solo lugar** compartido (en v1 estaba duplicado en 3 archivos y era una fuente de errores).
 - Analytics de visitas: solo para `administrador`.
 
+## Capa de datos y backend
+
+- Las pantallas NO leen datos directo: llaman a funciones de `src/lib/data/` (ej. `iniciarSesion`). Hoy devuelven datos de prueba; con Supabase se cambia solo el interior de cada función.
+- El backend de la v2 vive en el mismo proyecto Next.js: Route Handlers (`src/app/api/**/route.js`) y código de servidor. Todavía no hay ninguno (no existe un `app.py`).
+- **Contraseñas:** en la v1 están en texto plano en la hoja Usuarios y el panel admin las muestra. En v2 se usa Supabase Auth (contraseñas cifradas); el admin pasa a tener "restablecer contraseña" en vez de verlas. Pendiente de hablar con el usuario al llegar a Auth.
+
 ## Reglas de trabajo
 
 - Trabajar de a un paso por vez. La app actual funciona perfecto; esta migración es aparte y no debe romper nada de v1.
@@ -114,7 +120,8 @@ Pendiente aparte, en el repo viejo: `vapid_private.pem` está versionado en su h
 - [x] Primer commit/push y primer deploy en Vercel (producción: `hacoaj-v2.vercel.app`, rama `main`, deploy automático en cada push)
 - [x] Paso 1 de React: tokens de diseño en `globals.css`, tipografía única, layout raíz y pantalla de inicio propia
 - [x] Paso 2: componentes reutilizables en `src/components/` (Card, Badge, Button, PageHeader, EmptyState, CommentBox) + helper `src/lib/cx.js`. Página temporal `/componentes` para revisarlos (borrar cuando ya no haga falta).
-- [ ] Pasos 3 a 8: login, menú por rol, Pesos, Fuerza y Pliegues, Torneo, paneles técnico/admin (con datos falsos)
+- [x] Paso 3: login (`/login`), solo pantalla con estado y validación; usuarios de PRUEBA en `src/lib/data/usuarios.js` (jugador/tecnico/admin, contraseña `demo`). Componentes nuevos: `Hero`, `TextField`. Al iniciar sesión hoy solo muestra un aviso: falta el menú (paso 4).
+- [ ] Pasos 4 a 8: menú por rol, Pesos, Fuerza y Pliegues, Torneo, paneles técnico/admin (con datos falsos)
 - [ ] Proyecto de Supabase y modelado de tablas (después de tener las pantallas)
 - [ ] Login y roles
 - [ ] Migración de pantallas
