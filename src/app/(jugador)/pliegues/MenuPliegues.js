@@ -34,7 +34,6 @@ export default function MenuPliegues() {
       ultimoHref="/pliegues/ultimo"
       historialHref="/pliegues/historial"
       historialDescripcion="Todos tus registros de pliegues"
-      historialDisponible={false}
     />
   );
 }

@@ -32,3 +32,29 @@ export async function obtenerMiPliegue(usuario) {
     },
   };
 }
+
+// Devuelve TODAS las mediciones de pliegues del jugador, de la más nueva a la
+// más vieja (mismos nombres de campo que `/api/mis-pliegues` de la v1). Si no
+// hay ninguna, devuelve una lista vacía y un mensaje. Datos de prueba ficticios.
+export async function obtenerMisPliegues(usuario) {
+  await new Promise((resolver) => setTimeout(resolver, 500)); // simula la red
+  void usuario;
+
+  const registros = [
+    ["15/08/2026", 78.5, 61],
+    ["15/06/2026", 78.2, 58.9],
+    ["12/04/2026", 78.0, 55.8],
+    ["10/02/2026", 77.4, 52],
+    ["05/12/2025", 76.8, 48.5],
+  ];
+
+  return {
+    status: "success",
+    message: null,
+    pliegues: registros.map(([fecha, peso, sumatoria]) => ({
+      "Fecha pliegue": fecha,
+      Peso: peso,
+      "sumatoria 6 pl": sumatoria,
+    })),
+  };
+}

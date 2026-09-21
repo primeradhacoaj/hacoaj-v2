@@ -1,0 +1,32 @@
+/* Usa los colores de PantallaDatos (--blue-*, --gray-*). */
+
+.fila {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.boton {
+  padding: 7px 16px;
+  border: 1px solid var(--gray-200);
+  border-radius: 99px;
+  background: #fff;
+  color: var(--gray-500);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.activo {
+  background: var(--blue-900);
+  border-color: var(--blue-900);
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boton {
+    transition: none;
+  }
+}

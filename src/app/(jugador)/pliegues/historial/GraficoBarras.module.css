@@ -1,0 +1,52 @@
+/* Gráfico de barras horizontales — copiado del diseño original de la v1.
+   Usa los colores de PantallaDatos (--gray-*). */
+
+.fila {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.fecha {
+  flex-shrink: 0;
+  width: 65px;
+  font-size: 11px;
+  font-weight: 500;
+  text-align: right;
+  color: var(--gray-500);
+}
+
+.pista {
+  flex: 1;
+  height: 20px;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--gray-100);
+}
+
+.relleno {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.valor {
+  min-width: 45px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gray-700);
+}
+
+.vacio {
+  padding: 16px;
+  font-size: 13px;
+  text-align: center;
+  color: var(--gray-400);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .relleno {
+    transition: none;
+  }
+}

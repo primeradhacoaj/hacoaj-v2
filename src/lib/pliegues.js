@@ -26,3 +26,21 @@ export function textoDiferenciaPeso(peso, pesoIdeal) {
   if (diferencia > 0) return `Falta aumentar ${distancia} kg para llegar al peso ideal.`;
   return `Falta bajar ${distancia} kg para llegar al peso ideal.`;
 }
+
+// Estado para la tabla del historial (texto corto, sin el ✓ de la última medición).
+export function estadoPlieguesTabla(sumatoria) {
+  const numero = aNumero(sumatoria);
+  if (numero === null) return { tono: "red", texto: "Sin dato" };
+  if (numero < 50) return { tono: "green", texto: "Bueno" };
+  if (numero <= 60) return { tono: "yellow", texto: "Regular" };
+  return { tono: "red", texto: "Alto" };
+}
+
+// Color de la barra del gráfico de sumatoria según su valor.
+export function colorBarraPliegues(sumatoria) {
+  const numero = aNumero(sumatoria);
+  if (numero === null) return "#94a3b8";
+  if (numero < 50) return "#10b981";
+  if (numero <= 60) return "#f59e0b";
+  return "#ef4444";
+}

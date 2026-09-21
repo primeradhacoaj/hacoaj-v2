@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Alternador from "@/components/Alternador";
 import Icono from "@/components/Icono";
 import PantallaDatos from "@/components/PantallaDatos";
 import { useSesion } from "@/components/SesionProvider";
 import TarjetaJugador from "@/components/TarjetaJugador";
+import TituloBloque from "@/components/TituloBloque";
 import { obtenerMiHistorialFuerza } from "@/lib/data/fuerza";
 import { exportarHistorialFuerza } from "@/lib/exportarFuerza";
 import {
@@ -19,6 +21,16 @@ import GraficoCombinado from "./GraficoCombinado";
 import GraficoLinea from "./GraficoLinea";
 import TablaHistorial from "./TablaHistorial";
 import styles from "./HistorialFuerza.module.css";
+
+const VISTAS = [
+  { valor: "tabla", etiqueta: "📋 Tabla" },
+  { valor: "graficos", etiqueta: "📊 Gráficos" },
+];
+
+const TIPOS_ALTERNADOR = [
+  { valor: "sentadilla", etiqueta: "🏋 Sentadilla" },
+  { valor: "pecho", etiqueta: "💪 Pecho" },
+];
 
 // Historial de fuerza del jugador (diseño y lógica de la v1): todas las
 // mediciones en tabla o en gráficos, con exportación a Excel.
@@ -81,22 +93,7 @@ export default function HistorialFuerza() {
         piernaHabil={sesion.piernaHabil}
       />
 
-      <div className={styles.alternador}>
-        <button
-          type="button"
-          className={cx(styles.boton, vista === "tabla" && styles.activo)}
-          onClick={() => setVista("tabla")}
-        >
-          📋 Tabla
-        </button>
-        <button
-          type="button"
-          className={cx(styles.boton, vista === "graficos" && styles.activo)}
-          onClick={() => setVista("graficos")}
-        >
-          📊 Gráficos
-        </button>
-      </div>
+      <Alternador opciones={VISTAS} valor={vista} alCambiar={setVista} />
 
       {estado.fase === "cargando" && (
         <div className={styles.cargando}>
@@ -113,10 +110,14 @@ export default function HistorialFuerza() {
         <>
           {vista === "tabla" ? (
             <>
-              <Seccion punto="pecho">Press de Pecho</Seccion>
+              <TituloBloque color={TIPOS.pecho.colorRm} arriba={24}>
+                Press de Pecho
+              </TituloBloque>
               <TablaHistorial registros={estado.pecho} campos={TIPOS.pecho.campos} />
 
-              <Seccion punto="sentadilla">Sentadilla</Seccion>
+              <TituloBloque color={TIPOS.sentadilla.colorRm} arriba={24}>
+                Sentadilla
+              </TituloBloque>
               <TablaHistorial
                 registros={estado.sentadilla}
                 campos={TIPOS.sentadilla.campos}
@@ -162,40 +163,17 @@ export default function HistorialFuerza() {
   );
 }
 
-function Seccion({ punto, children }) {
-  return (
-    <div className={styles.seccion}>
-      <span className={cx(styles.punto, styles[punto])} />
-      <span className={styles.seccionTitulo}>{children}</span>
-    </div>
-  );
-}
-
 // Vista de gráficos: elegir ejercicio y ver tres gráficos de evolución.
 function Graficos({ tipo, cambiarTipo, registros, alSeleccionar }) {
   const config = TIPOS[tipo];
-  const punto = tipo === "sentadilla" ? "sentadilla" : "pecho";
 
   return (
     <>
-      <div className={styles.alternador}>
-        <button
-          type="button"
-          className={cx(styles.boton, tipo === "sentadilla" && styles.activo)}
-          onClick={() => cambiarTipo("sentadilla")}
-        >
-          🏋 Sentadilla
-        </button>
-        <button
-          type="button"
-          className={cx(styles.boton, tipo === "pecho" && styles.activo)}
-          onClick={() => cambiarTipo("pecho")}
-        >
-          💪 Pecho
-        </button>
-      </div>
+      <Alternador opciones={TIPOS_ALTERNADOR} valor={tipo} alCambiar={cambiarTipo} />
 
-      <Seccion punto={punto}>F. Relativa — {config.etiqueta}</Seccion>
+      <TituloBloque color={config.colorRm} arriba={24}>
+        F. Relativa — {config.etiqueta}
+      </TituloBloque>
       <div className={cx(styles.tarjeta, styles.tarjetaAngosta)}>
         <div className={styles.leyenda}>
           <span style={{ color: "#10b981" }}>● Objetivo cumplido</span>
@@ -218,7 +196,9 @@ function Graficos({ tipo, cambiarTipo, registros, alSeleccionar }) {
         />
       </div>
 
-      <Seccion punto={punto}>Carga + VMP — {config.etiqueta}</Seccion>
+      <TituloBloque color={config.colorRm} arriba={24}>
+        Carga + VMP — {config.etiqueta}
+      </TituloBloque>
       <div className={cx(styles.tarjeta, styles.tarjetaAncha)}>
         <div className={styles.leyendaCombo}>
           <span>
@@ -239,7 +219,9 @@ function Graficos({ tipo, cambiarTipo, registros, alSeleccionar }) {
         />
       </div>
 
-      <Seccion punto={punto}>RM Estimado — {config.etiqueta}</Seccion>
+      <TituloBloque color={config.colorRm} arriba={24}>
+        RM Estimado — {config.etiqueta}
+      </TituloBloque>
       <div className={cx(styles.tarjeta, styles.tarjetaAngosta)}>
         <GraficoLinea
           registros={registros}

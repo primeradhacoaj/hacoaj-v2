@@ -109,6 +109,8 @@ Usuarios, Fuerza Sentadilla, Fuerza Pecho, Pliegues, Pesos, Accesos, Partidos, P
 
 ## Seguridad
 
+- **El repo `hacoaj-v2` es PRIVADO** (confirmado por el usuario). Por eso los PDF del club (`public/rutinas/`: pautas nutricionales, suplementación y, más adelante, los planes de rutinas) se guardan en el repo. **Si el repo pasa a público, el usuario avisa** y hay que decidir cómo servir esos documentos (por ejemplo, Supabase Storage con acceso restringido) y sacarlos del repo.
+
 Nunca subir al repo (ver `README.md` y `.gitignore`):
 
 - Cualquier `.env*`, claves privadas `*.pem`, `service_account.json`.
@@ -140,10 +142,11 @@ Pendiente aparte, en el repo viejo: `vapid_private.pem` está versionado en su h
   - Componentes compartidos nuevos para las pantallas de datos (diseño "C" de la v1): `PantallaDatos` (barra `TopNav` + columna + colores `--blue-*`/`--gray-*`), `HeroSeccion` (encabezado compacto de submenús), `CommentBox` (comentario del Chano con el diseño de la v1). Reutilizarlos en Pliegues, Rutinas, Wellness, etc.
   - Inconsistencia de la v1 corregida: `--gray-400` se usaba sin estar definido; ahora vale `#94a3b8` (el gris que se buscaba).
 - [x] Pliegues (jugador): submenú `/pliegues` y última medición `/pliegues/ultimo` (`menu_pliegues.html` y `pliegues.html`), con datos de prueba en `src/lib/data/pliegues.js` (misma forma que el viejo `/api/mi-pliegue`) y la lógica de la v1 en `src/lib/pliegues.js` (estado según la sumatoria de 6 pliegues: <50 bueno, 50-60 regular, >60 alto; frase de cuánto falta para el peso ideal). Incluye las tarjetas de PDFs de pautas nutricionales y suplementación (`public/rutinas/`).
-  - **Falta:** `/pliegues/historial` (`historial_pliegues.html`), hoy muestra el aviso "se está migrando".
-  - Piezas compartidas creadas para las pantallas de mediciones (en la v1 estaban copiadas en cada archivo): `SubmenuMedicion` (los submenús de fuerza y pliegues son el mismo componente), `Baldosa`/`RejillaBaldosas`, `InsigniaEstado`, `FechaTest`, `SinDatos`, `Glosario`, `TarjetaRecurso` (PDFs; se reutiliza en Rutinas), `TarjetaJugador`, `CommentBox`. Al portar una pantalla nueva de mediciones, usar estas piezas y no copiar CSS.
+  - **Historial** `/pliegues/historial` (`historial_pliegues.html`): alternador Tabla/Gráficos, tabla de registros con estado (Bueno/Regular/Alto), gráficos de barras horizontales (evolución del peso y de la sumatoria de 6 pliegues, con leyenda) y exportación a Excel (2 hojas). Datos de prueba en `obtenerMisPliegues`.
+  - El botón de exportar de Pliegues (blanco con borde, dentro de la tarjeta) es distinto al de Fuerza (azul, centrado): así están en la v1. No se unificaron; preguntar antes de cambiarlos.
+  - Piezas compartidas creadas para las pantallas de mediciones (en la v1 estaban copiadas en cada archivo): `Alternador` (Tabla/Gráficos), `TituloBloque` (título con puntito de color), `SubmenuMedicion` (los submenús de fuerza y pliegues son el mismo componente), `Baldosa`/`RejillaBaldosas`, `InsigniaEstado`, `FechaTest`, `SinDatos`, `Glosario`, `TarjetaRecurso` (PDFs; se reutiliza en Rutinas), `TarjetaJugador`, `CommentBox`. Al portar una pantalla nueva de mediciones, usar estas piezas y no copiar CSS.
   - El punto de color de "Composición corporal" usa el mismo azul que el de pecho (`--blue-600`), para unificar la v1.
-- [ ] Siguientes: historial de pliegues, Rutinas, Encuestas, Torneo, Pesos, pantallas del técnico/admin (con datos falsos)
+- [ ] Siguientes: Rutinas, Encuestas, Torneo, Pesos, pantallas del técnico/admin (con datos falsos)
 - [ ] Proyecto de Supabase y modelado de tablas (después de tener las pantallas)
 - [ ] Login y roles
 - [ ] Migración de pantallas

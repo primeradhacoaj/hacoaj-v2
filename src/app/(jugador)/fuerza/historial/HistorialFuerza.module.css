@@ -1,64 +1,6 @@
 /* Historial de fuerza — copiado del diseño original de la v1.
    Usa los colores de PantallaDatos (--blue-*, --gray-*). */
 
-/* ── Alternadores (Tabla/Gráficos y Sentadilla/Pecho) ── */
-.alternador {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 16px;
-}
-
-.boton {
-  padding: 7px 16px;
-  border: 1px solid var(--gray-200);
-  border-radius: 99px;
-  background: #fff;
-  color: var(--gray-500);
-  font: inherit;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.activo {
-  background: var(--blue-900);
-  border-color: var(--blue-900);
-  color: #fff;
-}
-
-/* ── Encabezado de cada bloque ── */
-.seccion {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 24px;
-  margin-bottom: 12px;
-}
-
-.punto {
-  flex-shrink: 0;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-
-.pecho {
-  background: var(--blue-600);
-}
-
-.sentadilla {
-  background: #c9a83e;
-}
-
-.seccionTitulo {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--gray-500);
-}
-
 /* ── Tarjetas de los gráficos ── */
 .tarjeta {
   margin-bottom: 16px;
@@ -222,7 +164,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .boton,
   .botonExportar,
   .volver,
   .globito {

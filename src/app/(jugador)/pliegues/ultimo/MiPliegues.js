@@ -8,6 +8,7 @@ import { useSesion } from "@/components/SesionProvider";
 import SinDatos from "@/components/SinDatos";
 import TarjetaJugador from "@/components/TarjetaJugador";
 import TarjetaRecurso from "@/components/TarjetaRecurso";
+import TituloBloque from "@/components/TituloBloque";
 import { obtenerMiPliegue } from "@/lib/data/pliegues";
 import MetricasPliegues from "./MetricasPliegues";
 import styles from "./MiPliegues.module.css";
@@ -99,10 +100,7 @@ function Contenido({ sesion, datos }) {
         peso={pliegue?.Peso ?? null}
       />
 
-      <div className={styles.seccion}>
-        <span className={styles.punto} />
-        <span className={styles.seccionTitulo}>Composición corporal</span>
-      </div>
+      <TituloBloque color="var(--blue-600)">Composición corporal</TituloBloque>
       <div className={styles.tarjeta}>
         {pliegue ? (
           <MetricasPliegues pliegue={pliegue} />

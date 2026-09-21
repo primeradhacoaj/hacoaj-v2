@@ -1,0 +1,143 @@
+/* Historial de pliegues — copiado del diseño original de la v1.
+   Usa los colores de PantallaDatos (--blue-*, --gray-*). */
+
+/* ── Carga y error ── */
+.cargando {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 60vh;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--gray-200);
+  border-top-color: var(--blue-700);
+  border-radius: 50%;
+  animation: girar 0.7s linear infinite;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.cargandoTexto {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-500);
+}
+
+.error {
+  padding-top: 40px;
+  font-size: 13px;
+  text-align: center;
+  color: #ef4444;
+}
+
+/* ── Tarjeta blanca ── */
+.tarjeta {
+  margin-bottom: 12px;
+  padding: 20px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 41, 107, 0.06);
+}
+
+/* ── Tabla de registros ── */
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla th {
+  padding: 8px 10px;
+  border-bottom: 2px solid var(--gray-200);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--gray-500);
+}
+
+.tabla td {
+  padding: 10px;
+  border-bottom: 1px solid var(--gray-100);
+  font-size: 13px;
+  color: var(--gray-700);
+}
+
+.tabla tr:last-child td {
+  border-bottom: none;
+}
+
+/* ── Exportar (botón blanco con borde, dentro de la tarjeta, como en la v1) ── */
+.exportar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 8px 16px;
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--blue-900);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.exportar:hover {
+  border-color: var(--gray-300);
+  background: var(--gray-50);
+}
+
+.exportar:active {
+  transform: scale(0.98);
+}
+
+.exportar:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+/* ── Leyenda del gráfico de sumatoria ── */
+.leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.leyendaItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--gray-500);
+}
+
+.cuadrito {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 2s;
+  }
+
+  .exportar {
+    transition: none;
+  }
+}

@@ -39,39 +39,7 @@
   color: #ef4444;
 }
 
-/* ── Encabezado de cada ejercicio ── */
-.seccion {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 8px;
-  margin-bottom: 12px;
-}
-
-.punto {
-  flex-shrink: 0;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-
-/* Mismos colores que el historial: azul para pecho, dorado para sentadilla */
-.pecho {
-  background: var(--blue-600);
-}
-
-.sentadilla {
-  background: #c9a83e;
-}
-
-.seccionTitulo {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--gray-500);
-}
-
+/* ── Tarjeta de cada ejercicio ── */
 .ejercicio {
   margin-bottom: 12px;
   padding: 20px;

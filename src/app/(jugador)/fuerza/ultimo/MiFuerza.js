@@ -8,6 +8,7 @@ import Icono from "@/components/Icono";
 import PantallaDatos from "@/components/PantallaDatos";
 import SinDatos from "@/components/SinDatos";
 import TarjetaJugador from "@/components/TarjetaJugador";
+import TituloBloque from "@/components/TituloBloque";
 import { useSesion } from "@/components/SesionProvider";
 import { obtenerMiFuerza } from "@/lib/data/fuerza";
 import {
@@ -16,7 +17,6 @@ import {
   esNuevo,
   marcarComoVisto,
 } from "@/lib/fuerza";
-import { cx } from "@/lib/cx";
 import MetricasEjercicio from "./MetricasEjercicio";
 import styles from "./MiFuerza.module.css";
 
@@ -125,10 +125,7 @@ function Contenido({ sesion, estado }) {
       />
 
       {/* Press de pecho */}
-      <div className={styles.seccion}>
-        <span className={cx(styles.punto, styles.pecho)} />
-        <span className={styles.seccionTitulo}>Press de pecho</span>
-      </div>
+      <TituloBloque color="var(--blue-600)">Press de pecho</TituloBloque>
       <div className={styles.ejercicio}>
         {pecho && pecho["VMP PECHO"] != null ? (
           <MetricasEjercicio
@@ -148,10 +145,7 @@ function Contenido({ sesion, estado }) {
       </div>
 
       {/* Sentadilla */}
-      <div className={styles.seccion}>
-        <span className={cx(styles.punto, styles.sentadilla)} />
-        <span className={styles.seccionTitulo}>Sentadilla</span>
-      </div>
+      <TituloBloque color="#c9a83e">Sentadilla</TituloBloque>
       <div className={styles.ejercicio}>
         {sentadilla && sentadilla["VMP SENTADILLA"] != null ? (
           <MetricasEjercicio
