@@ -31,6 +31,29 @@
   box-shadow: 0 0 0 3px rgba(201, 168, 62, 0.25);
 }
 
+/* Avisos de los formularios (verde / rojo), como en la v1 */
+.exito,
+.error {
+  max-width: 340px;
+  padding: 14px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.exito {
+  background: #10b981;
+}
+
+.error {
+  background: #ef4444;
+}
+
+.exito::before,
+.error::before {
+  display: none;
+}
+
 .visible {
   opacity: 1;
   transform: translateX(-50%) translateY(0);

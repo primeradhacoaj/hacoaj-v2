@@ -34,6 +34,10 @@
   padding: 24px 16px 48px;
 }
 
+.angosta {
+  max-width: 480px;
+}
+
 .ancha {
   max-width: 720px;
 }

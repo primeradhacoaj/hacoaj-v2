@@ -1,0 +1,312 @@
+/* Formularios de encuestas — copiados del diseño original de la v1.
+   Usan los colores de PantallaDatos (--blue-*, --gray-*, --green, --red). */
+
+/* ── Tarjeta y preguntas ── */
+.tarjeta {
+  --espacio-pregunta: 22px;
+  --espacio-etiqueta: 10px;
+  margin-bottom: 12px;
+  padding: 24px 20px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 41, 107, 0.06);
+}
+
+.holgada {
+  --espacio-pregunta: 26px;
+  --espacio-etiqueta: 12px;
+}
+
+.pregunta {
+  margin-bottom: var(--espacio-pregunta);
+}
+
+.pregunta:last-child {
+  margin-bottom: 0;
+}
+
+.etiqueta {
+  margin-bottom: var(--espacio-etiqueta);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--blue-900);
+}
+
+/* Pregunta dentro de un recuadro: título más chico y sin margen propio */
+.compacta {
+  margin-bottom: 0;
+}
+
+.compacta .etiqueta {
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.obligatoria {
+  font-size: 12px;
+  color: var(--red);
+}
+
+.opcional {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--gray-400);
+}
+
+.aclaracion {
+  margin-bottom: 8px;
+  font-size: 11px;
+  color: var(--gray-400);
+}
+
+.error {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--red);
+}
+
+/* Los radios reales quedan ocultos a la vista pero se pueden usar con el teclado */
+.entrada {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Opciones tipo botón ── */
+.opciones {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.opcion {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 16px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 12px;
+  background: var(--gray-50);
+  color: var(--gray-600);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+}
+
+.opcion:hover {
+  border-color: var(--gray-300);
+  background: #fff;
+}
+
+.entrada:checked + .opcion {
+  border-color: var(--blue-900);
+  background: var(--blue-900);
+  color: #fff;
+}
+
+.entrada:focus-visible + .opcion,
+.entrada:focus-visible + .numero {
+  outline: 2px solid var(--blue-600);
+  outline-offset: 2px;
+}
+
+/* ── Escala del 1 al 10 ── */
+.escala {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.extremos {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--gray-400);
+}
+
+.numeros {
+  position: relative;
+  display: flex;
+  gap: 6px;
+}
+
+.numero {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 0;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 10px;
+  background: var(--gray-50);
+  color: var(--gray-600);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+}
+
+.numero:hover {
+  border-color: var(--gray-300);
+  background: #fff;
+}
+
+.entrada:checked + .numero {
+  border-color: var(--blue-900);
+  background: var(--blue-900);
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.valorElegido {
+  min-height: 18px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--blue-700);
+}
+
+/* ── Campos de texto ── */
+.campo {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 12px;
+  background: var(--gray-50);
+  color: var(--gray-700);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  transition: border-color 0.15s, background 0.15s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+textarea.campo {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.campo:focus {
+  outline: none;
+  border-color: var(--blue-600);
+  background: #fff;
+}
+
+.campo::placeholder {
+  color: var(--gray-400);
+}
+
+/* ── Botones ── */
+.boton {
+  width: 100%;
+  margin-top: 8px;
+  padding: 15px;
+  border: none;
+  border-radius: 14px;
+  background: var(--blue-900);
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+}
+
+.boton:hover {
+  background: var(--blue-800);
+}
+
+.boton:active {
+  transform: scale(0.98);
+}
+
+.boton:disabled {
+  background: var(--gray-300);
+  cursor: not-allowed;
+}
+
+.botonVerde {
+  margin-top: 14px;
+  padding: 12px;
+  background: var(--green);
+  font-size: 13px;
+}
+
+.botonVerde:hover {
+  background: var(--green);
+  filter: brightness(0.95);
+}
+
+/* ── Pantalla de éxito ── */
+.exito {
+  padding: 40px 24px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 41, 107, 0.06);
+  text-align: center;
+}
+
+.exitoIcono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  font-size: 28px;
+}
+
+.exitoTitulo {
+  margin-bottom: 6px;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--blue-900);
+}
+
+.exitoTexto {
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: var(--gray-500);
+}
+
+.exitoEnlace {
+  display: inline-flex;
+  padding: 12px 28px;
+  border-radius: 12px;
+  background: var(--blue-900);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  transition: background 0.15s;
+}
+
+.exitoEnlace:hover {
+  background: var(--blue-800);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opcion,
+  .numero,
+  .boton,
+  .campo,
+  .exitoEnlace {
+    transition: none;
+  }
+}

@@ -49,7 +49,7 @@ export const MENU_JUGADOR = [
         descripcion: "Post partido y wellness",
         icono: "encuestas",
         href: "/encuestas",
-        disponible: false,
+        disponible: true,
       },
     ],
   },

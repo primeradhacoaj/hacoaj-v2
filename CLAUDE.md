@@ -149,7 +149,13 @@ Pendiente aparte, en el repo viejo: `vapid_private.pem` está versionado en su h
 - [x] Rutinas (jugador): `/rutinas` (`rutinas.html`), se llega desde "Rutinas disponibles" en la última medición de fuerza. Una tarjeta por plan (elegir = tocar la tarjeta), "Abrir"/"Descargar" y un visor `<iframe>` del PDF elegido. Lista de planes en `src/lib/rutinas.js`, PDFs en `public/rutinas/`. Usa `PantallaDatos ancho="ancho"` (720 px, 3 columnas desde 640 px).
   - Falla de la v1 corregida: la 4ª tarjeta ("RUTINA FMAX TI") apuntaba a `rutina Fmax TI.pdf`, que no existe; ahora usa `PLAN FUERZA MAXIMA TREN INFERIOR.pdf` (título alineado con el archivo). Preguntar al usuario si prefiere otro título.
   - Unificado: la barra superior de esta pantalla decía "← Fuerza"; ahora es "← Volver" como en las demás.
-- [ ] Siguientes: Encuestas, Torneo, Pesos, pantallas del técnico/admin (con datos falsos)
+- [x] Encuestas (jugador): submenú `/encuestas` (`menu_encuestas.html`), formulario `/encuestas/wellness` (`wellness.html`: 4 escalas 1-10 + comentario) y `/encuestas/post-partido` (`post_partido.html`: fecha, llegada, carga emocional/física, categoría con "Otro", minutos, y VARIOS golpes/molestias con tipo, buscador de zona, lado y comentario). Reglas de validación y listas (zonas con/sin lado, categorías, tipos) en `src/lib/encuestas.js`; guardado en `src/lib/data/encuestas.js` (**hoy NO persiste: valida y responde ok**; con Supabase inserta una fila por golpe, o una sola con "No" si no hubo).
+  - Primeras pantallas que ESCRIBEN datos. Kit de formulario compartido en `src/app/(jugador)/encuestas/_componentes/Formulario.js` (carpeta con `_` = no es ruta): `Pregunta`, `OpcionesRadio`, `EscalaDiez`, `Campo`, `BotonEnviar`, `TarjetaFormulario`, `TarjetaExito`.
+  - `SubmenuSeccion` es el submenú genérico (Encuestas lo usa); `SubmenuMedicion` (fuerza/pliegues) es un caso particular. `Aviso` ahora tiene tipos `info` / `exito` (verde) / `error` (rojo) vía `useAviso().mostrar(texto, tipo)`. `PantallaDatos` acepta `ancho="angosto"` (480 px, formularios).
+  - Mejoras sobre la v1 (mismo aspecto): las opciones se pueden elegir con el teclado (en la v1 los radios estaban con `display:none`); en el buscador de zona, reescribir el texto descarta la zona elegida antes (antes quedaba guardada sin verse).
+  - Unificado: la barra superior de ambos formularios ("← Menú" / "← Encuestas" en la v1) es "← Volver" → `/encuestas`.
+  - **Falta:** las pantallas del técnico que leen estas respuestas (`menu_encuestas_tecnico`, `wellness_tecnico`, `post_partido_tecnico`).
+- [ ] Siguientes: Torneo, Pesos, pantallas del técnico/admin (con datos falsos)
 - [ ] Proyecto de Supabase y modelado de tablas (después de tener las pantallas)
 - [ ] Login y roles
 - [ ] Migración de pantallas
