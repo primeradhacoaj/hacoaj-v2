@@ -1,0 +1,48 @@
+.pagina {
+  min-height: 100vh;
+}
+
+.contenido {
+  max-width: var(--width-jugador);
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.seccion {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tituloSeccion {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.nota {
+  font-size: 13px;
+  color: var(--ink-500);
+}
+
+.cuerpo {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.texto {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--ink-700);
+}

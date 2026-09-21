@@ -1,0 +1,43 @@
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px; /* tamaño cómodo para tocar con el dedo */
+  padding: 0 20px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.principal {
+  background: var(--navy-900);
+  color: #fff;
+}
+
+.principal:hover {
+  background: var(--navy-800);
+}
+
+.secundario {
+  background: var(--surface);
+  color: var(--navy-900);
+  border-color: var(--line);
+}
+
+.secundario:hover {
+  background: var(--navy-50);
+}
+
+.bloque {
+  display: flex;
+  width: 100%;
+}
+
+.boton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

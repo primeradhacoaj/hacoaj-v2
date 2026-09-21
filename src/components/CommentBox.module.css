@@ -1,0 +1,14 @@
+.titulo {
+  margin-bottom: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.texto {
+  font-size: 15px;
+  color: var(--ink-700);
+  white-space: pre-line; /* respeta los saltos de línea que escriba el técnico */
+}

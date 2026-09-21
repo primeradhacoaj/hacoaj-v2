@@ -113,7 +113,7 @@ Pendiente aparte, en el repo viejo: `vapid_private.pem` está versionado en su h
 - [x] Cuenta de Vercel creada y vinculada a GitHub
 - [x] Primer commit/push y primer deploy en Vercel (producción: `hacoaj-v2.vercel.app`, rama `main`, deploy automático en cada push)
 - [x] Paso 1 de React: tokens de diseño en `globals.css`, tipografía única, layout raíz y pantalla de inicio propia
-- [ ] Paso 2: componentes reutilizables (card, botón, encabezado, mensaje sin datos, Comentario del Chano)
+- [x] Paso 2: componentes reutilizables en `src/components/` (Card, Badge, Button, PageHeader, EmptyState, CommentBox) + helper `src/lib/cx.js`. Página temporal `/componentes` para revisarlos (borrar cuando ya no haga falta).
 - [ ] Pasos 3 a 8: login, menú por rol, Pesos, Fuerza y Pliegues, Torneo, paneles técnico/admin (con datos falsos)
 - [ ] Proyecto de Supabase y modelado de tablas (después de tener las pantallas)
 - [ ] Login y roles

@@ -1,0 +1,43 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.azul {
+  background: var(--navy-50);
+  color: var(--navy-800);
+}
+
+.neutro {
+  background: var(--line-2);
+  color: var(--ink-700);
+}
+
+.exito {
+  background: var(--success-soft);
+  color: var(--success-ink);
+}
+
+.aviso {
+  background: var(--warning-soft);
+  color: var(--warning-ink);
+}
+
+.peligro {
+  background: var(--danger-soft);
+  color: var(--danger-ink);
+}
+
+.punto {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold-500);
+}

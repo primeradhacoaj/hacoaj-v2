@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Badge from "@/components/Badge";
+import Card from "@/components/Card";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -29,17 +31,14 @@ export default function Home() {
       </header>
 
       <main className={styles.content}>
-        <section className={styles.card}>
-          <span className={styles.badge}>
-            <span className={styles.dot} />
-            Versión 2
-          </span>
+        <Card as="section">
+          <Badge punto>Versión 2</Badge>
           <h2 className={styles.cardTitle}>Estamos construyendo la nueva app</h2>
           <p className={styles.cardText}>
             Muy pronto vas a poder ingresar y ver tus mediciones, rutinas y
             estadísticas del torneo.
           </p>
-        </section>
+        </Card>
       </main>
     </div>
   );

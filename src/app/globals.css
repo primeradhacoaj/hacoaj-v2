@@ -40,10 +40,13 @@
   /* Estados (semáforo) */
   --success: #10b981;
   --success-soft: #d1fae5;
+  --success-ink: #047857;
   --warning: #f59e0b;
   --warning-soft: #fef3c7;
+  --warning-ink: #b45309;
   --danger: #d04848;
   --danger-soft: #fee2e2;
+  --danger-ink: #b91c1c;
 
   /* Forma y profundidad */
   --radius-card: 18px;
