@@ -1,56 +1,152 @@
+/* Encabezado del jugador — copiado del diseño original de la v1 */
+
 .hero {
-  background: linear-gradient(160deg, var(--navy-950), var(--navy-800));
+  position: relative;
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 55%),
+    radial-gradient(80% 60% at 0% 100%, rgba(201, 168, 62, 0.18) 0%, rgba(201, 168, 62, 0) 60%),
+    linear-gradient(180deg, var(--navy-950) 0%, var(--navy-900) 60%, var(--navy-800) 100%);
   color: #fff;
-  padding: calc(var(--safe-top) + 48px) 24px 72px;
-  border-radius: 0 0 32px 32px;
+  padding: calc(var(--safe-top) + 22px) 22px 72px 22px;
+  border-bottom-left-radius: 28px;
+  border-bottom-right-radius: 28px;
   box-shadow: var(--shadow-hero);
+  overflow: hidden;
 }
 
-.interior {
-  max-width: var(--width-jugador);
-  margin: 0 auto;
+/* Círculos decorativos (líneas de cancha) */
+.hero::before {
+  content: "";
+  position: absolute;
+  right: -90px;
+  top: -90px;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow:
+    inset 0 0 0 40px rgba(255, 255, 255, 0.025),
+    inset 0 0 0 80px rgba(255, 255, 255, 0);
+  pointer-events: none;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  left: -40px;
+  bottom: -120px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0) 70%);
+  pointer-events: none;
+}
+
+.superior {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .marca {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 40px;
+  gap: 12px;
 }
 
-.textoMarca {
+.escudo {
+  flex-shrink: 0;
   display: flex;
-  flex-direction: column;
-  line-height: 1.15;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(6px);
+}
+
+.escudoImagen {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
 }
 
 .sobretitulo {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 1.6px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1;
 }
 
 .club {
-  font-size: 20px;
-  font-weight: 800;
+  margin-top: 4px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.1px;
+  line-height: 1;
+  color: #fff;
+}
+
+.temporada {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.punto {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold-400);
+  box-shadow: 0 0 0 3px rgba(201, 168, 62, 0.25);
 }
 
 .titulo {
-  font-size: clamp(40px, 12vw, 56px);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.05;
+  position: relative;
+  z-index: 1;
+  margin-top: 26px;
 }
 
-/* Único toque dorado del encabezado */
+.nombre {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.02;
+}
+
 .acento {
-  color: var(--gold-500);
+  color: var(--gold-400);
 }
 
 .subtitulo {
-  margin-top: 12px;
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.78);
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* Pantallas más grandes: el encabezado queda como una tarjeta centrada */
+@media (min-width: 600px) {
+  .hero {
+    max-width: 480px;
+    margin: 24px auto 0;
+    border-radius: 28px;
+  }
 }

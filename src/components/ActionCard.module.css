@@ -1,0 +1,174 @@
+/* Tarjetas del panel técnico (diseño original de la v1).
+   Usa las variables de color de la zona técnica: ver (tecnico)/layout.module.css */
+
+.tarjeta {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 28px 26px 24px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--card-shadow);
+  width: 100%;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tarjeta:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--card-hover);
+  border-color: rgba(0, 41, 107, 0.15);
+}
+
+.tarjeta:hover .flecha {
+  transform: translate(3px, -3px);
+  opacity: 1;
+}
+
+.tarjeta:active {
+  transform: translateY(-1px);
+}
+
+.icono {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+}
+
+.icono svg {
+  width: 24px;
+  height: 24px;
+}
+
+.navy {
+  background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+  color: #fff;
+}
+
+.blue {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  color: var(--navy);
+}
+
+.pink {
+  background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+  color: #be185d;
+}
+
+.green {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  color: #065f46;
+}
+
+.orange {
+  background: linear-gradient(135deg, #ffedd5, #fed7aa);
+  color: #9a3412;
+}
+
+.purple {
+  background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+  color: #5b21b6;
+}
+
+.red {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  color: #991b1b;
+}
+
+.gris {
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  color: #374151;
+}
+
+.filaTitulo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nombre {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.flecha {
+  color: var(--text-light);
+  opacity: 0.4;
+  transition: all 0.2s;
+}
+
+.descripcion {
+  margin-top: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-mid);
+}
+
+.etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.etiqueta {
+  padding: 3px 9px;
+  border-radius: 10px;
+  background: rgba(0, 41, 107, 0.04);
+  color: var(--text-mid);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 768px) {
+  .tarjeta {
+    gap: 10px;
+    padding: 20px 18px 18px;
+  }
+
+  .nombre {
+    font-size: 15px;
+  }
+
+  .descripcion {
+    font-size: 12px;
+  }
+
+  .icono {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+  }
+
+  .icono svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .etiquetas {
+    gap: 4px;
+  }
+
+  .etiqueta {
+    padding: 2px 7px;
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 380px) {
+  .tarjeta {
+    padding: 16px 14px 14px;
+  }
+}

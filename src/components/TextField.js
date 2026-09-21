@@ -1,3 +1,4 @@
+import Icono from "@/components/Icono";
 import { cx } from "@/lib/cx";
 import styles from "./TextField.module.css";
 
@@ -10,6 +11,7 @@ import styles from "./TextField.module.css";
 //   value          valor actual
 //   onChange       función que se llama en cada tecla; recibe el evento
 //   error          mensaje de error (si hay, el campo se marca en rojo)
+//   icono          nombre de un ícono (ver <Icono>) que se muestra a la izquierda
 //   accion         elemento opcional a la derecha del campo (ej. "ver contraseña")
 //   ...resto       autoComplete, placeholder, disabled, etc. van directo al <input>
 export default function TextField({
@@ -19,6 +21,7 @@ export default function TextField({
   value,
   onChange,
   error,
+  icono,
   accion,
   ...resto
 }) {
@@ -29,7 +32,14 @@ export default function TextField({
       <label htmlFor={id} className={styles.etiqueta}>
         {label}
       </label>
-      <div className={cx(styles.contenedor, error && styles.conError)}>
+      <div
+        className={cx(
+          styles.contenedor,
+          icono && styles.conIcono,
+          accion && styles.conAccion,
+          error && styles.conError,
+        )}
+      >
         <input
           id={id}
           type={type}
@@ -40,7 +50,12 @@ export default function TextField({
           aria-describedby={error ? idError : undefined}
           {...resto}
         />
-        {accion}
+        {icono && (
+          <span className={styles.icono}>
+            <Icono nombre={icono} tamano={18} strokeWidth={2} />
+          </span>
+        )}
+        {accion && <span className={styles.accion}>{accion}</span>}
       </div>
       {error && (
         <p id={idError} className={styles.error} role="alert">

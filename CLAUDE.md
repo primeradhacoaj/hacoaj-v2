@@ -34,13 +34,25 @@ No mencionar la materia en nombres, README ni commits del repo (debe verse profe
 
 ## Diseño (decidido)
 
+**REGLA PRINCIPAL (del usuario): el diseño de cada pantalla debe ser IGUAL o MUY MUY parecido al de la v1.** Antes de armar cualquier pantalla, leer su template original en `C:\Users\Saroka\Downloads\Primera D\templates\` y portarlo fielmente (medidas, colores, tipografías, textos, estados). Solo se corrigen inconsistencias entre pantallas de la v1 (ver abajo), manteniendo lo que se ve en la v1. No reinterpretar ni "mejorar" el diseño sin preguntar. Las pantallas de jugador se evalúan en tamaño celular; las de técnico/admin, en escritorio (pero también usables en celular).
+
+Único desvío aceptado por el usuario: **íconos SVG** en lugar de los emojis del menú del jugador (los pone dentro del mismo recuadro dorado de la v1).
+
+Cómo se resuelven las opciones que todavía no tienen pantalla en v2: se ven igual que en la v1 (activas), y al tocarlas muestran un aviso emergente ("Esta sección se está migrando a la nueva versión"). Las que la v1 ya marcaba como "Pronto" conservan su etiqueta y su aviso original.
+
 La v1 tenía 3 generaciones de diseño mezcladas (44 templates HTML sin herencia, cada uno con su CSS). En v2 hay UN solo sistema:
 
 - **Base: el diseño "A" de la v1** (jugador moderno): encabezado azul con degradé y esquinas redondeadas, cards blancas de radio 18px, sombras suaves.
 - **Tomado del diseño "C"** (fuerza/pliegues): semáforo verde/amarillo/rojo para estados, tarjetas de métricas y barras de progreso.
 - **Tomado del diseño "B"** (técnico): barra superior fija y layout ancho para escritorio.
-- **Una sola tipografía: Plus Jakarta Sans** (`next/font`, variable `--font-sans`). Sin Playfair, DM Sans ni Inter.
-- **Dorado solo como acento puntual** (un punto, una letra, un subrayado). No usarlo en fondos grandes ni botones: no representa nada importante. El color principal es el azul navy. El rosa del panel técnico de la v1 se descarta.
+- **Tipografía general: Plus Jakarta Sans** (`next/font`, variable `--font-sans`).
+- **Dorado solo como acento puntual** (un punto, una letra, un subrayado). No usarlo en fondos grandes ni botones: no representa nada importante. El color principal es el azul navy.
+- **EXCEPCIONES decididas por el usuario tras verlas en pantalla (copiar la v1 tal cual):**
+  - **Login (`/login`)** = el login original de la v1: panel de marca (escudo, logo del Torneo Promocional Amateur `public/torneo_amateur.png`, "Primera D", píldora dorada) + panel de formulario, dos columnas en escritorio. Ahí el dorado sí se usa como en la v1.
+  - **Panel técnico/admin (`/panel`)** = el `tecnico/menu_principal.html` original: barra superior oscura con logo blanco, título en Playfair Display con acento **rosa**, accesos rápidos, tarjetas con íconos de colores. Usa **DM Sans + Playfair Display**, cargadas y con sus variables de color SOLO dentro de `src/app/(tecnico)/` (ver `layout.js` y `layout.module.css`); no se filtran al resto de la app. Sus íconos están en `IconoPanel`.
+  - Si se pide algo nuevo para el panel técnico, seguir ese estilo.
+  - **Menú del jugador (`/menu`)** = el `usuario/menu.html` original (encabezado con escudo en recuadro, tarjeta del jugador, secciones Evaluaciones físicas / Torneo / Ajustes / Próximamente, cerrar sesión en píldora). Componentes: `Hero`, `PerfilChip`, `SectionLabel`, `MenuItem`, `Aviso` (+ hook `useAviso`).
+- Los detalles del panel de la v1 que NO se portaron todavía: estadísticas del encabezado (venían vacías) y la configuración de accesos rápidos por usuario (se guardaba en localStorage).
 - Los colores, radios, sombras y anchos están como variables CSS en `src/app/globals.css`. Usar siempre `var(--...)`, nunca colores sueltos.
 - Jugador = mobile-first (ancho `--width-jugador`, 480px). Técnico = pensado para escritorio (`--width-tecnico`, 1200px) pero usable en celular.
 - Estilos de cada pieza con CSS Modules (`*.module.css`).
@@ -121,7 +133,8 @@ Pendiente aparte, en el repo viejo: `vapid_private.pem` está versionado en su h
 - [x] Paso 1 de React: tokens de diseño en `globals.css`, tipografía única, layout raíz y pantalla de inicio propia
 - [x] Paso 2: componentes reutilizables en `src/components/` (Card, Badge, Button, PageHeader, EmptyState, CommentBox) + helper `src/lib/cx.js`. Página temporal `/componentes` para revisarlos (borrar cuando ya no haga falta).
 - [x] Paso 3: login (`/login`), solo pantalla con estado y validación; usuarios de PRUEBA en `src/lib/data/usuarios.js` (jugador/tecnico/admin, contraseña `demo`). Componentes nuevos: `Hero`, `TextField`. Al iniciar sesión hoy solo muestra un aviso: falta el menú (paso 4).
-- [ ] Pasos 4 a 8: menú por rol, Pesos, Fuerza y Pliegues, Torneo, paneles técnico/admin (con datos falsos)
+- [x] Paso 4: menú principal por rol. Sesión SIMULADA (`SesionProvider`/`useSesion`, guardada en localStorage, provisoria hasta Supabase Auth). `Guardia` protege los grupos de rutas `(jugador)` → `/menu` y `(tecnico)` → `/panel` (técnico y admin; "Cargar partido" y "Analytics" solo admin). Menús definidos como datos en `src/lib/menus.js`. Íconos SVG propios en `Icono`. Todas las opciones figuran "Próximamente" hasta construir cada pantalla ("Lesiones" no existe todavía en la v1 tampoco).
+- [ ] Pasos 5 a 8: Pesos, Fuerza y Pliegues, Torneo, pantallas del técnico/admin (con datos falsos)
 - [ ] Proyecto de Supabase y modelado de tablas (después de tener las pantallas)
 - [ ] Login y roles
 - [ ] Migración de pantallas

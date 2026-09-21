@@ -1,53 +1,93 @@
 .campo {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 7px;
 }
 
 .etiqueta {
-  font-size: 12px;
+  padding-left: 2px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--ink-500);
 }
 
 .contenedor {
-  display: flex;
-  align-items: center;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.contenedor:focus-within {
-  border-color: var(--navy-600);
-  box-shadow: 0 0 0 3px rgba(10, 83, 181, 0.15);
-}
-
-.conError {
-  border-color: var(--danger);
-}
-
-.conError:focus-within {
-  border-color: var(--danger);
-  box-shadow: 0 0 0 3px rgba(208, 72, 72, 0.15);
+  position: relative;
 }
 
 .entrada {
-  flex: 1;
-  min-width: 0;
-  min-height: 48px;
-  padding: 0 16px;
-  border: 0;
-  background: transparent;
+  width: 100%;
+  min-height: 50px;
+  padding: 14px;
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  color: var(--ink-900);
   font-size: 16px; /* 16px evita el zoom automático de iPhone al enfocar */
-  outline: none;
+  font-weight: 500;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.conIcono .entrada {
+  padding-left: 44px;
+}
+
+.conAccion .entrada {
+  padding-right: 48px;
 }
 
 .entrada::placeholder {
   color: var(--ink-400);
+  font-weight: 500;
+}
+
+.entrada:hover {
+  border-color: #d5dceb;
+}
+
+.entrada:focus {
+  outline: none;
+  border-color: var(--navy-700);
+  box-shadow: 0 0 0 4px rgba(0, 41, 107, 0.1);
+}
+
+.entrada:disabled {
+  opacity: 0.7;
+}
+
+.icono {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  color: var(--ink-400);
+  pointer-events: none;
+}
+
+.contenedor:focus-within .icono {
+  color: var(--navy-700);
+}
+
+.accion {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+}
+
+.conError .entrada,
+.conError .entrada:hover {
+  border-color: var(--danger);
+}
+
+.conError .entrada:focus {
+  box-shadow: 0 0 0 4px rgba(208, 72, 72, 0.12);
 }
 
 .error {

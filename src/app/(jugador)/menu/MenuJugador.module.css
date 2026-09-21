@@ -1,0 +1,76 @@
+/* Menú del jugador — copiado del diseño original de la v1 */
+
+.pagina {
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+}
+
+.contenido {
+  padding: 24px 16px calc(var(--safe-bottom) + 32px);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pie {
+  margin-top: 28px;
+  text-align: center;
+}
+
+.salir {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: var(--surface);
+  color: var(--ink-500);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.salir:hover {
+  color: var(--danger);
+  border-color: rgba(208, 72, 72, 0.3);
+  background: #fff;
+}
+
+.version {
+  display: block;
+  margin-top: 14px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--ink-400);
+}
+
+/* Pantallas más grandes: el contenido queda en una columna centrada */
+@media (min-width: 600px) {
+  .pagina {
+    background:
+      radial-gradient(60% 40% at 50% 0%, rgba(0, 41, 107, 0.08), rgba(0, 41, 107, 0) 70%),
+      var(--bg);
+  }
+
+  .contenido {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .salir {
+    transition: none;
+  }
+}

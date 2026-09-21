@@ -1,0 +1,126 @@
+/* Barra superior del panel técnico (diseño original de la v1) */
+
+.barra {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  padding: 0 40px;
+  background: var(--navy-deep);
+  color: #fff;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.imagen {
+  width: 84px;
+  height: 42px;
+  filter: brightness(0) invert(1); /* el logo azul se ve blanco sobre fondo oscuro */
+  opacity: 0.92;
+}
+
+.titulo {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.subtitulo {
+  margin-top: 1px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.derecha {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.usuario {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--navy-mid);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.nombre {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.rol {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.salir {
+  padding: 6px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.salir:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.barra :focus-visible {
+  outline-color: #fff;
+}
+
+@media (max-width: 768px) {
+  .barra {
+    height: 56px;
+    padding: 0 16px;
+  }
+
+  .imagen {
+    width: 64px;
+    height: 32px;
+  }
+
+  .titulo {
+    font-size: 13px;
+  }
+
+  .subtitulo,
+  .datos {
+    display: none;
+  }
+
+  .avatar {
+    width: 30px;
+    height: 30px;
+    font-size: 11px;
+  }
+
+  .derecha {
+    gap: 10px;
+  }
+}

@@ -1,0 +1,20 @@
+/* Colores y tipografía propios del panel técnico (diseño original de la v1).
+   Las variables de acá solo existen dentro de esta zona. */
+.zona {
+  --navy: #00296b;
+  --navy-deep: #0a1535;
+  --navy-mid: #1e3a8a;
+  --pink: #ed0992;
+  --off-white: #f7f8fc;
+  --text: #0a1535;
+  --text-mid: rgba(10, 21, 53, 0.6);
+  --text-light: rgba(10, 21, 53, 0.4);
+  --border: rgba(10, 21, 53, 0.08);
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 6px 24px rgba(0, 0, 0, 0.06);
+  --card-hover: 0 4px 12px rgba(0, 0, 0, 0.08), 0 12px 40px rgba(0, 0, 0, 0.1);
+
+  min-height: 100vh;
+  background: var(--off-white);
+  color: var(--text);
+  font-family: var(--font-dm-sans), "DM Sans", sans-serif;
+}
