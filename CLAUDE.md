@@ -146,7 +146,10 @@ Pendiente aparte, en el repo viejo: `vapid_private.pem` está versionado en su h
   - El botón de exportar de Pliegues (blanco con borde, dentro de la tarjeta) es distinto al de Fuerza (azul, centrado): así están en la v1. No se unificaron; preguntar antes de cambiarlos.
   - Piezas compartidas creadas para las pantallas de mediciones (en la v1 estaban copiadas en cada archivo): `Alternador` (Tabla/Gráficos), `TituloBloque` (título con puntito de color), `SubmenuMedicion` (los submenús de fuerza y pliegues son el mismo componente), `Baldosa`/`RejillaBaldosas`, `InsigniaEstado`, `FechaTest`, `SinDatos`, `Glosario`, `TarjetaRecurso` (PDFs; se reutiliza en Rutinas), `TarjetaJugador`, `CommentBox`. Al portar una pantalla nueva de mediciones, usar estas piezas y no copiar CSS.
   - El punto de color de "Composición corporal" usa el mismo azul que el de pecho (`--blue-600`), para unificar la v1.
-- [ ] Siguientes: Rutinas, Encuestas, Torneo, Pesos, pantallas del técnico/admin (con datos falsos)
+- [x] Rutinas (jugador): `/rutinas` (`rutinas.html`), se llega desde "Rutinas disponibles" en la última medición de fuerza. Una tarjeta por plan (elegir = tocar la tarjeta), "Abrir"/"Descargar" y un visor `<iframe>` del PDF elegido. Lista de planes en `src/lib/rutinas.js`, PDFs en `public/rutinas/`. Usa `PantallaDatos ancho="ancho"` (720 px, 3 columnas desde 640 px).
+  - Falla de la v1 corregida: la 4ª tarjeta ("RUTINA FMAX TI") apuntaba a `rutina Fmax TI.pdf`, que no existe; ahora usa `PLAN FUERZA MAXIMA TREN INFERIOR.pdf` (título alineado con el archivo). Preguntar al usuario si prefiere otro título.
+  - Unificado: la barra superior de esta pantalla decía "← Fuerza"; ahora es "← Volver" como en las demás.
+- [ ] Siguientes: Encuestas, Torneo, Pesos, pantallas del técnico/admin (con datos falsos)
 - [ ] Proyecto de Supabase y modelado de tablas (después de tener las pantallas)
 - [ ] Login y roles
 - [ ] Migración de pantallas

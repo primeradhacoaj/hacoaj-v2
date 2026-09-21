@@ -34,6 +34,10 @@
   padding: 24px 16px 48px;
 }
 
+.ancha {
+  max-width: 720px;
+}
+
 @media (min-width: 540px) {
   .pagina {
     padding: 32px 24px 64px;

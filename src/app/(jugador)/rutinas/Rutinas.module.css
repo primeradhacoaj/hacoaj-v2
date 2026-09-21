@@ -1,0 +1,179 @@
+/* Rutinas disponibles — copiado del diseño original de la v1.
+   Usa los colores de PantallaDatos (--blue-*, --gray-*). */
+
+.rejilla {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.tarjeta {
+  padding: 16px;
+  border: 1px solid var(--gray-200);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 41, 107, 0.04);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.tarjeta:hover {
+  transform: translateY(-1px);
+  border-color: rgba(0, 41, 107, 0.18);
+  box-shadow: 0 4px 18px rgba(0, 41, 107, 0.1);
+}
+
+.activa {
+  border-color: var(--blue-900);
+  box-shadow: 0 0 0 2px rgba(0, 41, 107, 0.1), 0 4px 18px rgba(0, 41, 107, 0.1);
+}
+
+/* Zona de arriba de la tarjeta: es un botón para poder elegirla con el teclado */
+.superior {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.icono {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: rgba(201, 168, 62, 0.12);
+  color: #c9a83e;
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+}
+
+.titulo {
+  display: block;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--blue-900);
+}
+
+.descripcion {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gray-500);
+}
+
+.acciones {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.boton {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  border-radius: 11px;
+  font-size: 12px;
+  font-weight: 800;
+  transition: all 0.15s ease;
+}
+
+.principal {
+  background: var(--blue-900);
+  color: #fff;
+}
+
+.principal:hover {
+  background: var(--blue-800);
+}
+
+.secundario {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  color: var(--blue-900);
+}
+
+.secundario:hover {
+  background: #fff;
+  border-color: var(--gray-300);
+}
+
+/* ── Visor del PDF ── */
+.visor {
+  padding: 14px;
+  border: 1px solid var(--gray-200);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 41, 107, 0.04);
+}
+
+.visorTitulo {
+  margin-bottom: 12px;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--blue-900);
+}
+
+.visorNota {
+  margin-bottom: 12px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--gray-500);
+}
+
+.pdf {
+  display: block;
+  width: 100%;
+  height: 520px;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  background: var(--gray-50);
+}
+
+@media (min-width: 640px) {
+  .rejilla {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .tarjeta {
+    padding: 14px;
+  }
+
+  .superior {
+    align-items: flex-start;
+  }
+
+  .acciones {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .pdf {
+    height: 430px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tarjeta,
+  .boton {
+    transition: none;
+  }
+}

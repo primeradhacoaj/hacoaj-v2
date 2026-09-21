@@ -1,4 +1,5 @@
 import TopNav from "@/components/TopNav";
+import { cx } from "@/lib/cx";
 import styles from "./PantallaDatos.module.css";
 
 // Contenedor de las pantallas de datos del jugador (fuerza, pliegues,
@@ -7,11 +8,15 @@ import styles from "./PantallaDatos.module.css";
 //
 // Props:
 //   volverHref  a dónde lleva "← Volver" en la barra superior
-export default function PantallaDatos({ volverHref, children }) {
+//   ancho       "normal" (520 px, por defecto) o "ancho" (720 px, para pantallas con
+//               varias columnas como Rutinas)
+export default function PantallaDatos({ volverHref, ancho = "normal", children }) {
   return (
     <div className={styles.pantalla}>
       <TopNav volverHref={volverHref} />
-      <div className={styles.pagina}>{children}</div>
+      <div className={cx(styles.pagina, ancho === "ancho" && styles.ancha)}>
+        {children}
+      </div>
     </div>
   );
 }

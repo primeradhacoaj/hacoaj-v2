@@ -16,6 +16,8 @@ export default function TarjetaJugador({
   piernaHabil,
   peso,
 }) {
+  const hayEtiquetas = Boolean(posicion || piernaHabil || peso !== undefined);
+
   return (
     <div className={styles.tarjeta}>
       <div className={styles.interior}>
@@ -23,13 +25,15 @@ export default function TarjetaJugador({
         <div className={styles.info}>
           <div className={styles.nombre}>{nombre}</div>
           <div className={styles.subtitulo}>{subtitulo}</div>
-          <div className={styles.etiquetas}>
-            {posicion && <span className={styles.etiqueta}>📍 {posicion}</span>}
-            {piernaHabil && <span className={styles.etiqueta}>🦶 {piernaHabil}</span>}
-            {peso !== undefined && (
-              <span className={styles.etiqueta}>⚖ {peso ? peso : "--"} kg</span>
-            )}
-          </div>
+          {hayEtiquetas && (
+            <div className={styles.etiquetas}>
+              {posicion && <span className={styles.etiqueta}>📍 {posicion}</span>}
+              {piernaHabil && <span className={styles.etiqueta}>🦶 {piernaHabil}</span>}
+              {peso !== undefined && (
+                <span className={styles.etiqueta}>⚖ {peso ? peso : "--"} kg</span>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
