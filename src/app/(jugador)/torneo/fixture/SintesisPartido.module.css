@@ -1,0 +1,114 @@
+/* Síntesis de un partido — copiada del diseño original de la v1 */
+
+.cargando {
+  padding: 16px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-400);
+}
+
+.sinDatos {
+  padding: 12px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-400);
+}
+
+.equipo {
+  margin-bottom: 10px;
+}
+
+.nombreEquipo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--navy-700);
+}
+
+.esquema {
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--line-2);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: none;
+  color: var(--ink-400);
+}
+
+.linea {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.7;
+  color: var(--ink-700);
+}
+
+.numero {
+  display: inline-block;
+  width: 18px;
+  margin-right: 4px;
+  text-align: right;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--navy-700);
+}
+
+.puesto {
+  margin-left: 2px;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--ink-400);
+}
+
+.suplentes {
+  margin-top: 4px;
+  font-size: 11px;
+  font-style: italic;
+  color: var(--ink-500);
+}
+
+.eventos {
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.evento {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-700);
+}
+
+.icono {
+  flex-shrink: 0;
+  width: 18px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.minuto {
+  min-width: 24px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ink-400);
+}
+
+.nombre {
+  font-weight: 600;
+  color: var(--ink-900);
+}
+
+.detalle {
+  color: var(--ink-500);
+}

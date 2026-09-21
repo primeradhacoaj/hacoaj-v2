@@ -1,8 +1,8 @@
-import Icono from "@/components/Icono";
+import FuenteDatos from "@/components/FuenteDatos";
+import PanelVacio from "@/components/PanelVacio";
 import PantallaTorneo from "@/components/PantallaTorneo";
 import { obtenerPosiciones } from "@/lib/data/torneo";
 import TablaPosiciones from "./TablaPosiciones";
-import styles from "./TablaPosiciones.module.css";
 
 export const metadata = {
   title: "Tabla de posiciones",
@@ -19,16 +19,13 @@ export default async function PosicionesPage() {
         <>
           <TablaPosiciones zona="Zona A" filas={zonaA} primera />
           <TablaPosiciones zona="Zona B" filas={zonaB} />
-          <p className={styles.fuente}>Fuente: soloascenso.com.ar</p>
+          <FuenteDatos />
         </>
       ) : (
-        <div className={styles.vacio}>
-          <div className={styles.vacioIcono}>
-            <Icono nombre="posiciones" tamano={42} />
-          </div>
-          <h3>Sin datos</h3>
-          <p>No se pudo obtener la tabla de posiciones en este momento.</p>
-        </div>
+        <PanelVacio
+          icono="posiciones"
+          mensaje="No se pudo obtener la tabla de posiciones en este momento."
+        />
       )}
     </PantallaTorneo>
   );

@@ -1,0 +1,8 @@
+.fuente {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: var(--ink-400);
+}

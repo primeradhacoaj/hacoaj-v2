@@ -1,0 +1,29 @@
+.vacio {
+  padding: 40px 24px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-tile);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+
+.icono {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 14px;
+  color: var(--ink-400);
+}
+
+.vacio h3 {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--ink-900);
+}
+
+.vacio p {
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--ink-500);
+}

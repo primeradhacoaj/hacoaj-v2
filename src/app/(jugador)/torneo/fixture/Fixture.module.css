@@ -1,0 +1,256 @@
+/* Fixture — copiado del diseño original de la v1 */
+
+/* ── Filtros ── */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.selector {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 32px 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background-color: var(--surface);
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7689' stroke-width='2.4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  box-shadow: var(--shadow-card);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-700);
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.selector:focus {
+  outline: none;
+  border-color: var(--navy-700);
+  box-shadow: 0 0 0 3px rgba(0, 41, 107, 0.1);
+}
+
+.enlace {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--navy-700);
+  white-space: nowrap;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.enlace:hover {
+  border-color: rgba(0, 41, 107, 0.22);
+  background: rgba(0, 41, 107, 0.03);
+}
+
+/* ── Fecha ── */
+.fecha {
+  margin-bottom: 20px;
+}
+
+.cabeceraFecha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 6px;
+  margin-bottom: 10px;
+  border: none;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.tituloFecha {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.flecha {
+  color: var(--ink-400);
+  transition: transform 0.2s;
+}
+
+.plegada {
+  transform: rotate(-90deg);
+}
+
+.cantidad {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  color: var(--ink-400);
+}
+
+.partidos {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.oculto {
+  display: none;
+}
+
+/* ── Partido ── */
+.partido {
+  position: relative;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow-card);
+}
+
+.hacoaj {
+  border-left: 3px solid var(--gold-400);
+  background: linear-gradient(90deg, rgba(201, 168, 62, 0.06) 0%, var(--surface) 40%);
+}
+
+.jugado {
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+
+.jugado:hover {
+  border-color: #d8e0ed;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(7, 21, 56, 0.05), 0 14px 30px -10px rgba(7, 21, 56, 0.14);
+}
+
+.jugado:active {
+  transform: translateY(0);
+}
+
+/* El botón de la cabecera se estira sobre toda la tarjeta: se puede tocar en cualquier parte. */
+.cabecera {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+}
+
+button.cabecera {
+  cursor: pointer;
+}
+
+button.cabecera::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+}
+
+button.cabecera:focus-visible::after {
+  outline: 2px solid var(--navy-700);
+  outline-offset: 2px;
+}
+
+.fechaHora {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: var(--ink-400);
+}
+
+.equipos {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 8px;
+}
+
+.equipo {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ink-700);
+}
+
+.izquierda {
+  text-align: right;
+}
+
+.derecha {
+  text-align: left;
+}
+
+.resaltado {
+  font-weight: 700;
+  color: var(--gold-500);
+}
+
+.marcador {
+  min-width: 52px;
+  text-align: center;
+}
+
+.jugadoMarcador {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  color: var(--ink-900);
+}
+
+.pendiente {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-400);
+}
+
+/* ── Síntesis (se despliega dentro de la tarjeta) ── */
+.panel {
+  position: relative;
+  z-index: 1;
+  max-height: 0;
+  overflow: hidden;
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+  transition: max-height 0.35s ease;
+}
+
+.panelAbierto {
+  max-height: 2000px;
+}
+
+.panelInterior {
+  padding: 12px 14px;
+}
+
+.panelInterior:empty {
+  padding: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flecha,
+  .jugado,
+  .panel,
+  .enlace {
+    transition: none;
+  }
+}

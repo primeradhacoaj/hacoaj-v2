@@ -1,0 +1,234 @@
+/* Equipos — copiado del diseño original de la v1 */
+
+.aviso {
+  padding: 40px 20px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--ink-400);
+}
+
+/* Selector de equipo */
+.selector {
+  margin-bottom: 14px;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-tile);
+  box-shadow: var(--shadow-card);
+}
+
+.selector label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ink-400);
+}
+
+.selector select {
+  width: 100%;
+  padding: 10px 32px 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background-color: var(--surface);
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236b7689' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--ink-900);
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.selector select:focus {
+  border-color: var(--navy-700);
+}
+
+/* Tarjeta de números */
+.tarjeta {
+  margin-bottom: 14px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-tile);
+  box-shadow: var(--shadow-card);
+}
+
+.cifras4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.cifras3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.separada {
+  margin-top: 8px;
+}
+
+.cifra {
+  padding: 8px 4px;
+  border-radius: 10px;
+  background: var(--bg);
+  text-align: center;
+}
+
+.valor {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--navy-900);
+}
+
+.destacada {
+  color: var(--gold-500);
+}
+
+.rotulo {
+  margin-top: 2px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--ink-400);
+}
+
+.fondo_ganados {
+  background: rgba(34, 197, 94, 0.08);
+}
+
+.fondo_empates {
+  background: rgba(234, 179, 8, 0.08);
+}
+
+.fondo_derrotas {
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.color_ganados {
+  color: #16a34a;
+}
+
+.color_empates {
+  color: #ca8a04;
+}
+
+.color_derrotas {
+  color: #dc2626;
+}
+
+/* Barra de ganados / empates / derrotas */
+.barra {
+  display: flex;
+  height: 8px;
+  margin: 8px 0 4px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.ganados {
+  background: #16a34a;
+}
+
+.empates {
+  background: #ca8a04;
+}
+
+.derrotas {
+  background: #dc2626;
+}
+
+/* Lista de partidos */
+.titulo {
+  margin: 20px 0 10px 4px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.partido {
+  margin-bottom: 8px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-tile);
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.15s;
+}
+
+.partido:hover {
+  border-color: #d0d8e8;
+}
+
+.cabecera {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  background: none;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fecha {
+  min-width: 55px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-400);
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+}
+
+.rival {
+  display: block;
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-900);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.condicion {
+  display: block;
+  font-size: 11px;
+  color: var(--ink-500);
+}
+
+.flecha {
+  flex-shrink: 0;
+  color: var(--ink-400);
+  transition: transform 0.2s;
+}
+
+.girada {
+  transform: rotate(90deg);
+}
+
+.sintesis {
+  padding: 14px;
+  border-top: 1px solid var(--line-2);
+  font-size: 13px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .partido,
+  .flecha {
+    transition: none;
+  }
+}

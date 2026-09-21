@@ -44,35 +44,30 @@ const TORNEO = [
     titulo: "Fixture",
     descripcion: "Calendario y resultados de todas las fechas",
     href: "/torneo/fixture",
-    disponible: false,
   },
   {
     icono: "goleadores",
     titulo: "Goleadores",
     descripcion: "Tabla de goleadores del torneo",
     href: "/torneo/goleadores",
-    disponible: false,
   },
   {
     icono: "jugadores",
     titulo: "Planteles",
     descripcion: "Planteles de todos los equipos",
     href: "/torneo/planteles",
-    disponible: false,
   },
   {
     icono: "estrella",
     titulo: "Jugadores",
     descripcion: "Rankings, goleadores y estadísticas individuales",
     href: "/torneo/jugadores",
-    disponible: false,
   },
   {
     icono: "torneo",
     titulo: "Equipos",
     descripcion: "Estadísticas y partidos de cada equipo",
     href: "/torneo/equipos",
-    disponible: false,
   },
 ];
 

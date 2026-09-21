@@ -1,0 +1,50 @@
+.aviso {
+  padding: 16px;
+  text-align: center;
+  color: var(--ink-400);
+}
+
+.encabezado {
+  margin-bottom: 12px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ink-500);
+}
+
+.bloque {
+  margin-bottom: 12px;
+}
+
+.bloque h5 {
+  margin-bottom: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--ink-400);
+}
+
+.fila {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+  color: var(--ink-700);
+}
+
+.minuto {
+  min-width: 28px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-400);
+}
+
+.enlace {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.enlace a {
+  color: var(--navy-700);
+}

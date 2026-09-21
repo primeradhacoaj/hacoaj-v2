@@ -6,10 +6,11 @@ import styles from "./PantallaTorneo.module.css";
 // copiado de la v1: encabezado bajo sin tarjeta del jugador, contenido y pie.
 //
 // Props:
-//   titulo, seccion  textos del encabezado (seccion: "Promocional 2026" por defecto)
+//   titulo, subtitulo, seccion  textos del encabezado (seccion: "Promocional 2026" por defecto)
 //   volverHref, volverTexto  botón del encabezado (por defecto vuelve al menú del torneo)
 export default function PantallaTorneo({
   titulo,
+  subtitulo,
   seccion = "Promocional 2026",
   volverHref = "/torneo",
   volverTexto = "Torneo",
@@ -21,6 +22,7 @@ export default function PantallaTorneo({
         sinPerfil
         seccion={seccion}
         titulo={titulo}
+        subtitulo={subtitulo}
         volverHref={volverHref}
         volverTexto={volverTexto}
       />
