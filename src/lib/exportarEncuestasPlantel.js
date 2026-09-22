@@ -1,8 +1,8 @@
-// Exporta una tabla de respuestas del plantel (wellness o post partido) a un
-// archivo Excel de una sola hoja.
+// Exporta una tabla de respuestas del plantel (wellness, post partido,
+// historial de fuerza/pliegues…) a un archivo Excel de una sola hoja.
 //
 // columnas: [[clave, etiqueta]]
-export async function exportarTabla(filas, columnas, nombreArchivo) {
+export async function exportarTabla(filas, columnas, nombreArchivo, nombreHoja = "Respuestas") {
   if (filas.length === 0) return;
 
   const XLSX = await import("xlsx");
@@ -11,6 +11,6 @@ export async function exportarTabla(filas, columnas, nombreArchivo) {
   );
   const hoja = XLSX.utils.json_to_sheet(datos);
   const libro = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(libro, hoja, "Respuestas");
+  XLSX.utils.book_append_sheet(libro, hoja, nombreHoja);
   XLSX.writeFile(libro, `${nombreArchivo}.xlsx`);
 }

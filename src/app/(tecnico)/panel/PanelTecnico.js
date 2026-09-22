@@ -5,7 +5,7 @@ import ActionCard from "@/components/ActionCard";
 import Aviso from "@/components/Aviso";
 import IconoPanel from "@/components/IconoPanel";
 import { useSesion } from "@/components/SesionProvider";
-import { ACCESOS_RAPIDOS, AVISO_MIGRANDO, menuTecnicoParaRol } from "@/lib/menus";
+import { ACCESOS_RAPIDOS, AVISO_MIGRANDO, AVISO_PRONTO, menuTecnicoParaRol } from "@/lib/menus";
 import { useAviso } from "@/lib/useAviso";
 import styles from "./PanelTecnico.module.css";
 
@@ -74,7 +74,9 @@ export default function PanelTecnico() {
                   href={item.href}
                   etiquetas={item.etiquetas}
                   disponible={item.disponible}
-                  onNoDisponible={() => mostrar(AVISO_MIGRANDO)}
+                  onNoDisponible={() =>
+                    mostrar(item.aviso ?? (item.pronto ? AVISO_PRONTO : AVISO_MIGRANDO))
+                  }
                 />
               ))}
             </div>

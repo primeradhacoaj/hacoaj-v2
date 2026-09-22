@@ -132,7 +132,6 @@ const MENU_TECNICO = [
         tono: "blue",
         href: "/panel/fuerza",
         etiquetas: ["Historial", "Sentadilla", "Pecho"],
-        disponible: false,
       },
       {
         id: "pliegues",
@@ -143,7 +142,6 @@ const MENU_TECNICO = [
         tono: "pink",
         href: "/panel/pliegues",
         etiquetas: ["Historial", "Pliegues", "Peso"],
-        disponible: false,
       },
     ],
   },
@@ -170,6 +168,7 @@ const MENU_TECNICO = [
         href: "/panel/lesiones",
         etiquetas: ["Registro", "Seguimiento", "Recuperación"],
         disponible: false,
+        pronto: true,
       },
       {
         id: "encuestas",
