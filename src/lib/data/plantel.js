@@ -206,3 +206,31 @@ export async function obtenerHistorialPlieguesPlantel() {
   const { pliegues, pesos } = await base();
   return { pliegues, pesos };
 }
+
+// "dd/mm/aaaa" → Date, para ordenar cronológicamente.
+function comoFecha(fechaCorta) {
+  const [dd, mm, aa] = fechaCorta.split("/").map(Number);
+  return new Date(aa, mm - 1, dd);
+}
+
+// Jugadores del plantel con su propio historial de fuerza (sentadilla, pecho)
+// y pliegues, cada uno del más viejo al más nuevo (para el Dashboard de
+// análisis: promedios, evolución y comparar el último registro contra el
+// primero).
+export async function obtenerJugadoresConHistorial() {
+  const { jugadores, posiciones } = await obtenerJugadoresPanel();
+  const { sentadilla, pecho } = await obtenerHistorialFuerzaPlantel();
+  const { pliegues } = await obtenerHistorialPlieguesPlantel();
+
+  const porOrden = (a, b) => comoFecha(a.fecha) - comoFecha(b.fecha);
+  const de = (lista, nombre) => lista.filter((r) => r.jugador === nombre).sort(porOrden);
+
+  const conHistorial = jugadores.map((j) => ({
+    ...j,
+    fuerzaSent: de(sentadilla, j.nombre),
+    fuerzaPecho: de(pecho, j.nombre),
+    pliegues: de(pliegues, j.nombre),
+  }));
+
+  return { jugadores: conHistorial, posiciones };
+}

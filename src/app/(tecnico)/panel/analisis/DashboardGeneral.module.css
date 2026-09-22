@@ -1,0 +1,311 @@
+/* Dashboard general — copiado del diseño original de la v1 */
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.kpisFila2 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.kpi {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--card-shadow);
+}
+
+.etiquetaKpi {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.valorKpi {
+  margin-top: 4px;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.unidadKpi {
+  margin-left: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.notaKpi {
+  margin-top: 4px;
+  font-size: 10.5px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.pieKpi {
+  margin-top: 4px;
+  font-size: 10px;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.sparklineKpi {
+  margin-top: 4px;
+}
+
+.tendenciaSube {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--green);
+}
+
+.tendenciaBaja {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--red);
+}
+
+/* ── Alertas ── */
+.alertas {
+  margin-bottom: 20px;
+}
+
+.tarjetaVencidas {
+  margin-bottom: 16px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-left: 3px solid #f59e0b;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--card-shadow);
+}
+
+.tituloVencidas {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.tituloVencidasTexto {
+  font-size: 13px;
+  font-weight: 600;
+  color: #92400e;
+}
+
+.notaVencidas {
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.listaVencidas {
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.filaVencida {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  font-size: 12.5px;
+}
+
+.nombreVencida {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.detalleVencida {
+  flex: 1;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.filaCambios {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.subEtiqueta {
+  margin: 8px 0 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.35);
+}
+
+.subEtiqueta:first-of-type {
+  margin-top: 0;
+}
+
+.filaCambio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  font-size: 12px;
+}
+
+.nombreCambio {
+  min-width: 110px;
+  overflow: hidden;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.detalleCambio {
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+/* ── Tarjetas ── */
+.tarjeta {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--card-shadow);
+}
+
+.tituloTarjeta {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.tituloTarjetaChico {
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.subtituloTarjeta {
+  margin-bottom: 12px;
+  font-size: 11.5px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.sinDatos {
+  padding: 20px 0;
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 13px;
+  text-align: center;
+}
+
+/* ── Distribución + rankings ── */
+.filaInferior {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+.filaDonut {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.leyenda {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filaLeyenda {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.puntoLeyenda {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.etiquetaLeyenda {
+  min-width: 90px;
+  color: var(--text);
+}
+
+.cantidadLeyenda {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.porcentajeLeyenda {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.filaRanking {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.puestoRanking {
+  width: 14px;
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.35);
+  text-align: right;
+}
+
+.nombreRanking {
+  width: 90px;
+  overflow: hidden;
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.85);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.barraFondo {
+  flex: 1;
+  height: 22px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.barraRelleno {
+  height: 100%;
+  border-radius: 3px;
+}
+
+.valorRanking {
+  min-width: 40px;
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.7);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 1100px) {
+  .kpis {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filaInferior {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .kpis,
+  .kpisFila2,
+  .filaCambios {
+    grid-template-columns: 1fr;
+  }
+}

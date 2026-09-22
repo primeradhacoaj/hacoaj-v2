@@ -122,7 +122,6 @@ const MENU_TECNICO = [
         tono: "navy",
         href: "/panel/analisis",
         etiquetas: ["Dashboard", "Fuerza", "Pliegues", "Evolución"],
-        disponible: false,
       },
       {
         id: "fuerza",
@@ -305,7 +304,7 @@ export function menuTecnicoParaRol(rol) {
 // Botones de "Acceso rápido" del panel técnico (los mismos que traía la v1 por
 // defecto). Se activan cuando exista la pantalla a la que apuntan.
 export const ACCESOS_RAPIDOS = [
-  { id: "dashboard", titulo: "Ver Dashboard", icono: "dashboard", href: "/panel/analisis", disponible: false },
+  { id: "dashboard", titulo: "Ver Dashboard", icono: "dashboard", href: "/panel/analisis", disponible: true },
   { id: "cargar", titulo: "Cargar datos", icono: "flechaArriba", href: "/panel/cargar-datos", disponible: false },
   { id: "post-partido", titulo: "Post partido", icono: "encuestas", href: "/panel/encuestas/post-partido", disponible: true },
   { id: "wellness", titulo: "Wellness", icono: "corazon", href: "/panel/encuestas/wellness", disponible: true },
