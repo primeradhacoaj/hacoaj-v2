@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import ActionCard from "@/components/ActionCard";
 import Aviso from "@/components/Aviso";
 import IconoPanel from "@/components/IconoPanel";
@@ -39,17 +40,24 @@ export default function PanelTecnico() {
       <main className={styles.contenido}>
         <h2 className={styles.etiquetaSeccion}>Acceso rápido</h2>
         <div className={styles.accesos}>
-          {ACCESOS_RAPIDOS.map((acceso) => (
-            <button
-              key={acceso.id}
-              type="button"
-              className={styles.acceso}
-              onClick={() => mostrar(AVISO_MIGRANDO)}
-            >
-              <IconoPanel nombre={acceso.icono} tamano={16} />
-              {acceso.titulo}
-            </button>
-          ))}
+          {ACCESOS_RAPIDOS.map((acceso) =>
+            acceso.disponible ? (
+              <Link key={acceso.id} href={acceso.href} className={styles.acceso}>
+                <IconoPanel nombre={acceso.icono} tamano={16} />
+                {acceso.titulo}
+              </Link>
+            ) : (
+              <button
+                key={acceso.id}
+                type="button"
+                className={styles.acceso}
+                onClick={() => mostrar(AVISO_MIGRANDO)}
+              >
+                <IconoPanel nombre={acceso.icono} tamano={16} />
+                {acceso.titulo}
+              </button>
+            ),
+          )}
         </div>
 
         {secciones.map((seccion) => (

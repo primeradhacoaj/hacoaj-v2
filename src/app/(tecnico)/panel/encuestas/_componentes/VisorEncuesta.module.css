@@ -1,0 +1,207 @@
+/* Visor de encuestas del plantel — copiado del diseño original de la v1 */
+
+.controles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.etiquetaCampo {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-light);
+}
+
+.select,
+.fecha {
+  padding: 7px 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--navy-deep);
+  background: #fff;
+}
+
+.select {
+  min-width: 200px;
+}
+
+.limpiar {
+  padding: 5px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 11px;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.limpiar:hover {
+  border-color: var(--navy);
+  color: var(--navy);
+}
+
+/* ── Estadísticas ── */
+.estadisticas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.tarjetaEstadistica {
+  min-width: 140px;
+  padding: 14px 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.valorEstadistica {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--navy);
+}
+
+.tituloEstadistica {
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--text-light);
+}
+
+/* ── Tabla ── */
+.tabla {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--card-shadow);
+}
+
+.infoTabla {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.botonesTabla {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.botonIcono {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-mid);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.botonIcono:hover {
+  border-color: var(--navy);
+  color: var(--navy);
+}
+
+.scroll {
+  max-height: 70vh;
+  overflow: auto;
+}
+
+.vacio {
+  padding: 60px;
+  color: var(--text-light);
+  font-size: 14px;
+  text-align: center;
+}
+
+.tabla table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.tabla th {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  padding: 10px 14px;
+  border-bottom: 2px solid var(--border);
+  background: #fafbfc;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.tabla td {
+  padding: 9px 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+.tabla tr:hover td {
+  background: rgba(0, 41, 107, 0.02);
+}
+
+.filaNueva td {
+  background: rgba(237, 9, 146, 0.04);
+}
+
+.insigniaNuevo {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #be185d;
+}
+
+@media (max-width: 768px) {
+  .controles {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .select {
+    min-width: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .limpiar,
+  .botonIcono {
+    transition: none;
+  }
+}

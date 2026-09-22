@@ -1,0 +1,117 @@
+/* Menú de encuestas — copiado del diseño original de la v1 */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 48px 40px 56px;
+  background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 50%, var(--navy-mid) 100%);
+  color: #fff;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(237, 9, 146, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.heroInterior {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.heroInsignia {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+  padding: 5px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.heroPunto {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #0e8a4f;
+}
+
+.heroInterior h1 {
+  margin-bottom: 10px;
+  font-family: var(--font-playfair), "Playfair Display", serif;
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.heroInterior h1 span {
+  color: var(--pink);
+}
+
+.heroTexto {
+  max-width: 520px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.contenido {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 40px 60px;
+}
+
+.etiquetaSeccion {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 28px 0 16px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+
+.etiquetaSeccion::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.tarjetas {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 28px 16px 36px;
+  }
+
+  .heroInterior h1 {
+    font-size: 26px;
+  }
+
+  .contenido {
+    padding: 16px 16px 40px;
+  }
+
+  .tarjetas {
+    grid-template-columns: 1fr;
+  }
+}

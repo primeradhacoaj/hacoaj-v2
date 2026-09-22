@@ -13,6 +13,7 @@ const ICONOS = {
   flechaAbajo: "M6 9l6 6 6-6",
   mas: "M12 5v14 M5 12h14",
   cerrar: "M18 6 6 18 M6 6l12 12",
+  check: "M20 6 9 17l-5-5",
   buscar: "M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z M21 21l-4.3-4.3",
   tabla: "M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z M3 9h18 M9 3v18",
   descargar: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 M7 10l5 5 5-5 M12 15V3",

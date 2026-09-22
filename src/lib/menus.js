@@ -181,7 +181,6 @@ const MENU_TECNICO = [
         tono: "orange",
         href: "/panel/encuestas",
         etiquetas: ["Post partido", "Wellness", "Bienestar"],
-        disponible: false,
       },
       {
         id: "cargar-partido",
@@ -308,7 +307,7 @@ export function menuTecnicoParaRol(rol) {
 export const ACCESOS_RAPIDOS = [
   { id: "dashboard", titulo: "Ver Dashboard", icono: "dashboard", href: "/panel/analisis", disponible: false },
   { id: "cargar", titulo: "Cargar datos", icono: "flechaArriba", href: "/panel/cargar-datos", disponible: false },
-  { id: "post-partido", titulo: "Post partido", icono: "encuestas", href: "/panel/encuestas", disponible: false },
-  { id: "wellness", titulo: "Wellness", icono: "corazon", href: "/panel/encuestas", disponible: false },
+  { id: "post-partido", titulo: "Post partido", icono: "encuestas", href: "/panel/encuestas/post-partido", disponible: true },
+  { id: "wellness", titulo: "Wellness", icono: "corazon", href: "/panel/encuestas/wellness", disponible: true },
   { id: "notificacion", titulo: "Enviar notificación", icono: "campana", href: "/panel/notificaciones", disponible: false },
 ];
