@@ -1,0 +1,23 @@
+/* Pestaña Fuerza del dashboard: lo específico de sentadilla/pecho — el resto
+   de las piezas (KPIs, filtros, tarjetas, ranking, detalle, tabla) están en
+   AnalisisComun.module.css. Copiado del diseño original de la v1. */
+
+.colorSent {
+  color: #0e8a4f;
+}
+
+.colorPecho {
+  color: #00296b;
+}
+
+.grupoSent {
+  background: rgba(14, 138, 79, 0.04);
+  border-bottom: 2px solid #0e8a4f;
+  color: #0e8a4f;
+}
+
+.grupoPecho {
+  background: rgba(0, 41, 107, 0.04);
+  border-bottom: 2px solid #00296b;
+  color: #00296b;
+}

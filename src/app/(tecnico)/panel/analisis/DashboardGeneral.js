@@ -1,8 +1,8 @@
 import {
   cambiosFuerzaRelativa,
   distribucionPorPosicion,
-  fechaCortaADate,
   medicionesVencidas,
+  promedioAnioActual,
   promedioPrimerRegistro,
   promedioUltimoRegistro,
   serieDePromedios,
@@ -23,22 +23,6 @@ const COLOR_POSICION = {
 
 const numero = (v, decimales = 2) => (v != null ? v.toFixed(decimales) : "—");
 
-function promedioSumatoria6AnioActual(jugadores) {
-  const anioActual = new Date().getFullYear();
-  let suma = 0;
-  let cantidad = 0;
-  for (const j of jugadores) {
-    const delAnio = (j.pliegues || []).filter((r) => fechaCortaADate(r.fecha)?.getFullYear() === anioActual);
-    if (delAnio.length === 0) continue;
-    const ultimo = delAnio[delAnio.length - 1].sumatoria6;
-    if (ultimo != null && ultimo !== 0) {
-      suma += ultimo;
-      cantidad++;
-    }
-  }
-  return cantidad > 0 ? suma / cantidad : null;
-}
-
 // Pestaña "Dashboard general": KPIs agregados del plantel, alertas y los
 // rankings de fuerza relativa. Copiado de la v1.
 export default function DashboardGeneral({ jugadores, posiciones }) {
@@ -52,7 +36,7 @@ export default function DashboardGeneral({ jugadores, posiciones }) {
   const basePecho = promedioPrimerRegistro(jugadores, "fuerzaPecho", "fRelativa");
   const diffPecho = ultimoPecho.promedio != null && basePecho != null ? ultimoPecho.promedio - basePecho : null;
 
-  const promedioPliegues = promedioSumatoria6AnioActual(jugadores);
+  const promedioPliegues = promedioAnioActual(jugadores, "pliegues", "sumatoria6").promedio;
 
   const pesos = jugadores.map((j) => j.peso).filter((p) => p != null && p > 0);
   const promedioPeso = pesos.length ? pesos.reduce((s, v) => s + v, 0) / pesos.length : null;

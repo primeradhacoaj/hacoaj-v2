@@ -133,3 +133,143 @@ export function distribucionPorPosicion(jugadores) {
   for (const j of jugadores) cuenta.set(j.posicion, (cuenta.get(j.posicion) ?? 0) + 1);
   return cuenta;
 }
+
+// Promedio del plantel por fecha de medición (para el gráfico de evolución):
+// una posición por cada fecha distinta que aparezca en los registros de
+// cualquier jugador, ordenadas cronológicamente.
+export function evolucionPorFecha(jugadores, coleccion, campo) {
+  const porFecha = new Map();
+  for (const j of jugadores) {
+    for (const r of j[coleccion] || []) {
+      const valor = r[campo];
+      if (!r.fecha || valor == null || valor === 0) continue;
+      const actual = porFecha.get(r.fecha) ?? { suma: 0, cantidad: 0 };
+      actual.suma += valor;
+      actual.cantidad += 1;
+      porFecha.set(r.fecha, actual);
+    }
+  }
+  return [...porFecha.entries()]
+    .sort(([a], [b]) => fechaCortaADate(a) - fechaCortaADate(b))
+    .map(([fecha, { suma, cantidad }]) => ({ fecha, valor: suma / cantidad }));
+}
+
+// Último registro de sentadilla y pecho de cada jugador, con el cambio contra
+// el anterior, para la tabla completa del plantel.
+export function resumenFuerzaPorJugador(jugadores) {
+  const ultimoYDelta = (arr) => {
+    if (arr.length === 0) return { vmp: null, rm: null, fRelativa: null, fecha: null, delta: null };
+    const ultimo = arr[arr.length - 1];
+    const anterior = arr.length >= 2 ? arr[arr.length - 2] : null;
+    const delta =
+      anterior && ultimo.fRelativa != null && anterior.fRelativa != null
+        ? ultimo.fRelativa - anterior.fRelativa
+        : null;
+    return { vmp: ultimo.vmp, rm: ultimo.rm, fRelativa: ultimo.fRelativa, fecha: ultimo.fecha, delta };
+  };
+
+  return jugadores.map((j) => ({
+    nombre: j.nombre,
+    posicion: j.posicion,
+    peso: j.peso,
+    sentadilla: ultimoYDelta(j.fuerzaSent || []),
+    pecho: ultimoYDelta(j.fuerzaPecho || []),
+  }));
+}
+
+// Registros de una colección que son de este año calendario.
+export function delAnioActual(arr) {
+  const anio = new Date().getFullYear();
+  return (arr ?? []).filter((r) => fechaCortaADate(r.fecha)?.getFullYear() === anio);
+}
+
+// Promedio del último registro DE ESTE AÑO de cada jugador (p. ej. Σ6
+// pliegues o peso, que se cargan más seguido y solo interesa lo reciente).
+export function promedioAnioActual(jugadores, coleccion, campo) {
+  let suma = 0;
+  let cantidad = 0;
+  for (const j of jugadores) {
+    const delAnio = delAnioActual(j[coleccion]);
+    if (delAnio.length === 0) continue;
+    const valor = delAnio[delAnio.length - 1][campo];
+    if (valor != null && valor !== 0) {
+      suma += valor;
+      cantidad++;
+    }
+  }
+  return cantidad > 0 ? { promedio: suma / cantidad, cantidad } : { promedio: null, cantidad: 0 };
+}
+
+// Evolución del promedio del plantel por fecha, usando solo los registros de
+// este año.
+export function evolucionAnioActual(jugadores, coleccion, campo) {
+  const soloEsteAnio = jugadores.map((j) => ({ ...j, [coleccion]: delAnioActual(j[coleccion]) }));
+  return evolucionPorFecha(soloEsteAnio, coleccion, campo);
+}
+
+// Ranking por un campo del último registro de este año, de menor a mayor
+// (para Σ6 pliegues, donde menos es mejor).
+export function rankingAnioActualAscendente(jugadores, coleccion, campo) {
+  const lista = [];
+  for (const j of jugadores) {
+    const delAnio = delAnioActual(j[coleccion]);
+    if (delAnio.length === 0) continue;
+    const valor = delAnio[delAnio.length - 1][campo];
+    if (valor != null && valor !== 0) lista.push({ nombre: j.nombre, posicion: j.posicion, valor });
+  }
+  return lista.sort((a, b) => a.valor - b.valor);
+}
+
+// Promedio (del último registro de este año) agrupado por posición, con
+// mínimo y máximo — para el gráfico de barras por posición.
+export function promedioPorPosicion(jugadores, coleccion, campo) {
+  const porPosicion = new Map();
+  for (const j of jugadores) {
+    const delAnio = delAnioActual(j[coleccion]);
+    if (delAnio.length === 0 || !j.posicion) continue;
+    const valor = delAnio[delAnio.length - 1][campo];
+    if (valor == null || valor === 0) continue;
+    const lista = porPosicion.get(j.posicion) ?? [];
+    lista.push(valor);
+    porPosicion.set(j.posicion, lista);
+  }
+  return [...porPosicion.entries()].map(([posicion, valores]) => ({
+    posicion,
+    promedio: valores.reduce((s, v) => s + v, 0) / valores.length,
+    minimo: Math.min(...valores),
+    maximo: Math.max(...valores),
+    cantidad: valores.length,
+  }));
+}
+
+// Último peso e IMC de este año, Σ6 pliegues y peso ideal de cada jugador,
+// con el cambio de peso contra el registro anterior — para la tabla completa
+// de la pestaña Pliegues.
+export function resumenPlieguesPorJugador(jugadores) {
+  return jugadores.map((j) => {
+    const pesosAnio = delAnioActual(j.pesos);
+    const pesoActual = pesosAnio.length ? pesosAnio[pesosAnio.length - 1] : null;
+    const pesoAnterior = pesosAnio.length >= 2 ? pesosAnio[pesosAnio.length - 2] : null;
+    const plieguesAnio = delAnioActual(j.pliegues);
+    const ultimoPliegue = plieguesAnio.length ? plieguesAnio[plieguesAnio.length - 1] : null;
+
+    const deltaPeso =
+      pesoActual && pesoAnterior && pesoActual.peso != null && pesoAnterior.peso != null
+        ? pesoActual.peso - pesoAnterior.peso
+        : null;
+    const diferenciaIdeal =
+      pesoActual?.peso != null && ultimoPliegue?.pesoIdeal != null ? pesoActual.peso - ultimoPliegue.pesoIdeal : null;
+
+    return {
+      nombre: j.nombre,
+      posicion: j.posicion,
+      altura: j.altura,
+      peso: pesoActual?.peso ?? null,
+      fechaPeso: pesoActual?.fecha ?? null,
+      deltaPeso,
+      pesoIdeal: ultimoPliegue?.pesoIdeal ?? null,
+      diferenciaIdeal,
+      sumatoria6: ultimoPliegue?.sumatoria6 ?? null,
+    };
+  });
+}

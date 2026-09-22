@@ -31,3 +31,51 @@ export async function exportarResumenAnalisis(jugadores) {
   XLSX.utils.book_append_sheet(libro, hoja, "Resumen");
   XLSX.writeFile(libro, "resumen_dashboard_plantel.xlsx");
 }
+
+// Exporta la tabla completa de fuerza del plantel (la de la pestaña
+// "Fuerza" del dashboard) a un archivo Excel.
+export async function exportarFuerzaPlantel(resumen) {
+  if (resumen.length === 0) return;
+  const XLSX = await import("xlsx");
+
+  const filas = resumen.map((j) => ({
+    Jugador: j.nombre,
+    Posición: j.posicion ?? "",
+    "Peso (kg)": j.peso ?? "",
+    "VMP Sentadilla": j.sentadilla.vmp ?? "",
+    "RM Sentadilla (kg)": j.sentadilla.rm ?? "",
+    "F. Relativa Sentadilla": j.sentadilla.fRelativa ?? "",
+    "Fecha Sentadilla": j.sentadilla.fecha ?? "",
+    "VMP Pecho": j.pecho.vmp ?? "",
+    "RM Pecho (kg)": j.pecho.rm ?? "",
+    "F. Relativa Pecho": j.pecho.fRelativa ?? "",
+    "Fecha Pecho": j.pecho.fecha ?? "",
+  }));
+  const hoja = XLSX.utils.json_to_sheet(filas);
+  const libro = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(libro, hoja, "Fuerza plantel");
+  XLSX.writeFile(libro, "fuerza_plantel.xlsx");
+}
+
+// Exporta la tabla completa de pliegues del plantel (la de la pestaña
+// "Composición corporal" del dashboard) a un archivo Excel.
+export async function exportarPlieguesPlantel(resumen) {
+  if (resumen.length === 0) return;
+  const XLSX = await import("xlsx");
+
+  const filas = resumen.map((j) => ({
+    Jugador: j.nombre,
+    Posición: j.posicion ?? "",
+    "Altura (cm)": j.altura ?? "",
+    "Peso (kg)": j.peso ?? "",
+    "Δ Peso (kg)": j.deltaPeso ?? "",
+    "Fecha peso": j.fechaPeso ?? "",
+    "Peso ideal (kg)": j.pesoIdeal ?? "",
+    "Diferencia vs. ideal (kg)": j.diferenciaIdeal ?? "",
+    "Σ6 Pliegues (mm)": j.sumatoria6 ?? "",
+  }));
+  const hoja = XLSX.utils.json_to_sheet(filas);
+  const libro = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(libro, hoja, "Pliegues plantel");
+  XLSX.writeFile(libro, "pliegues_plantel.xlsx");
+}

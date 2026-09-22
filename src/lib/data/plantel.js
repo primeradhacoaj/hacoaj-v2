@@ -220,7 +220,7 @@ function comoFecha(fechaCorta) {
 export async function obtenerJugadoresConHistorial() {
   const { jugadores, posiciones } = await obtenerJugadoresPanel();
   const { sentadilla, pecho } = await obtenerHistorialFuerzaPlantel();
-  const { pliegues } = await obtenerHistorialPlieguesPlantel();
+  const { pliegues, pesos } = await obtenerHistorialPlieguesPlantel();
 
   const porOrden = (a, b) => comoFecha(a.fecha) - comoFecha(b.fecha);
   const de = (lista, nombre) => lista.filter((r) => r.jugador === nombre).sort(porOrden);
@@ -230,6 +230,7 @@ export async function obtenerJugadoresConHistorial() {
     fuerzaSent: de(sentadilla, j.nombre),
     fuerzaPecho: de(pecho, j.nombre),
     pliegues: de(pliegues, j.nombre),
+    pesos: de(pesos, j.nombre),
   }));
 
   return { jugadores: conHistorial, posiciones };

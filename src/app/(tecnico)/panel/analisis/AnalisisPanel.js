@@ -7,6 +7,8 @@ import IconoPanel from "@/components/IconoPanel";
 import { cx } from "@/lib/cx";
 import { exportarResumenAnalisis } from "@/lib/exportarAnalisisPlantel";
 import DashboardGeneral from "./DashboardGeneral";
+import FuerzaPlantel from "./FuerzaPlantel";
+import PliequesPlantel from "./PliequesPlantel";
 import styles from "./AnalisisPanel.module.css";
 
 const PESTANAS = [
@@ -28,8 +30,8 @@ const TITULOS = {
 // tabla con cada registro — esa es la pantalla de "Fuerza"/"Pliegues" del
 // menú técnico, que muestra el historial completo).
 //
-// Por ahora solo está armada la pestaña "Dashboard"; las demás (Fuerza,
-// Composición corporal, Promocional 2026) van a sumar sus propios gráficos.
+// Por ahora están armadas "Dashboard", "Fuerza" y "Composición corporal"; solo
+// falta "Promocional 2026".
 export default function AnalisisPanel({ jugadores, posiciones }) {
   const [pestana, setPestana] = useState("dashboard");
 
@@ -73,7 +75,9 @@ export default function AnalisisPanel({ jugadores, posiciones }) {
 
         <div className={styles.contenido}>
           {pestana === "dashboard" && <DashboardGeneral jugadores={jugadores} posiciones={posiciones} />}
-          {pestana !== "dashboard" && (
+          {pestana === "fuerza" && <FuerzaPlantel jugadores={jugadores} posiciones={posiciones} />}
+          {pestana === "pliegues" && <PliequesPlantel jugadores={jugadores} posiciones={posiciones} />}
+          {pestana === "torneo" && (
             <div className={styles.proximamente}>
               <IconoPanel nombre={PESTANAS.find((p) => p.id === pestana).icono} tamano={28} />
               <p>Esta sección del dashboard se está armando.</p>
