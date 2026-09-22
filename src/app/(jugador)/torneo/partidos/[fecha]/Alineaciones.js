@@ -1,64 +1,7 @@
 import SectionLabel from "@/components/SectionLabel";
-import { FORMACIONES } from "@/lib/formaciones";
+import { ubicarEnCancha, ubicarPorLineas } from "@/lib/formaciones";
+import { apellidoDeNombre as apellido, inicialesDeNombre as iniciales, minutoDeIngreso } from "@/lib/torneo";
 import styles from "./Alineaciones.module.css";
-
-// Ubica cada titular en un puesto del esquema: primero por coincidencia exacta
-// de posición, y los que sobran, en los lugares que quedan libres.
-function ubicarEnCancha(formacion, titulares) {
-  const puestos = FORMACIONES[formacion];
-  if (!puestos) return null;
-
-  const slots = puestos.map((p) => ({ ...p, jugador: null }));
-  const sinUbicar = [...titulares];
-
-  for (const slot of slots) {
-    const indice = sinUbicar.findIndex((j) => j.posicion === slot.pos);
-    if (indice !== -1) {
-      slot.jugador = sinUbicar[indice];
-      sinUbicar.splice(indice, 1);
-    }
-  }
-  for (const slot of slots) {
-    if (!slot.jugador && sinUbicar.length > 0) slot.jugador = sinUbicar.shift();
-  }
-  return slots.filter((slot) => slot.jugador);
-}
-
-// Alternativa sin esquema reconocido: arquero atrás, después defensores,
-// mediocampistas y delanteros, cada línea repartida en su ancho.
-function ubicarPorLineas(titulares) {
-  const arquero = titulares.filter((t) => t.posicion === "PO");
-  const defensores = titulares.filter((t) => ["DFI", "DFC", "DFD"].includes(t.posicion));
-  const mediocampistas = titulares.filter((t) =>
-    ["MI", "MC", "MD", "MCD", "MCO", "EI", "ED"].includes(t.posicion),
-  );
-  const delanteros = titulares.filter((t) => t.posicion === "DC");
-  const otros = titulares.filter(
-    (t) => !arquero.includes(t) && !defensores.includes(t) && !mediocampistas.includes(t) && !delanteros.includes(t),
-  );
-  const lineas = [delanteros, [...mediocampistas, ...otros], defensores, arquero];
-  const alturas = [90, 74, 52, 22];
-
-  const slots = [];
-  lineas.forEach((linea, indiceLinea) => {
-    linea.forEach((jugador, indice) => {
-      slots.push({ jugador, x: ((indice + 1) * 100) / (linea.length + 1), y: alturas[indiceLinea] ?? 50 });
-    });
-  });
-  return slots;
-}
-
-function iniciales(nombre) {
-  const partes = nombre.trim().split(/\s+/);
-  return partes.length >= 2
-    ? (partes[0][0] + partes[partes.length - 1][0]).toUpperCase()
-    : nombre.slice(0, 2).toUpperCase();
-}
-
-function apellido(nombre) {
-  const partes = nombre.trim().split(/\s+/);
-  return partes.length >= 2 ? partes[partes.length - 1] : nombre;
-}
 
 // Cancha con los 11 titulares, copiada de la v1: círculo con iniciales,
 // apellido, minutos, cinta de capitán y, si salió, la flechita roja; además
@@ -94,20 +37,6 @@ function Jugador({ jugador: j, esCapitan, fueSustituido }) {
       )}
     </div>
   );
-}
-
-// El minuto en que entró un suplente: recorre "a quién reemplazó" hasta el
-// titular, sumando los minutos jugados por cada eslabón de la cadena.
-function minutoDeIngreso(jugador, porNombre) {
-  let acumulado = 0;
-  let actual = jugador;
-  while (actual?.ingreso_por) {
-    const reemplazado = porNombre.get(actual.ingreso_por);
-    if (!reemplazado) break;
-    acumulado += reemplazado.minutos;
-    actual = reemplazado;
-  }
-  return acumulado;
 }
 
 // Pestaña "Alineaciones": la cancha con los titulares, los cambios realizados

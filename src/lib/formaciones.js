@@ -69,3 +69,82 @@ export const FORMACIONES = {
     { pos: "DC", x: 37, y: 18 }, { pos: "DC", x: 63, y: 18 },
   ],
 };
+
+// Ubica cada titular en un puesto del esquema: primero por coincidencia exacta
+// de posición, y los que sobran, en los lugares que quedan libres. Devuelve
+// null si el esquema no se reconoce.
+export function ubicarEnCancha(formacion, titulares) {
+  const puestos = FORMACIONES[formacion];
+  if (!puestos) return null;
+
+  const slots = puestos.map((p) => ({ ...p, jugador: null }));
+  const sinUbicar = [...titulares];
+
+  for (const slot of slots) {
+    const indice = sinUbicar.findIndex((j) => j.posicion === slot.pos);
+    if (indice !== -1) {
+      slot.jugador = sinUbicar[indice];
+      sinUbicar.splice(indice, 1);
+    }
+  }
+  for (const slot of slots) {
+    if (!slot.jugador && sinUbicar.length > 0) slot.jugador = sinUbicar.shift();
+  }
+  return slots.filter((slot) => slot.jugador);
+}
+
+// Alternativa sin esquema reconocido: arquero atrás, después defensores,
+// mediocampistas y delanteros, cada línea repartida en su ancho.
+export function ubicarPorLineas(titulares) {
+  const arquero = titulares.filter((t) => t.posicion === "PO");
+  const defensores = titulares.filter((t) => ["DFI", "DFC", "DFD"].includes(t.posicion));
+  const mediocampistas = titulares.filter((t) =>
+    ["MI", "MC", "MD", "MCD", "MCO", "EI", "ED"].includes(t.posicion),
+  );
+  const delanteros = titulares.filter((t) => t.posicion === "DC");
+  const otros = titulares.filter(
+    (t) => !arquero.includes(t) && !defensores.includes(t) && !mediocampistas.includes(t) && !delanteros.includes(t),
+  );
+  const lineas = [delanteros, [...mediocampistas, ...otros], defensores, arquero];
+  const alturas = [90, 74, 52, 22];
+
+  const slots = [];
+  lineas.forEach((linea, indiceLinea) => {
+    linea.forEach((jugador, indice) => {
+      slots.push({ jugador, x: ((indice + 1) * 100) / (linea.length + 1), y: alturas[indiceLinea] ?? 50 });
+    });
+  });
+  return slots;
+}
+
+// ── Agrupar una formación por puesto (síntesis del fixture) ────────────────
+
+const ORDEN_LINEAS = ["arquero", "defensor", "mediocampista", "delantero"];
+const ORDEN_SORT_FORMACION = { arquero: 0, defensor: 1, mediocampista: 2, delantero: 3, suplente: 4 };
+export const ETIQUETAS_POSICION = { arquero: "ARQ", defensor: "DEF", mediocampista: "MED", delantero: "DEL" };
+
+function ordenarPorPuesto(jugadores) {
+  return [...jugadores].sort((a, b) => {
+    const pa = ORDEN_SORT_FORMACION[a.posicion_partido] ?? 3;
+    const pb = ORDEN_SORT_FORMACION[b.posicion_partido] ?? 3;
+    if (pa !== pb) return pa - pb;
+    return (a.numero_camiseta || 99) - (b.numero_camiseta || 99);
+  });
+}
+
+// Agrupa la formación de un equipo (la síntesis de un partido) por línea, para
+// mostrarla como texto: titulares por puesto, suplentes y el esquema
+// ("4-4-2") calculado de la cantidad de defensores/mediocampistas/delanteros.
+export function agruparFormacion(jugadores) {
+  const titulares = ordenarPorPuesto(jugadores.filter((j) => j.titular));
+  const suplentes = ordenarPorPuesto(jugadores.filter((j) => !j.titular));
+
+  const lineas = Object.fromEntries(ORDEN_LINEAS.map((pos) => [pos, []]));
+  for (const jugador of titulares) {
+    const pos = (jugador.posicion_partido || "").toLowerCase();
+    lineas[lineas[pos] ? pos : "mediocampista"].push(jugador);
+  }
+  const esquema = ["defensor", "mediocampista", "delantero"].map((pos) => lineas[pos].length).join("-");
+
+  return { titulares, suplentes, lineas, esquema };
+}

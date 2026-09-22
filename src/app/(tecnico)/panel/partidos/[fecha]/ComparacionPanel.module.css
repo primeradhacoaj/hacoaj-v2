@@ -1,0 +1,82 @@
+.tarjeta {
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--card-shadow);
+}
+
+.cabecera {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 18px 10px;
+  border-bottom: 1px solid rgba(10, 21, 53, 0.06);
+}
+
+.equipo {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.rival {
+  color: var(--text-light);
+}
+
+.fila {
+  display: flex;
+  align-items: center;
+  padding: 12px 18px 4px;
+}
+
+.valor {
+  min-width: 36px;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+  text-align: center;
+}
+
+.gana {
+  color: var(--green);
+}
+
+.pierde {
+  color: var(--text-light);
+}
+
+.nombre {
+  flex: 1;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+  text-align: center;
+}
+
+.barras {
+  display: flex;
+  gap: 3px;
+  padding: 0 18px 12px;
+  border-bottom: 1px solid rgba(10, 21, 53, 0.06);
+}
+
+.grupoFila:last-child .barras {
+  border-bottom: none;
+}
+
+.barraAf {
+  height: 4px;
+  margin-left: auto;
+  border-radius: 2px;
+  background: var(--navy-mid);
+}
+
+.barraEc {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+}

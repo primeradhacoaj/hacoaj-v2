@@ -1,0 +1,222 @@
+/* Fixture (panel técnico) — copiado del diseño original de la v1 */
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.selector {
+  padding: 9px 32px 9px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7689' stroke-width='2.4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  box-shadow: var(--card-shadow);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.selector:focus {
+  outline: none;
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(0, 41, 107, 0.08);
+}
+
+.fecha {
+  margin-bottom: 20px;
+}
+
+.cabeceraFecha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 4px;
+  margin-bottom: 8px;
+  border: none;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
+  user-select: none;
+}
+
+.tituloFecha {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+
+.flecha {
+  color: var(--text-light);
+  transition: transform 0.2s;
+}
+
+.plegada {
+  transform: rotate(-90deg);
+}
+
+.cantidad {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.partidos {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.oculto {
+  display: none;
+}
+
+.partido {
+  position: relative;
+  padding: 12px 16px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+}
+
+.hacoaj {
+  border-left: 3px solid var(--gold);
+  background: linear-gradient(90deg, rgba(201, 168, 62, 0.06), #fff 40%);
+}
+
+.jugado {
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+
+.jugado:hover {
+  border-color: rgba(0, 41, 107, 0.18);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(7, 21, 56, 0.05), 0 14px 30px -10px rgba(7, 21, 56, 0.14);
+}
+
+.jugado:active {
+  transform: translateY(0);
+}
+
+.cabecera {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+}
+
+button.cabecera {
+  cursor: pointer;
+}
+
+button.cabecera::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+}
+
+button.cabecera:focus-visible::after {
+  outline: 2px solid var(--navy);
+  outline-offset: 2px;
+}
+
+.fechaHora {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-light);
+}
+
+.equipos {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+.equipo {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-mid);
+}
+
+.izquierda {
+  text-align: right;
+}
+
+.derecha {
+  text-align: left;
+}
+
+.resaltado {
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.marcador {
+  min-width: 52px;
+  text-align: center;
+}
+
+.jugadoMarcador {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  color: var(--text);
+}
+
+.pendiente {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-light);
+}
+
+.panel {
+  position: relative;
+  z-index: 1;
+  max-height: 0;
+  overflow: hidden;
+  background: var(--off-white);
+  border-top: 1px solid var(--border);
+  transition: max-height 0.35s ease;
+}
+
+.panelAbierto {
+  max-height: 2000px;
+}
+
+.panelInterior {
+  padding: 12px 14px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flecha,
+  .jugado,
+  .panel {
+    transition: none;
+  }
+}

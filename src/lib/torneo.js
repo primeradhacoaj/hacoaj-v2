@@ -77,3 +77,56 @@ export function fechaLarga(fechaIso) {
   const [anio, mes, dia] = fechaIso.split("-");
   return `${dia}/${mes}/${anio}`;
 }
+
+// Iniciales para el avatar circular de la cancha: "Jorge Villalba" → "JV".
+export function inicialesDeNombre(nombre) {
+  const partes = nombre.trim().split(/\s+/);
+  return partes.length >= 2
+    ? (partes[0][0] + partes[partes.length - 1][0]).toUpperCase()
+    : nombre.slice(0, 2).toUpperCase();
+}
+
+// Último apellido de un nombre completo: "Jorge Villalba" → "Villalba".
+export function apellidoDeNombre(nombre) {
+  const partes = nombre.trim().split(/\s+/);
+  return partes.length >= 2 ? partes[partes.length - 1] : nombre;
+}
+
+// El minuto en que entró un suplente: recorre "a quién reemplazó" hasta el
+// titular, sumando los minutos jugados por cada eslabón de la cadena.
+export function minutoDeIngreso(jugador, porNombre) {
+  let acumulado = 0;
+  let actual = jugador;
+  while (actual?.ingreso_por) {
+    const reemplazado = porNombre.get(actual.ingreso_por);
+    if (!reemplazado) break;
+    acumulado += reemplazado.minutos;
+    actual = reemplazado;
+  }
+  return acumulado;
+}
+
+// Goles, cambios y tarjetas de la síntesis de un partido, juntos y en orden de
+// minuto (usado por el fixture y por el detalle de partido).
+export function eventosDeSintesis(datos) {
+  return [
+    ...(datos.goles ?? []).map((g) => ({
+      minuto: g.minuto,
+      icono: "⚽",
+      nombre: g.jugador_nombre,
+      detalle: g.equipo_abrev,
+    })),
+    ...(datos.cambios ?? []).map((c) => ({
+      minuto: c.minuto,
+      icono: "🔄",
+      nombre: c.jugador_entra,
+      detalle: `← ${c.jugador_sale} ${c.equipo_abrev || ""}`,
+    })),
+    ...(datos.tarjetas ?? []).map((t) => ({
+      minuto: t.minuto,
+      icono: t.tipo === "Roja" ? "🟥" : "🟨",
+      nombre: t.jugador_nombre,
+      detalle: t.equipo_abrev || "",
+    })),
+  ].sort((a, b) => (a.minuto || 0) - (b.minuto || 0));
+}

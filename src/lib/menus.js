@@ -210,7 +210,6 @@ const MENU_TECNICO = [
         tono: "green",
         href: "/panel/partidos",
         etiquetas: ["Resultados", "Formación", "Detalle"],
-        disponible: false,
       },
       {
         id: "posiciones",
@@ -221,7 +220,6 @@ const MENU_TECNICO = [
         tono: "navy",
         href: "/panel/posiciones",
         etiquetas: ["Zona A", "Zona B", "Clasificación"],
-        disponible: false,
       },
       {
         id: "fixture",
@@ -232,7 +230,6 @@ const MENU_TECNICO = [
         tono: "blue",
         href: "/panel/fixture",
         etiquetas: ["Resultados", "Calendario", "35 fechas"],
-        disponible: false,
       },
       {
         id: "goleadores",
@@ -243,7 +240,6 @@ const MENU_TECNICO = [
         tono: "orange",
         href: "/panel/goleadores",
         etiquetas: ["Ranking", "Goles", "Torneo"],
-        disponible: false,
       },
     ],
   },

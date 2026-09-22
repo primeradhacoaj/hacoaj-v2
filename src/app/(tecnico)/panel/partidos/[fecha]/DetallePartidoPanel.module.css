@@ -1,0 +1,140 @@
+/* Detalle de partido (panel técnico) — copiado del diseño original de la v1 */
+
+.noEncontrado {
+  padding: 40px 20px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-mid);
+}
+
+/* ── Banner del marcador ── */
+.banner {
+  margin-bottom: 24px;
+  padding: 24px 28px;
+  background: var(--navy-deep);
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+  color: #fff;
+  text-align: center;
+}
+
+.meta {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.rival {
+  margin-top: 6px;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+
+.numerosGrandes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.equipo,
+.equipoDerecha {
+  min-width: 70px;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.equipo {
+  text-align: right;
+}
+
+.equipoDerecha {
+  text-align: left;
+}
+
+.numeros {
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+.separador {
+  margin: 0 6px;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.gano {
+  color: var(--green);
+}
+
+.empato {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.perdio {
+  color: var(--red);
+}
+
+.etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.etiqueta {
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* ── Pestañas ── */
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  padding: 4px;
+  background: rgba(10, 21, 53, 0.05);
+  border-radius: 12px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px 6px;
+  border: none;
+  border-radius: 9px;
+  background: none;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tabActiva {
+  background: #fff;
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab {
+    transition: none;
+  }
+}
