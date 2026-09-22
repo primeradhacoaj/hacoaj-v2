@@ -262,18 +262,16 @@ const MENU_TECNICO = [
         tono: "blue",
         href: "/panel/calendario",
         etiquetas: ["Partidos", "Entrenamientos", "Testeos"],
-        disponible: false,
       },
       {
         id: "configuracion",
         titulo: "Configuración",
         descripcion:
-          "Ajustes del sistema, gestión de usuarios y permisos de acceso.",
+          "Notificaciones push y personalización de los accesos directos del panel principal.",
         icono: "config",
         tono: "gris",
         href: "/panel/configuracion",
-        etiquetas: ["Usuarios", "Permisos"],
-        disponible: false,
+        etiquetas: ["Notificaciones", "Accesos rápidos"],
       },
       {
         id: "analytics",
@@ -284,7 +282,6 @@ const MENU_TECNICO = [
         tono: "purple",
         href: "/panel/analytics",
         etiquetas: ["Page views", "Usuarios", "Actividad"],
-        disponible: false,
         soloAdmin: true,
       },
     ],
@@ -300,12 +297,25 @@ export function menuTecnicoParaRol(rol) {
   }));
 }
 
-// Botones de "Acceso rápido" del panel técnico (los mismos que traía la v1 por
-// defecto). Se activan cuando exista la pantalla a la que apuntan.
-export const ACCESOS_RAPIDOS = [
+// TODOS los accesos directos que se pueden mostrar en "Acceso rápido" (menú
+// principal) — mismos 11 que la v1 (ALL_SHORTCUTS en configuracion.html).
+// Cuáles están activos y en qué orden lo decide cada técnico/admin en
+// /panel/configuracion (ver `useAccesosRapidos.js`); acá solo están todos los
+// que existen y si ya tienen pantalla.
+export const TODOS_LOS_ACCESOS = [
   { id: "dashboard", titulo: "Ver Dashboard", icono: "dashboard", href: "/panel/analisis", disponible: true },
   { id: "cargar", titulo: "Cargar datos", icono: "flechaArriba", href: "/panel/cargar-datos", disponible: false },
   { id: "post-partido", titulo: "Post partido", icono: "encuestas", href: "/panel/encuestas/post-partido", disponible: true },
   { id: "wellness", titulo: "Wellness", icono: "corazon", href: "/panel/encuestas/wellness", disponible: true },
   { id: "notificacion", titulo: "Enviar notificación", icono: "campana", href: "/panel/notificaciones", disponible: false },
+  { id: "encuestas", titulo: "Encuestas", icono: "encuestas", href: "/panel/encuestas", disponible: true },
+  { id: "fuerza", titulo: "Historial fuerza", icono: "fuerza", href: "/panel/fuerza", disponible: true },
+  { id: "pliegues", titulo: "Historial pliegues", icono: "ondas", href: "/panel/pliegues", disponible: true },
+  { id: "jugadores", titulo: "Jugadores", icono: "usuarios", href: "/panel/jugadores", disponible: true },
+  { id: "lesiones", titulo: "Lesiones", icono: "lesiones", href: "/panel/lesiones", disponible: false },
+  { id: "calendario", titulo: "Calendario", icono: "calendarioPunto", href: "/panel/calendario", disponible: true },
 ];
+
+// Con cuáles arranca un técnico/admin que todavía no personalizó sus accesos
+// (mismos 5 que traía la v1 por defecto).
+export const ACCESOS_POR_DEFECTO = ["dashboard", "cargar", "post-partido", "wellness", "notificacion"];

@@ -1,0 +1,350 @@
+/* Analytics del panel técnico — copiado del diseño original de la v1. */
+
+.descripcion {
+  margin: -12px 0 20px;
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+.rotulo {
+  margin: 26px 0 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+
+.rotulo:first-of-type {
+  margin-top: 0;
+}
+
+.nota {
+  margin: -4px 0 12px;
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.kpi {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--card-shadow);
+}
+
+.etiquetaKpi {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.valorKpi {
+  margin-top: 4px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.unidadKpi {
+  margin-left: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-light);
+}
+
+.notaKpi {
+  margin-top: 4px;
+  font-size: 10.5px;
+  color: var(--text-light);
+}
+
+.vacio,
+.vacioChico {
+  padding: 20px 0;
+  color: var(--text-light);
+  font-size: 13px;
+  text-align: center;
+}
+
+.vacioChico {
+  padding: 10px 0;
+}
+
+.listaJerarquia {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tarjetaJerarquia {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--card-shadow);
+}
+
+.cabeceraJerarquia {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+
+.iconoSeccion {
+  flex-shrink: 0;
+  font-size: 20px;
+}
+
+.infoSeccion {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.nombreSeccion {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.barraTrack {
+  height: 6px;
+  border-radius: 3px;
+  background: #eef1f6;
+}
+
+.barraFill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--navy);
+}
+
+.statsSeccion {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.visitasSeccion {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.tiempoSeccion {
+  font-size: 10.5px;
+  color: var(--text-light);
+}
+
+.chevron {
+  flex-shrink: 0;
+  color: var(--text-light);
+  transition: transform 0.15s;
+}
+
+.chevronAbierto {
+  transform: rotate(90deg);
+}
+
+.hijos {
+  padding: 4px 16px 14px 48px;
+  border-top: 1px solid var(--border);
+}
+
+.filaHijo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+}
+
+.nombreHijo {
+  flex: 0 0 160px;
+  overflow: hidden;
+  font-size: 11.5px;
+  color: var(--text-mid);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.barraTrackChica {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: #eef1f6;
+}
+
+.barraFillChica {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--navy-mid);
+}
+
+.statsHijo {
+  flex-shrink: 0;
+  font-size: 10.5px;
+  color: var(--text-light);
+}
+
+.rankings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.tarjetaRanking {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--card-shadow);
+}
+
+.tituloRanking {
+  margin-bottom: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.filaRankingItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 12px;
+  color: var(--text-mid);
+}
+
+.filaRankingItem + .filaRankingItem {
+  border-top: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.valorRankingItem {
+  flex-shrink: 0;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.filtros {
+  display: flex;
+  gap: 8px;
+}
+
+.chip {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-mid);
+  cursor: pointer;
+}
+
+.chip:hover {
+  border-color: var(--navy);
+}
+
+.chipActivo,
+.chipActivo:hover {
+  border-color: var(--navy);
+  background: var(--navy);
+  color: #fff;
+}
+
+.tablaWrap {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--card-shadow);
+}
+
+.scroll {
+  overflow-x: auto;
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+.scroll table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.scroll th {
+  position: sticky;
+  top: 0;
+  padding: 9px 14px;
+  border-bottom: 2px solid var(--border);
+  background: #fafbfc;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.scroll td {
+  padding: 8px 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+  white-space: nowrap;
+}
+
+.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.vacioTabla {
+  padding: 40px;
+  color: var(--text-light);
+  text-align: center;
+}
+
+.pieTabla {
+  padding: 9px 14px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-light);
+}
+
+@media (max-width: 900px) {
+  .kpis {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .rankings {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron {
+    transition: none;
+  }
+}

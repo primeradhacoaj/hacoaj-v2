@@ -1,0 +1,319 @@
+/* Calendario del panel técnico — copiado del diseño original de la v1
+   (usuario/calendario.html), adaptado a los tokens del panel técnico. */
+
+.navegacion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  max-width: 420px;
+  margin: 0 auto 20px;
+}
+
+.botonNav {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--text-mid);
+  cursor: pointer;
+}
+
+.botonNav:hover {
+  border-color: var(--navy);
+  color: var(--navy);
+}
+
+.centroNav {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.etiquetaMes {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.selectorAnio {
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fafbfc;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-mid);
+}
+
+.layout {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  transition: opacity 0.15s;
+}
+
+.cargando {
+  opacity: 0.5;
+}
+
+.columnaGrilla {
+  flex: 1 1 60%;
+  min-width: 0;
+}
+
+.columnaPanel {
+  position: sticky;
+  top: 76px;
+  flex: 0 0 300px;
+}
+
+.tarjeta {
+  padding: 16px 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: var(--card-shadow);
+}
+
+.encabezadoDias {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.encabezadoDias span {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+
+.grilla {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+.celda {
+  position: relative;
+  display: flex;
+  aspect-ratio: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-mid);
+  cursor: default;
+}
+
+.vacia {
+  visibility: hidden;
+}
+
+.hoy {
+  background: var(--navy);
+  color: #fff;
+  font-weight: 700;
+}
+
+.conEventos {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.conEventos:not(.hoy) {
+  background: #f2f4f9;
+}
+
+.elegida:not(.hoy) {
+  outline: 2px solid var(--navy);
+  outline-offset: -2px;
+}
+
+.puntos {
+  display: flex;
+  gap: 3px;
+  height: 5px;
+  margin-top: 3px;
+}
+
+.punto {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.puntocumple {
+  background: var(--pink);
+}
+
+.puntopartido {
+  background: var(--navy-mid);
+}
+
+.puntotesteo {
+  background: var(--green);
+}
+
+.hoy .puntocumple {
+  background: #ff8ec4;
+}
+
+.hoy .puntopartido {
+  background: #7eb3ff;
+}
+
+.hoy .puntotesteo {
+  background: #7ee2a8;
+}
+
+.sinSeleccion {
+  padding: 8px 2px;
+  color: var(--text-light);
+  font-size: 12.5px;
+  text-align: center;
+}
+
+.fechaPanel {
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+
+.filaEvento {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+}
+
+.filaEvento + .filaEvento {
+  border-top: 1px solid var(--border);
+}
+
+.iconoEvento {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.iconocumple {
+  background: rgba(237, 9, 146, 0.1);
+}
+
+.iconopartido {
+  background: rgba(30, 58, 138, 0.1);
+}
+
+.iconotesteo {
+  background: var(--green-bg);
+}
+
+.textoEvento {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.tituloEvento {
+  overflow: hidden;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.subEvento {
+  margin-top: 1px;
+  font-size: 10.5px;
+  color: var(--text-light);
+}
+
+.insigniaResultado {
+  flex-shrink: 0;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+.ganado {
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.perdido {
+  background: var(--red-bg);
+  color: var(--red);
+}
+
+.empatado {
+  background: var(--yellow-bg);
+  color: var(--yellow);
+}
+
+.botonAgregar {
+  position: fixed;
+  right: 28px;
+  bottom: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 41, 107, 0.35);
+  z-index: 90;
+}
+
+.botonAgregar:hover {
+  background: var(--navy-deep);
+}
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .columnaPanel {
+    position: static;
+    flex: 1 1 auto;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layout {
+    transition: none;
+  }
+}

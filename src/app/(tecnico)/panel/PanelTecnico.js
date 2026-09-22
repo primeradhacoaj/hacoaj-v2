@@ -5,17 +5,21 @@ import ActionCard from "@/components/ActionCard";
 import Aviso from "@/components/Aviso";
 import IconoPanel from "@/components/IconoPanel";
 import { useSesion } from "@/components/SesionProvider";
-import { ACCESOS_RAPIDOS, AVISO_MIGRANDO, AVISO_PRONTO, menuTecnicoParaRol } from "@/lib/menus";
+import { AVISO_MIGRANDO, AVISO_PRONTO, menuTecnicoParaRol } from "@/lib/menus";
+import { accesosActivosDe, useAccesosRapidos } from "@/lib/useAccesosRapidos";
 import { useAviso } from "@/lib/useAviso";
 import styles from "./PanelTecnico.module.css";
 
 // Panel principal de técnico y administrador (diseño original de la v1).
 // Muestra las mismas secciones a los dos roles, salvo las tarjetas marcadas
-// `soloAdmin`.
+// `soloAdmin`. Los accesos rápidos son los que cada técnico/admin activó en
+// /panel/configuracion (por defecto, los 5 de la v1).
 export default function PanelTecnico() {
   const { sesion } = useSesion();
   const { mensaje, visible, mostrar } = useAviso();
   const secciones = menuTecnicoParaRol(sesion.rol);
+  const { config } = useAccesosRapidos();
+  const accesos = accesosActivosDe(config);
 
   return (
     <>
@@ -40,7 +44,7 @@ export default function PanelTecnico() {
       <main className={styles.contenido}>
         <h2 className={styles.etiquetaSeccion}>Acceso rápido</h2>
         <div className={styles.accesos}>
-          {ACCESOS_RAPIDOS.map((acceso) =>
+          {accesos.map((acceso) =>
             acceso.disponible ? (
               <Link key={acceso.id} href={acceso.href} className={styles.acceso}>
                 <IconoPanel nombre={acceso.icono} tamano={16} />
