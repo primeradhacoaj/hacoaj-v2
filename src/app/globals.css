@@ -48,6 +48,14 @@
   --danger-soft: #fee2e2;
   --danger-ink: #b91c1c;
 
+  /* Resultado de un partido y tarjetas (pantallas del torneo) */
+  --win: #22a867;
+  --win-soft: rgba(34, 168, 103, 0.12);
+  --loss: #d04848;
+  --loss-soft: rgba(208, 72, 72, 0.1);
+  --amber: #e5a100;
+  --amber-soft: rgba(229, 161, 0, 0.12);
+
   /* Forma y profundidad */
   --radius-card: 18px;
   --radius-tile: 16px;

@@ -21,14 +21,12 @@ const HACOAJ = [
     descripcion: "Goles, asistencias, minutos jugados y más",
     href: "/torneo/estadisticas",
     destacado: true,
-    disponible: false,
   },
   {
     icono: "encuestas",
     titulo: "Partidos",
     descripcion: "Resultados y detalle de cada partido",
     href: "/torneo/partidos",
-    disponible: false,
   },
 ];
 

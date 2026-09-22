@@ -1,0 +1,263 @@
+/* Mis estadísticas — copiado del diseño original de la v1 */
+
+.cargando {
+  padding: 40px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--ink-400);
+}
+
+/* ── Resumen ── */
+.grupo {
+  margin-bottom: 8px;
+  padding: 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--ink-400);
+}
+
+.grupoSeparado {
+  margin-top: 16px;
+}
+
+.grilla {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.tarjeta {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+
+.ancha {
+  grid-column: 1 / -1;
+}
+
+.dorada {
+  border-color: rgba(201, 168, 62, 0.25);
+  background: linear-gradient(180deg, #fffdf5, #fff);
+}
+
+.azul {
+  border-color: rgba(0, 41, 107, 0.15);
+  background: linear-gradient(180deg, #f0f4ff, #fff);
+}
+
+.valor {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+  color: var(--ink-900);
+}
+
+.dorada .valor {
+  color: var(--gold-500);
+}
+
+.azul .valor {
+  color: var(--navy-700);
+}
+
+.amarillo {
+  color: var(--amber);
+}
+
+.rojo {
+  color: var(--loss);
+}
+
+.rotulo {
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  line-height: 1.3;
+  color: var(--ink-500);
+}
+
+/* ── Partidos ── */
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.partido {
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-tile);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  color: inherit;
+  transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+}
+
+.partido:hover {
+  border-color: #d8e0ed;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(7, 21, 56, 0.05), 0 14px 30px -10px rgba(7, 21, 56, 0.14);
+}
+
+.partido:active {
+  transform: translateY(0);
+}
+
+.encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line-2);
+}
+
+.fecha {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-500);
+}
+
+.condicion {
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.local {
+  background: var(--win-soft);
+  color: var(--win);
+}
+
+.visitante {
+  background: rgba(0, 41, 107, 0.07);
+  color: var(--navy-700);
+}
+
+.cuerpo {
+  padding: 12px 14px;
+}
+
+.filaRival {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.rival {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.1px;
+  color: var(--ink-900);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.marcador {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 10px;
+  background: var(--line-2);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+
+.guion {
+  font-size: 14px;
+  color: var(--ink-400);
+}
+
+.gano {
+  color: var(--win);
+}
+
+.empato {
+  color: var(--ink-700);
+}
+
+.perdio {
+  color: var(--loss);
+}
+
+.flecha {
+  flex-shrink: 0;
+  color: var(--ink-400);
+}
+
+.etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 9px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.posicion {
+  background: rgba(0, 41, 107, 0.06);
+  color: var(--navy-700);
+}
+
+.titular {
+  background: var(--win-soft);
+  color: var(--win);
+}
+
+.suplente,
+.amarilla {
+  background: var(--amber-soft);
+  color: var(--amber);
+}
+
+.minutos {
+  background: var(--line-2);
+  color: var(--ink-700);
+}
+
+.gol {
+  background: var(--gold-100);
+  color: var(--gold-500);
+}
+
+.asistencia {
+  background: rgba(0, 41, 107, 0.06);
+  color: var(--navy-600);
+}
+
+.roja,
+.noCitado {
+  background: var(--loss-soft);
+  color: var(--loss);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .partido {
+    transition: none;
+  }
+}

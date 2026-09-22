@@ -48,7 +48,7 @@ const POSICION_EN_PARTIDO = {
 
 const PALABRAS_MENORES = ["del", "los", "las", "club"];
 
-function abreviar(nombre) {
+export function abreviar(nombre) {
   const palabra = nombre
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "")

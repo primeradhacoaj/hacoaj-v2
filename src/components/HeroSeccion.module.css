@@ -151,6 +151,11 @@
   font-size: 28px;
 }
 
+/* Con contenido propio (marcador de partido): sin bloque de título */
+.conContenido {
+  padding-bottom: 24px;
+}
+
 @media (min-width: 600px) {
   .hero {
     max-width: 480px;
@@ -160,6 +165,10 @@
 
   .sinPerfil {
     max-width: 520px;
+  }
+
+  .sinPerfil.angosto {
+    max-width: 480px;
   }
 }
 

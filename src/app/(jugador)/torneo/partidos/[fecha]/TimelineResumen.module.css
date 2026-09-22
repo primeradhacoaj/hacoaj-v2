@@ -1,0 +1,164 @@
+.vacio {
+  padding: 30px 20px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ink-400);
+}
+
+.tarjeta {
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-tile);
+  box-shadow: var(--shadow-card);
+}
+
+.cabecera {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 18px 10px;
+  border-bottom: 1px solid var(--line-2);
+}
+
+.equipo {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--ink-700);
+}
+
+.rival {
+  color: var(--ink-400);
+}
+
+.linea {
+  position: relative;
+  padding: 8px 0;
+}
+
+.linea::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background: var(--line);
+  transform: translateX(-1px);
+}
+
+.fila {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+}
+
+.izquierda,
+.derecha {
+  flex: 1;
+  min-width: 0;
+}
+
+.izquierda {
+  padding-right: 12px;
+  text-align: right;
+}
+
+.derecha {
+  padding-left: 12px;
+  text-align: left;
+}
+
+.centro {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  width: 44px;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--ink-400);
+  text-align: center;
+}
+
+.centro::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: -1;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--line);
+  transform: translate(-50%, -50%);
+}
+
+.jugador {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy-900);
+}
+
+.jugadorSalido {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-400);
+}
+
+.asistencia {
+  font-size: 11px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink-400);
+}
+
+.icono {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.flechaEntra {
+  font-size: 14px;
+  font-weight: 900;
+  color: var(--win);
+}
+
+.flechaSale {
+  font-size: 14px;
+  font-weight: 900;
+  color: var(--loss);
+}
+
+.tarjetaIcono {
+  display: inline-block;
+  width: 12px;
+  height: 16px;
+  border-radius: 2px;
+  background: var(--amber);
+  vertical-align: middle;
+}
+
+.roja {
+  background: var(--loss);
+}
+
+.separador {
+  position: relative;
+  z-index: 1;
+  padding: 12px 0;
+  text-align: center;
+}
+
+.separador span {
+  display: inline-block;
+  padding: 5px 16px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--surface);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-400);
+}

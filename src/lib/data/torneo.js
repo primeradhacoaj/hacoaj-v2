@@ -140,7 +140,10 @@ export function armarFixture({ anio = 2026, semilla = 2026, jugadas = FECHAS_JUG
     for (let i = 0; i < cantidad / 2; i++) {
       const a = orden[i];
       const b = orden[cantidad - 1 - i];
-      const [local, visitante] = (f + i) % 2 === 0 ? [a, b] : [b, a];
+      // Quién es local: una moneda por partido. (El método del círculo deja
+      // fijo el orden de los enfrentamientos; alternar con `f % 2` no alcanza,
+      // porque el equipo en el índice 0 termina siempre del mismo lado.)
+      const [local, visitante] = azar() < 0.5 ? [a, b] : [b, a];
       const jugado = f < jugadas;
       partidos.push({
         dia,

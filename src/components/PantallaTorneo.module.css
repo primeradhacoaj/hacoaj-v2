@@ -10,6 +10,10 @@
   padding: 20px 16px calc(var(--safe-bottom) + 32px);
 }
 
+.conPerfil {
+  padding-top: 24px;
+}
+
 @media (min-width: 600px) {
   .pagina {
     background:
@@ -20,5 +24,9 @@
   .contenido {
     max-width: 520px;
     margin: 0 auto;
+  }
+
+  .angosta .contenido {
+    max-width: 480px;
   }
 }

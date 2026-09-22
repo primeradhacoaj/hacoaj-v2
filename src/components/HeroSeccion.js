@@ -18,6 +18,9 @@ import styles from "./HeroSeccion.module.css";
 //                     ej. { right: -10, bottom: 12, width: 220, height: 90 }
 //   sinPerfil    versión más baja, para pantallas SIN la tarjeta del jugador
 //                superpuesta (tablas, fixture…)
+//   angosto      con `sinPerfil`, ancho de 480 px en pantallas grandes (en vez de 520)
+//   children     contenido propio en lugar del título y subtítulo (ej. el
+//                marcador de un partido); el encabezado queda más bajo
 export default function HeroSeccion({
   volverHref = "/menu",
   volverTexto = "Menú",
@@ -27,9 +30,18 @@ export default function HeroSeccion({
   decoracion,
   estiloDecoracion,
   sinPerfil = false,
+  angosto = false,
+  children,
 }) {
   return (
-    <header className={cx(styles.hero, sinPerfil && styles.sinPerfil)}>
+    <header
+      className={cx(
+        styles.hero,
+        sinPerfil && styles.sinPerfil,
+        angosto && styles.angosto,
+        children && styles.conContenido,
+      )}
+    >
       {decoracion && (
         <div className={styles.decoracion} style={estiloDecoracion}>
           {decoracion}
@@ -51,14 +63,16 @@ export default function HeroSeccion({
         </span>
       </div>
 
-      <div className={styles.titulo}>
-        <span className={styles.seccion}>
-          <span className={styles.punto} />
-          {seccion}
-        </span>
-        <h1 className={styles.nombre}>{titulo}</h1>
-        {subtitulo && <p className={styles.subtitulo}>{subtitulo}</p>}
-      </div>
+      {children ?? (
+        <div className={styles.titulo}>
+          <span className={styles.seccion}>
+            <span className={styles.punto} />
+            {seccion}
+          </span>
+          <h1 className={styles.nombre}>{titulo}</h1>
+          {subtitulo && <p className={styles.subtitulo}>{subtitulo}</p>}
+        </div>
+      )}
     </header>
   );
 }

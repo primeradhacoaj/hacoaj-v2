@@ -46,3 +46,34 @@ export function iconosDeAparicion(aparicion) {
   if (aparicion.roja) iconos += "🟥 ";
   return iconos;
 }
+
+// Nombre sin acentos, en minúsculas y con las palabras ordenadas:
+// "VILLALBA, JORGE ANIBAL" y "Jorge Anibal Villalba" dan lo mismo.
+export function normalizarNombre(nombre) {
+  let limpio = (nombre ?? "")
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .trim();
+  if (limpio.includes(",")) {
+    const [apellido, nombres] = limpio.split(",");
+    limpio = `${nombres.trim()} ${apellido.trim()}`;
+  }
+  return limpio.split(/\s+/).sort().join(" ");
+}
+
+// ¿Son la misma persona? Compara nombre y apellido sin importar el orden ni los
+// segundos nombres: "Jorge Villalba" coincide con "VILLALBA, JORGE ANIBAL".
+export function nombresCoinciden(a, b) {
+  const palabrasA = normalizarNombre(a).split(" ");
+  const palabrasB = normalizarNombre(b).split(" ");
+  const [corto, largo] = palabrasA.length <= palabrasB.length ? [palabrasA, palabrasB] : [palabrasB, palabrasA];
+  return corto.length > 0 && corto[0] !== "" && corto.every((palabra) => largo.includes(palabra));
+}
+
+// "2026-05-23" → "23/05/2026"
+export function fechaLarga(fechaIso) {
+  if (!fechaIso) return "—";
+  const [anio, mes, dia] = fechaIso.split("-");
+  return `${dia}/${mes}/${anio}`;
+}

@@ -1,0 +1,355 @@
+/* Cancha y alineaciones — copiado del diseño original de la v1 */
+
+.canchaContenedor {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-tile);
+  box-shadow: var(--shadow-card);
+}
+
+.cancha {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 68 / 90;
+  overflow: hidden;
+  background: linear-gradient(180deg, #2e8b47 0%, #2c8343 48%, #30914c 50%, #2c8343 52%, #2e8b47 100%);
+}
+
+.lineaH {
+  position: absolute;
+  top: 50%;
+  left: 4%;
+  right: 4%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.circuloCentral {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 22%;
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.areaArriba,
+.areaAbajo {
+  position: absolute;
+  left: 22%;
+  right: 22%;
+  height: 16%;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.areaArriba {
+  top: 0;
+  border-top: none;
+}
+
+.areaAbajo {
+  bottom: 0;
+  border-bottom: none;
+}
+
+.arcoArriba,
+.arcoAbajo {
+  position: absolute;
+  left: 36%;
+  right: 36%;
+  height: 6%;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.arcoArriba {
+  top: 0;
+  border-top: none;
+}
+
+.arcoAbajo {
+  bottom: 0;
+  border-bottom: none;
+}
+
+.puntoCentral {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  transform: translate(-50%, -50%);
+}
+
+.insignia {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  z-index: 5;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.25);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* Jugador en la cancha */
+.jugador {
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 44px;
+  transform: translate(-50%, -50%);
+}
+
+.circulo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.65);
+  border-radius: 50%;
+  background: var(--navy-900);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.iniciales {
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+}
+
+.nombre {
+  margin-top: 2px;
+  max-width: 64px;
+  overflow: hidden;
+  font-size: 8px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.capitan {
+  margin-left: 3px;
+  padding: 1px 3px;
+  border-radius: 3px;
+  background: rgba(251, 191, 36, 0.18);
+  font-size: 7px;
+  font-weight: 900;
+  line-height: 1;
+  color: #fbbf24;
+}
+
+.minutos {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-top: 1px;
+  font-size: 8px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.salio {
+  font-size: 8px;
+  line-height: 1;
+  color: var(--loss);
+}
+
+.iconos {
+  display: flex;
+  gap: 2px;
+  margin-top: 1px;
+}
+
+.iconoGol,
+.iconoAsist {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  font-size: 6px;
+  font-weight: 900;
+}
+
+.iconoGol {
+  background: var(--gold-400);
+  color: #000;
+}
+
+.iconoAsist {
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--navy-900);
+}
+
+.iconoAmarilla,
+.iconoRoja {
+  width: 8px;
+  height: 11px;
+  border-radius: 1px;
+}
+
+.iconoAmarilla {
+  background: var(--amber);
+}
+
+.iconoRoja {
+  background: var(--loss);
+}
+
+/* Sustituciones */
+.listaCambios {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tarjetaCambio {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow-card);
+}
+
+.minutoCambio {
+  min-width: 28px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--ink-500);
+  text-align: center;
+}
+
+.jugadoresCambio {
+  flex: 1;
+  min-width: 0;
+}
+
+.entra {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--win);
+}
+
+.entra::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 6px solid var(--win);
+}
+
+.sale {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-400);
+}
+
+.sale::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid var(--loss);
+}
+
+/* Banco */
+.grillaBanco {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chipBanco {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+}
+
+.avatarBanco {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--navy-900);
+  font-size: 9px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.nombreBanco {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-700);
+  white-space: nowrap;
+}
+
+.posicionBanco {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ink-400);
+}
+
+@media (max-width: 360px) {
+  .jugador {
+    width: 38px;
+  }
+
+  .circulo {
+    width: 32px;
+    height: 32px;
+  }
+
+  .iniciales {
+    font-size: 10px;
+  }
+
+  .nombre {
+    max-width: 52px;
+    font-size: 7px;
+  }
+
+  .minutos {
+    font-size: 7px;
+  }
+
+  .avatarBanco {
+    width: 24px;
+    height: 24px;
+  }
+}
