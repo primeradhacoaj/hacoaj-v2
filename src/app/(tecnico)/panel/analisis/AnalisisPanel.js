@@ -10,6 +10,7 @@ import DashboardGeneral from "./DashboardGeneral";
 import FuerzaPlantel from "./FuerzaPlantel";
 import PliequesPlantel from "./PliequesPlantel";
 import styles from "./AnalisisPanel.module.css";
+import TorneoPlantel from "./TorneoPlantel";
 
 const PESTANAS = [
   { id: "dashboard", titulo: "Dashboard", icono: "dashboard" },
@@ -30,9 +31,8 @@ const TITULOS = {
 // tabla con cada registro — esa es la pantalla de "Fuerza"/"Pliegues" del
 // menú técnico, que muestra el historial completo).
 //
-// Por ahora están armadas "Dashboard", "Fuerza" y "Composición corporal"; solo
-// falta "Promocional 2026".
-export default function AnalisisPanel({ jugadores, posiciones }) {
+// Las 4 pestañas ya están armadas.
+export default function AnalisisPanel({ jugadores, posiciones, torneo }) {
   const [pestana, setPestana] = useState("dashboard");
 
   return (
@@ -77,12 +77,7 @@ export default function AnalisisPanel({ jugadores, posiciones }) {
           {pestana === "dashboard" && <DashboardGeneral jugadores={jugadores} posiciones={posiciones} />}
           {pestana === "fuerza" && <FuerzaPlantel jugadores={jugadores} posiciones={posiciones} />}
           {pestana === "pliegues" && <PliequesPlantel jugadores={jugadores} posiciones={posiciones} />}
-          {pestana === "torneo" && (
-            <div className={styles.proximamente}>
-              <IconoPanel nombre={PESTANAS.find((p) => p.id === pestana).icono} tamano={28} />
-              <p>Esta sección del dashboard se está armando.</p>
-            </div>
-          )}
+          {pestana === "torneo" && <TorneoPlantel {...torneo} />}
         </div>
       </div>
     </div>

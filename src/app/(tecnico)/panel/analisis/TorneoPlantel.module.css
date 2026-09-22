@@ -1,0 +1,20 @@
+/* Pestaña Promocional 2026 del dashboard: lo específico — el resto de las
+   piezas (KPIs, filtros, tarjetas, tabla) están en AnalisisComun.module.css.
+   Copiado del diseño original de la v1. */
+
+.filaDosColumnas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.filaTablaSinClick {
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 900px) {
+  .filaDosColumnas {
+    grid-template-columns: 1fr;
+  }
+}

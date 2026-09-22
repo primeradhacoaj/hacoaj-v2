@@ -79,3 +79,41 @@ export async function exportarPlieguesPlantel(resumen) {
   XLSX.utils.book_append_sheet(libro, hoja, "Pliegues plantel");
   XLSX.writeFile(libro, "pliegues_plantel.xlsx");
 }
+
+// Exporta el resumen del torneo (estadísticas del equipo + plantel) de la
+// pestaña "Promocional 2026" del dashboard, a un Excel de 2 hojas.
+export async function exportarTorneoPlantel(equipo, stats, jugadores) {
+  const XLSX = await import("xlsx");
+  const libro = XLSX.utils.book_new();
+
+  const hojaEquipo = XLSX.utils.aoa_to_sheet([
+    ["Métrica", "Valor"],
+    ["Equipo", equipo],
+    ["Temporada", stats.temporada],
+    ["Partidos jugados", stats.pj],
+    ["Puntos", stats.pts],
+    ["Ganados", stats.pg],
+    ["Empatados", stats.pe],
+    ["Perdidos", stats.pp],
+    ["Goles a favor", stats.gf],
+    ["Goles en contra", stats.gc],
+    ["Diferencia de gol", stats.dif],
+  ]);
+  hojaEquipo["!cols"] = [{ wch: 20 }, { wch: 16 }];
+  XLSX.utils.book_append_sheet(libro, hojaEquipo, "Equipo");
+
+  const filas = jugadores.map((j) => ({
+    Jugador: j.nombre,
+    Posición: j.posicion ?? "",
+    PJ: j.partidos,
+    Titular: j.titular,
+    Minutos: j.minutos,
+    Goles: j.goles,
+    Amarillas: j.amarillas,
+    Rojas: j.rojas,
+  }));
+  const hojaJugadores = XLSX.utils.json_to_sheet(filas);
+  XLSX.utils.book_append_sheet(libro, hojaJugadores, "Plantel");
+
+  XLSX.writeFile(libro, "torneo_plantel.xlsx");
+}
