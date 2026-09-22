@@ -11,6 +11,9 @@ const ICONOS = {
     "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",
   flechaIzquierda: "M15 18l-6-6 6-6",
   flechaAbajo: "M6 9l6 6 6-6",
+  mas: "M12 5v14 M5 12h14",
+  cerrar: "M18 6 6 18 M6 6l12 12",
+  buscar: "M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z M21 21l-4.3-4.3",
   tabla: "M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z M3 9h18 M9 3v18",
   descargar: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 M7 10l5 5 5-5 M12 15V3",
   nutricion:

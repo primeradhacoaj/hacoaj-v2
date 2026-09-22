@@ -160,7 +160,6 @@ const MENU_TECNICO = [
         tono: "green",
         href: "/panel/jugadores",
         etiquetas: ["Fichas", "Datos personales", "Historial"],
-        disponible: false,
       },
       {
         id: "lesiones",
