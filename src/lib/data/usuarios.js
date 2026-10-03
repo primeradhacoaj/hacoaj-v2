@@ -1,47 +1,33 @@
-// CAPA DE DATOS de usuarios.
+// CAPA DE DATOS de usuarios: inicio de sesión con Supabase Auth.
 //
-// Las pantallas no saben de dónde salen los datos: solo llaman a estas
-// funciones. Hoy devuelven DATOS DE PRUEBA. Cuando armemos Supabase se cambia
-// el interior de cada función y las pantallas no se tocan.
-//
-// Estos usuarios son ficticios y solo existen para probar el diseño.
+// El club no usa emails: la gente entra con un USUARIO (por ejemplo
+// "fsaroka"). Supabase Auth necesita un email para cada cuenta, así que el
+// usuario se convierte por dentro en uno inventado (`usuario@hacoaj.test`).
+// Nadie lo ve ni lo usa para nada más; no existe esa casilla. Consecuencia:
+// no hay "recuperar contraseña por mail" — el administrador restablece las
+// contraseñas.
 
-const USUARIOS_DE_PRUEBA = [
-  {
-    usuario: "jugador",
-    contrasena: "demo",
-    nombre: "Juan Pérez",
-    rol: "jugador",
-    posicion: "Volante",
-    piernaHabil: "Derecha",
-  },
-  { usuario: "tecnico", contrasena: "demo", nombre: "Cuerpo Técnico", rol: "tecnico" },
-  { usuario: "admin", contrasena: "demo", nombre: "Administración", rol: "administrador" },
-];
+import { createClient } from "@/lib/supabase/client";
+
+export const DOMINIO_INTERNO = "hacoaj.test";
+
+export function emailDeUsuario(usuario) {
+  return `${usuario.trim().toLowerCase()}@${DOMINIO_INTERNO}`;
+}
 
 // Intenta iniciar sesión. Devuelve:
-//   { ok: true, usuario: { usuario, nombre, rol, posicion, piernaHabil } }
+//   { ok: true }
 //   { ok: false, error: "mensaje para mostrar" }
-// Es `async` a propósito: la versión real va a tardar en responder (red).
+// Si sale bien no devuelve el usuario: el SesionProvider se entera solo cuando
+// Supabase confirma el login, y carga el perfil.
 export async function iniciarSesion(usuario, contrasena) {
-  await new Promise((resolver) => setTimeout(resolver, 400)); // simula la demora
+  const { error } = await createClient().auth.signInWithPassword({
+    email: emailDeUsuario(usuario),
+    password: contrasena,
+  });
 
-  const encontrado = USUARIOS_DE_PRUEBA.find(
-    (u) => u.usuario === usuario && u.contrasena === contrasena,
-  );
-
-  if (!encontrado) {
+  if (error) {
     return { ok: false, error: "Usuario o contraseña incorrectos" };
   }
-
-  return {
-    ok: true,
-    usuario: {
-      usuario: encontrado.usuario,
-      nombre: encontrado.nombre,
-      rol: encontrado.rol,
-      posicion: encontrado.posicion,
-      piernaHabil: encontrado.piernaHabil,
-    },
-  };
+  return { ok: true };
 }

@@ -60,7 +60,7 @@ export default function MiFuerza() {
   useEffect(() => {
     let cancelado = false;
 
-    obtenerMiFuerza(sesion.usuario)
+    obtenerMiFuerza()
       .then((datos) => {
         if (cancelado) return;
         if (datos.status !== "success") {

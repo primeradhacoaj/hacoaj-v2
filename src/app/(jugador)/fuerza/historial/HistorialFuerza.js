@@ -46,7 +46,7 @@ export default function HistorialFuerza() {
   useEffect(() => {
     let cancelado = false;
 
-    obtenerMiHistorialFuerza(sesion.usuario)
+    obtenerMiHistorialFuerza()
       .then((datos) => {
         if (cancelado) return;
         if (datos.status !== "success") {

@@ -23,7 +23,7 @@ export default function LoginForm() {
   const [errorGeneral, setErrorGeneral] = useState(""); // usuario/clave incorrectos
   const [cargando, setCargando] = useState(false);
 
-  const { sesion, iniciar } = useSesion();
+  const { sesion } = useSesion();
   const router = useRouter();
 
   // Apenas hay una sesión (recién iniciada o ya guardada de antes), pasa al
@@ -51,12 +51,11 @@ export default function LoginForm() {
     const resultado = await iniciarSesion(usuarioLimpio, contrasenaLimpia);
     setCargando(false);
 
-    // 3) Mostrar el error, o guardar la sesión (el efecto de arriba redirige)
+    // 3) Mostrar el error. Si salió bien no hay nada más que hacer acá: el
+    //    SesionProvider se entera del login y el efecto de arriba redirige.
     if (!resultado.ok) {
       setErrorGeneral(resultado.error);
-      return;
     }
-    iniciar(resultado.usuario);
   }
 
   if (sesion) {
@@ -143,7 +142,7 @@ export default function LoginForm() {
       <p className={styles.ayuda}>
         Versión de prueba: usuarios <strong>jugador</strong>,{" "}
         <strong>tecnico</strong> o <strong>admin</strong>, con contraseña{" "}
-        <strong>demo</strong>.
+        <strong>demo-12345</strong>.
       </p>
     </div>
   );
