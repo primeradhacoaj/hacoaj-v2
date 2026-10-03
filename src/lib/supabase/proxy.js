@@ -8,6 +8,12 @@ import { NextResponse } from "next/server";
 export async function updateSession(request) {
   let response = NextResponse.next({ request });
 
+  // Sin las variables de entorno (por ejemplo, un deploy al que todavía no se
+  // las cargaron) no se toca la sesión, pero el sitio sigue funcionando.
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
+    return response;
+  }
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
