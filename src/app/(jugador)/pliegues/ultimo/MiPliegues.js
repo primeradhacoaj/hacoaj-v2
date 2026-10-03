@@ -50,7 +50,7 @@ export default function MiPliegues() {
   useEffect(() => {
     let cancelado = false;
 
-    obtenerMiPliegue(sesion.usuario)
+    obtenerMiPliegue()
       .then((datos) => {
         if (cancelado) return;
         if (datos.status !== "success") {

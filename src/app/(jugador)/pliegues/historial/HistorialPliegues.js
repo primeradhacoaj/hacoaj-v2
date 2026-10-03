@@ -34,7 +34,7 @@ export default function HistorialPliegues() {
   useEffect(() => {
     let cancelado = false;
 
-    obtenerMisPliegues(sesion.usuario)
+    obtenerMisPliegues()
       .then((datos) => {
         if (cancelado) return;
         if (datos.status !== "success") {
