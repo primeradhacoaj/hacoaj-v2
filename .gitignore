@@ -47,3 +47,4 @@ service_account.json
 # importación de datos reales: equivalencias de nombres (datos personales) y SQL generado
 /scripts/importar/equivalencias.json
 /scripts/importar/salida/
+/scripts/importar/entradas/

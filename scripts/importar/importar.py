@@ -56,6 +56,14 @@ ADVERTENCIAS = []
 ERRORES = []
 
 
+def archivo_de_entrada(nombre):
+    """Archivos que viven solo en el servidor de la v1: se buscan en scripts/importar/entradas/ y en la carpeta data/ de la v1."""
+    for carpeta in (AQUI / "entradas", V1 / "data"):
+        if (carpeta / nombre).exists():
+            return carpeta / nombre
+    return None
+
+
 def uid(*partes):
     return str(uuid.uuid5(NS, "|".join(partes)))
 
@@ -400,8 +408,8 @@ def armar(libro, equiv, personas, sql, informe):
     ]
 
     # ── Multimedia y eventos (archivos del servidor de la v1, si se descargaron) ──
-    multimedia = V1 / "data" / "multimedia_meta.json"
-    if multimedia.exists():
+    multimedia = archivo_de_entrada("multimedia_meta.json")
+    if multimedia:
         meta = json.loads(multimedia.read_text(encoding="utf-8"))
         filas_m = []
         for f, bloque in meta.items():
@@ -418,15 +426,15 @@ def armar(libro, equiv, personas, sql, informe):
         informe["partidos_hacoaj_multimedia"] = len(filas_m)
     else:
         avisar("NO se importa multimedia (videos/links de partidos): `multimedia_meta.json` vive en el servidor de la v1 "
-               "(PythonAnywhere); copiarlo a Primera D/data/ y volver a correr.")
-    eventos = V1 / "data" / "eventos_calendario.json"
-    if eventos.exists():
+               "(PythonAnywhere); dejarlo en scripts/importar/entradas/ y volver a correr.")
+    eventos = archivo_de_entrada("eventos_calendario.json")
+    if eventos:
         lista = json.loads(eventos.read_text(encoding="utf-8"))
         filas_e = [[uid("ev", str(e.get("id"))), e["fecha"], e["titulo"], e.get("icono") or "evento"] for e in lista]
         sql["eventos"] = insertar("public.eventos_calendario", [("id", "uuid"), ("fecha", "date"), ("titulo", "text"), ("icono", "text")], filas_e)
         informe["eventos_calendario"] = len(filas_e)
     else:
-        avisar("NO se importan eventos propios del calendario: `eventos_calendario.json` vive en el servidor de la v1.")
+        avisar("NO se importan eventos propios del calendario: `eventos_calendario.json` no se encontró (si nunca se usó esa función en la v1, no pasa nada).")
 
     # ── Métricas físicas ──
     def del_jugador(r, donde):
