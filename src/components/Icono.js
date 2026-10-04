@@ -11,6 +11,7 @@ const ICONOS = {
     "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",
   flechaIzquierda: "M15 18l-6-6 6-6",
   flechaAbajo: "M6 9l6 6 6-6",
+  filtro: "M22 3H2l8 9.5V19l4 2v-8.5L22 3z",
   mas: "M12 5v14 M5 12h14",
   cerrar: "M18 6 6 18 M6 6l12 12",
   check: "M20 6 9 17l-5-5",

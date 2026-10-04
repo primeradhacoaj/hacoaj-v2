@@ -5,7 +5,8 @@
 //   datos       [{ etiqueta, valor }]
 //   color       color de las barras
 //   decimales   decimales del valor mostrado arriba de la barra
-export default function BarChart({ datos, color = "#00296b", decimales = 0, alto = 220 }) {
+//   decimalesEjes   decimales de los números del eje vertical
+export default function BarChart({ datos, color = "#00296b", decimales = 0, decimalesEjes = 0, alto = 220 }) {
   if (datos.length === 0) {
     return (
       <div style={{ padding: "20px", textAlign: "center", fontSize: 13, color: "rgba(0,0,0,.4)" }}>Sin datos</div>
@@ -29,7 +30,7 @@ export default function BarChart({ datos, color = "#00296b", decimales = 0, alto
           <g key={i}>
             <line x1={inicioX} y1={y} x2={inicioX + datos.length * (anchoBarra + separacion)} y2={y} stroke="#eceef2" />
             <text x={inicioX - 4} y={y + 3} fill="rgba(0,0,0,.45)" fontSize="10" textAnchor="end">
-              {Math.round(valor)}
+              {decimalesEjes > 0 ? valor.toFixed(decimalesEjes) : Math.round(valor)}
             </text>
           </g>
         );

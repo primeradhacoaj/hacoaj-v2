@@ -9,12 +9,176 @@
   margin-bottom: 16px;
 }
 
+.filaTres {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
 .filaTablaSinClick {
   border-top: 1px solid var(--border);
 }
 
+/* ── Filtros plegables ── */
+.tarjetaFiltros {
+  margin-bottom: 20px;
+}
+
+.cabeceraFiltros {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.botonFiltros {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: inherit;
+  cursor: pointer;
+}
+
+.contadorFiltros {
+  padding: 2px 7px;
+  border-radius: 10px;
+  background: #3b82f6;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.flechaFiltros {
+  display: inline-flex;
+  transition: transform 0.2s;
+}
+
+.flechaArriba {
+  transform: rotate(180deg);
+}
+
+.gruposFiltros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.grupoFiltro {
+  flex: 1;
+  min-width: 140px;
+}
+
+.grupoAncho {
+  flex: 2;
+  min-width: 200px;
+}
+
+.rotuloGrupo {
+  margin-bottom: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.botonesFiltro {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.listaJugadores {
+  max-height: 120px;
+  overflow-y: auto;
+  gap: 3px;
+}
+
+.chipFiltroActivo {
+  border-color: #3b82f6;
+  background: #3b82f6;
+  color: #fff;
+}
+
+.limpiarFiltros {
+  align-self: flex-end;
+  border-color: rgba(194, 65, 12, 0.3);
+  color: #c2410c;
+}
+
+.buscador {
+  width: 100%;
+  margin-bottom: 6px;
+  padding: 6px 10px;
+  border: 1.5px solid #eceef2;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  outline: none;
+}
+
+/* ── Selectores de modo (Todos/Titular/Suplente, Total/Cada 90 min, tramos) ── */
+.modos {
+  display: flex;
+  gap: 6px;
+  margin: 6px 0 8px;
+}
+
+.chipModo {
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ── Tablas chicas ── */
+.miniTabla {
+  width: 100%;
+  margin-top: 10px;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.miniTabla th {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  background: #fafbfc;
+  font-size: 10px;
+  font-weight: 600;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.miniTabla td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.miniTabla .centro {
+  text-align: center;
+}
+
+.puestoIdeal {
+  font-weight: 500;
+}
+
+.sinJugador {
+  color: rgba(0, 0, 0, 0.4);
+}
+
 @media (max-width: 900px) {
-  .filaDosColumnas {
+  .filaDosColumnas,
+  .filaTres {
     grid-template-columns: 1fr;
   }
 }

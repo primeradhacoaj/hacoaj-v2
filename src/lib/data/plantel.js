@@ -17,8 +17,10 @@ function fechaCorta(iso) {
   return `${dia}/${mes}/${anio}`;
 }
 
+// El año 1900 es un valor de relleno de la planilla (se cargó solo día y mes porque no se
+// conoce el año): sirve para el calendario de cumpleaños, pero no para calcular la edad.
 function calcularEdad(fechaIso) {
-  if (!fechaIso) return null;
+  if (!fechaIso || fechaIso < "1901-01-01") return null;
   const nacimiento = new Date(`${fechaIso}T00:00:00`);
   const hoy = new Date();
   let edad = hoy.getFullYear() - nacimiento.getFullYear();
@@ -67,7 +69,8 @@ export async function obtenerJugadoresPanel(supabase) {
     posicion: p.posicion ?? "",
     piernaHabil: p.pierna_habil ?? "",
     altura: numero(p.altura),
-    nacimiento: fechaCorta(p.fecha_nacimiento),
+    // sin año conocido (relleno 1900) se muestra solo "dd/mm"
+    nacimiento: p.fecha_nacimiento < "1901-01-01" ? fechaCorta(p.fecha_nacimiento).slice(0, 5) : fechaCorta(p.fecha_nacimiento),
     edad: calcularEdad(p.fecha_nacimiento),
     estado: p.estado === "activo" ? "Activo" : "Inactivo",
     rol_jugador: p.rol,

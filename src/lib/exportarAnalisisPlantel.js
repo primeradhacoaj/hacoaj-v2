@@ -109,6 +109,7 @@ export async function exportarTorneoPlantel(equipo, stats, jugadores) {
     Titular: j.titular,
     Minutos: j.minutos,
     Goles: j.goles,
+    Asistencias: j.asistencias,
     Amarillas: j.amarillas,
     Rojas: j.rojas,
   }));
