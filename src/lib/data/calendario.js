@@ -2,8 +2,8 @@
 // partidos de Hacoaj, testeos de fuerza/pliegues y los eventos propios que
 // carga el cuerpo técnico. En la v1 esto salía de `/api/calendario`.
 //
-// Por ahora solo se muestran los partidos YA jugados de Hacoaj; los próximos
-// (goles vacíos en `torneo_partidos`) quedan para cuando se conecte el torneo.
+// Los partidos de Hacoaj ya jugados salen de `partidos_hacoaj`; los que faltan jugar, del fixture de
+// soloascenso (`torneo_proximos`, que mantiene el scraper), y se ven como "Pendiente".
 
 import { obtenerPartidosHacoaj } from "./partidos";
 
@@ -46,6 +46,26 @@ export async function obtenerEventosDelMes(supabase, anio, mes) {
       condicion: p.condicion === "Local" ? "L" : "V",
       resultado: `${p.goles_hacoaj}-${p.goles_rival}`,
       jugado: true,
+    });
+  }
+
+  // Próximos partidos de Hacoaj (fixture de soloascenso, tabla `torneo_proximos`): "Pendiente".
+  const proximos = verificar(
+    await supabase
+      .from("torneo_proximos")
+      .select("fecha, equipo_local, equipo_visitante")
+      .gte("fecha", claveDe(anio, mes, 1))
+      .lte("fecha", claveDe(anio, mes, new Date(anio, mes, 0).getDate()))
+      .or("equipo_local.ilike.%hacoaj%,equipo_visitante.ilike.%hacoaj%"),
+  );
+  for (const p of proximos) {
+    const local = /hacoaj/i.test(p.equipo_local);
+    agregar(eventos, p.fecha, {
+      tipo: "partido",
+      rival: local ? p.equipo_visitante : p.equipo_local,
+      condicion: local ? "L" : "V",
+      resultado: null,
+      jugado: false,
     });
   }
 

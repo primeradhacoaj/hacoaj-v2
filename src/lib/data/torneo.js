@@ -77,23 +77,40 @@ export async function obtenerFixture(supabase) {
   const anio = await anioDelFixture(supabase);
   if (anio === null) return { fechas: [], equipos: [], equipo_zona: equipoZona };
 
-  const partidos = verificar(
-    await supabase
+  const [partidos, proximos] = await Promise.all([
+    supabase
       .from("torneo_partidos")
       .select("id, fecha, hora, jornada, equipo_local, equipo_visitante, goles_local, goles_visitante, arbitro")
       .gte("fecha", `${anio}-01-01`)
       .lte("fecha", `${anio}-12-31`)
       .order("fecha")
       .order("hora")
-      .order("id"),
-  );
+      .order("id")
+      .then(verificar),
+    // Los que todavía no se jugaron (sin síntesis, por eso no están en `torneo_partidos`).
+    supabase
+      .from("torneo_proximos")
+      .select("id, fecha, hora, jornada, equipo_local, equipo_visitante, arbitro")
+      .gte("fecha", `${anio}-01-01`)
+      .lte("fecha", `${anio}-12-31`)
+      .order("fecha")
+      .order("hora")
+      .order("id")
+      .then(verificar),
+  ]);
 
   const porJornada = new Map();
-  for (const p of partidos) {
+  const todos = [
+    ...partidos,
+    ...proximos.map((p) => ({ ...p, id: null, goles_local: null, goles_visitante: null })),
+  ];
+  for (const p of todos) {
     const jugado = p.goles_local !== null && p.goles_visitante !== null;
     const lista = porJornada.get(p.jornada) ?? [];
     lista.push({
       partido_id: p.id,
+      fecha: p.fecha,
+      hora_orden: p.hora ?? "",
       dia: diaDe(p.fecha),
       hora: p.hora ?? "",
       local: p.equipo_local,
@@ -108,7 +125,15 @@ export async function obtenerFixture(supabase) {
     porJornada.set(p.jornada, lista);
   }
 
-  const fechas = [...porJornada.entries()].sort(([a], [b]) => a - b).map(([jornada, lista]) => [String(jornada), lista]);
+  // Dentro de cada fecha, por día y hora; `fecha` y `hora_orden` solo sirven para ordenar.
+  const fechas = [...porJornada.entries()]
+    .sort(([a], [b]) => a - b)
+    .map(([jornada, lista]) => [
+      String(jornada),
+      lista
+        .sort((x, y) => (x.fecha + x.hora_orden).localeCompare(y.fecha + y.hora_orden))
+        .map(({ fecha: _fecha, hora_orden: _hora, ...partido }) => partido),
+    ]);
   const equipos = (Object.keys(equipoZona).length > 0
     ? Object.keys(equipoZona)
     : [...new Set(partidos.flatMap((p) => [p.equipo_local, p.equipo_visitante]))]

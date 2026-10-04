@@ -1,0 +1,57 @@
+name: Torneo - partidos nuevos y su detalle
+
+on:
+  schedule:
+    # Todos los días a las ~09:13 UTC (~06:13 Argentina), después del de posiciones. Minuto no redondo
+    # a propósito (ver scraper-liga.yml).
+    - cron: "13 9 * * *"
+  workflow_dispatch:
+    inputs:
+      max_minutos:
+        description: "Minutos máximos de scraping (el resto del trabajo queda para la próxima corrida)"
+        default: "40"
+
+concurrency:
+  group: scraper-torneo
+  cancel-in-progress: false
+
+jobs:
+  sintesis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    permissions:
+      contents: read
+    env:
+      SCRAPER_DB_URL: ${{ secrets.SCRAPER_DB_URL }}
+    steps:
+      - name: Comprobar que está configurado el secreto
+        id: secreto
+        run: |
+          if [ -z "$SCRAPER_DB_URL" ]; then
+            echo "::warning::Falta el secreto SCRAPER_DB_URL: no se actualiza nada."
+            echo "listo=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "listo=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.secreto.outputs.listo == 'true'
+
+      - uses: actions/setup-python@v5
+        if: steps.secreto.outputs.listo == 'true'
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: scraper/requirements.txt
+
+      - name: Instalar dependencias
+        if: steps.secreto.outputs.listo == 'true'
+        run: pip install -r scraper/requirements.txt
+
+      # Solo baja de soloascenso lo que falta (partidos nuevos y los de los últimos 7 días). Si se acaba el
+      # tiempo guarda el progreso y sigue en la próxima corrida. Todo se sube a Supabase en una transacción.
+      - name: Scrapear y subir a Supabase
+        if: steps.secreto.outputs.listo == 'true'
+        env:
+          MAX_MINUTOS: ${{ inputs.max_minutos || '40' }}
+        run: python scraper/ejecutar.py sintesis --max-minutos "$MAX_MINUTOS"

@@ -296,7 +296,7 @@ function EventoFila({ evento, onBorrar }) {
 
   if (evento.tipo === "partido") {
     const condicionTexto = evento.condicion === "L" ? "Local" : "Visitante";
-    const [golesHacoaj, golesRival] = evento.resultado.split("-").map(Number);
+    const [golesHacoaj, golesRival] = evento.jugado ? evento.resultado.split("-").map(Number) : [0, 0];
     return (
       <div className={styles.filaEvento}>
         <span className={cx(styles.iconoEvento, styles.iconoPartido)}>{ICONO_EVENTO.partido}</span>
@@ -304,9 +304,13 @@ function EventoFila({ evento, onBorrar }) {
           <span className={styles.tituloEvento}>vs {evento.rival}</span>
           <span className={styles.subEvento}>{condicionTexto}</span>
         </span>
-        <span className={cx(styles.insigniaResultado, resultadoClase(golesHacoaj, golesRival))}>
-          {evento.resultado}
-        </span>
+        {evento.jugado ? (
+          <span className={cx(styles.insigniaResultado, resultadoClase(golesHacoaj, golesRival))}>
+            {evento.resultado}
+          </span>
+        ) : (
+          <span className={cx(styles.insigniaResultado, styles.pendiente)}>Pendiente</span>
+        )}
       </div>
     );
   }

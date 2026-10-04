@@ -278,6 +278,11 @@
   color: var(--yellow);
 }
 
+.pendiente {
+  background: var(--border);
+  color: var(--text-mid);
+}
+
 .botonAgregar {
   position: fixed;
   right: 28px;

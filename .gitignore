@@ -48,3 +48,6 @@ service_account.json
 /scripts/importar/equivalencias.json
 /scripts/importar/salida/
 /scripts/importar/entradas/
+
+# Scraper: carpeta de trabajo (base SQLite, checkpoints y logs de la corrida) y credencial local
+/scraper/trabajo/

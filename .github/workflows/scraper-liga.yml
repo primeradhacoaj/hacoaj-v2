@@ -1,0 +1,52 @@
+name: Torneo - posiciones, goleadores y próximos partidos
+
+on:
+  schedule:
+    # Todos los días a las ~08:07 UTC (~05:07 Argentina). Minuto no redondo a propósito: GitHub atrasa
+    # o saltea más los cron que caen justo en punto cuando hay congestión.
+    - cron: "7 8 * * *"
+  workflow_dispatch:
+
+# Las dos tareas del scraper escriben en las mismas tablas: nunca corren a la vez.
+concurrency:
+  group: scraper-torneo
+  cancel-in-progress: false
+
+jobs:
+  liga:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    env:
+      # Conexión a Supabase del usuario `scraper` (solo puede tocar las tablas del torneo). Es un secreto
+      # del repositorio: Settings → Secrets and variables → Actions → SCRAPER_DB_URL.
+      SCRAPER_DB_URL: ${{ secrets.SCRAPER_DB_URL }}
+    steps:
+      - name: Comprobar que está configurado el secreto
+        id: secreto
+        run: |
+          if [ -z "$SCRAPER_DB_URL" ]; then
+            echo "::warning::Falta el secreto SCRAPER_DB_URL: no se actualiza nada."
+            echo "listo=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "listo=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.secreto.outputs.listo == 'true'
+
+      - uses: actions/setup-python@v5
+        if: steps.secreto.outputs.listo == 'true'
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: scraper/requirements.txt
+
+      - name: Instalar dependencias
+        if: steps.secreto.outputs.listo == 'true'
+        run: pip install -r scraper/requirements.txt
+
+      - name: Scrapear y subir a Supabase
+        if: steps.secreto.outputs.listo == 'true'
+        run: python scraper/ejecutar.py liga
