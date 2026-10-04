@@ -1,176 +1,43 @@
-// Datos de PRUEBA de los partidos de Hacoaj: lo que en la v1 salía de las hojas
-// de Google Sheets "Partidos" (un renglón por partido) y "Partidos-jugador" (un
-// renglón por jugador y partido), más el resumen del partido que la v1 sacaba
-// del SQLite del scraper.
+// CAPA DE DATOS de los partidos de Hacoaj, leída de Supabase (tablas
+// `partidos_hacoaj*`, las que carga el administrador).
 //
-// Se arma a partir de los mismos partidos de Hacoaj de `torneoDb.js`, así que
-// coinciden con lo que se ve en Equipos y Jugadores. Un delantero del plantel
-// hace de "Jugador de Prueba" (el usuario de prueba). Con Supabase se cambia
-// solo el interior de cada función.
+// Todas las funciones reciben el cliente de Supabase como primer parámetro:
+// las páginas del servidor le pasan `await createClient()` de
+// `@/lib/supabase/server`, y los componentes del navegador el de
+// `@/lib/supabase/client`. Así la misma función sirve para los dos lados.
+//
+// La forma de las respuestas es la que tenía el mock (que copiaba las hojas
+// "Partidos" y "Partidos-jugador" de la v1), para no tocar las pantallas.
+//
+// PENDIENTE: el resumen del detalle (línea de tiempo) mezclaba los eventos de
+// Hacoaj con los del RIVAL, que venían del scraper de soloascenso. Esos
+// eventos se van a sumar cuando se migre el torneo y se vincule cada partido
+// (`partido_torneo_id`). Mientras tanto el resumen muestra solo lo de Hacoaj.
 
-import { generador } from "@/lib/azar";
-import { FORMACIONES } from "@/lib/formaciones";
-import { nombresCoinciden } from "@/lib/torneo";
-import {
-  abreviar,
-  obtenerEquipos,
-  obtenerPartidosEquipo,
-  obtenerPlantel,
-  obtenerSintesisPartido,
-} from "./torneoDb";
-
-const NOMBRE_PRUEBA = "Jugador de Prueba";
-const ESQUEMAS = ["4-4-2", "4-3-3", "4-2-3-1"];
-const POSICION_SUPLENTE = { Arquero: "PO", Defensor: "DFC", Volante: "MC", Delantero: "DC" };
-
-let cache = null;
-
-async function base() {
-  if (cache) return cache;
-
-  const equipos = await obtenerEquipos();
-  const hacoaj = equipos.find((e) => e.nombre.toLowerCase().includes("hacoaj"));
-  const abrevHacoaj = abreviar(hacoaj.nombre);
-  const plantel = await obtenerPlantel(hacoaj.equipo_id);
-  const puestoDe = new Map(plantel.map((j) => [j.jugador_id, j.puesto]));
-  const idPrueba = plantel.find((j) => j.puesto === "Delantero").jugador_id;
-
-  const partidos = [];
-  const filasPorFecha = {};
-  const detalle = {};
-
-  const lista = await obtenerPartidosEquipo(hacoaj.equipo_id, "2026"); // del más nuevo al más viejo
-  for (const p of lista) {
-    const sintesis = await obtenerSintesisPartido(p.partido_id);
-    const esLocal = sintesis.partido.equipo_local === hacoaj.nombre;
-    const azar = generador(9000 + p.partido_id);
-    const esquema = ESQUEMAS[p.partido_id % ESQUEMAS.length];
-    const puestos = FORMACIONES[esquema];
-
-    // Un renglón por jugador (lo que sería "Partidos-jugador").
-    const propios = esLocal ? sintesis.formacion_local : sintesis.formacion_visitante;
-    let indiceTitular = 0;
-    const filas = propios.map((a) => {
-      const nombre = a.jugador_id === idPrueba ? NOMBRE_PRUEBA : a.nombre_display;
-      return {
-        _apellido: a.apellido,
-        jugador: nombre,
-        posicion: a.titular ? puestos[indiceTitular++].pos : POSICION_SUPLENTE[puestoDe.get(a.jugador_id)],
-        titular: a.titular,
-        minutos: a.minutos_jugados,
-        goles: a.goles,
-        asistencias: 0,
-        amarillas: a.amarilla,
-        rojas: a.roja,
-        ingreso_por: "",
-        salio_por: "",
-        asistencia_de: "",
-        minuto_gol: "",
-      };
-    });
-    const porApellido = (apellido) => filas.find((f) => f._apellido === apellido);
-
-    for (const c of sintesis.cambios.filter((x) => x.equipo_abrev === abrevHacoaj)) {
-      const entra = porApellido(c.jugador_entra);
-      const sale = porApellido(c.jugador_sale);
-      if (entra && sale) {
-        entra.ingreso_por = sale.jugador;
-        sale.salio_por = entra.jugador;
-      }
-    }
-
-    // Goles de Hacoaj: minuto y, casi siempre, quién dio el pase.
-    for (const g of sintesis.goles.filter((x) => x.equipo_abrev === abrevHacoaj)) {
-      const autor = porApellido(g.jugador_nombre);
-      if (!autor) continue;
-      const companeros = filas.filter((f) => f !== autor && f.minutos > 0);
-      let pase = "";
-      if (azar() < 0.6 && companeros.length > 0) {
-        const asistente = companeros[Math.floor(azar() * companeros.length)];
-        asistente.asistencias += 1;
-        pase = asistente.jugador;
-      }
-      autor.minuto_gol = autor.minuto_gol ? `${autor.minuto_gol},${g.minuto}` : String(g.minuto);
-      autor.asistencia_de = autor.asistencia_de ? `${autor.asistencia_de},${pase}` : pase;
-    }
-    const jugadoresFila = filas.map(({ _apellido, ...fila }) => fila);
-
-    // Hoja "Partidos".
-    const golesHacoaj = esLocal ? sintesis.partido.goles_local : sintesis.partido.goles_visitante;
-    const golesRival = esLocal ? sintesis.partido.goles_visitante : sintesis.partido.goles_local;
-    const clave = p.fecha;
-    const conEstadisticas = p.partido_id % 4 !== 0;
-    const capitan = jugadoresFila.find((f) => f.titular && ["DFC", "MC"].includes(f.posicion))?.jugador ?? "";
-    const partido = {
-      fecha_raw: clave,
-      rival: p.rival,
-      condicion: esLocal ? "Local" : "Visitante",
-      goles_hacoaj: golesHacoaj,
-      goles_rival: golesRival,
-      formacion: esquema,
-      capitan,
-      remates_af: conEstadisticas ? 4 + Math.floor(azar() * 12) : null,
-      remates_ec: conEstadisticas ? 3 + Math.floor(azar() * 10) : null,
-      remates_arco_af: conEstadisticas ? Math.floor(azar() * 8) : null,
-      remates_arco_ec: conEstadisticas ? Math.floor(azar() * 6) : null,
-      situaciones_af: conEstadisticas ? Math.floor(azar() * 7) : null,
-      situaciones_ec: conEstadisticas ? Math.floor(azar() * 6) : null,
-      corners_af: conEstadisticas ? Math.floor(azar() * 9) : null,
-      corners_ec: conEstadisticas ? Math.floor(azar() * 8) : null,
-      corners_con_af: conEstadisticas ? Math.floor(azar() * 3) : null,
-      corners_con_ec: conEstadisticas ? Math.floor(azar() * 3) : null,
-      tl_af: conEstadisticas ? Math.floor(azar() * 6) : null,
-      tl_ec: conEstadisticas ? Math.floor(azar() * 6) : null,
-    };
-    partidos.push(partido);
-    filasPorFecha[clave] = jugadoresFila;
-
-    // Resumen (goles, cambios y tarjetas de los dos equipos).
-    const eventos = [];
-    const disciplina = [];
-    for (const f of jugadoresFila) {
-      if (f.salio_por) eventos.push({ min: f.minutos > 0 ? f.minutos : null, tipo: "cambio", entra: f.salio_por, sale: f.jugador, equipo: "hacoaj" });
-      for (let i = 0; i < f.amarillas; i++) disciplina.push({ tipo: "amarilla", jugador: f.jugador, equipo: "hacoaj" });
-      for (let i = 0; i < f.rojas; i++) disciplina.push({ tipo: "roja", jugador: f.jugador, equipo: "hacoaj" });
-      const minutos = f.minuto_gol.split(",").filter(Boolean);
-      const pases = f.asistencia_de.split(",");
-      for (let i = 0; i < f.goles; i++) {
-        eventos.push({
-          min: minutos[i] !== undefined ? Number(minutos[i]) : null,
-          tipo: "gol",
-          jugador: f.jugador,
-          equipo: "hacoaj",
-          asistencia: pases[i] ?? "",
-          enContra: false,
-        });
-      }
-    }
-    for (const g of sintesis.goles.filter((x) => x.equipo_abrev !== abrevHacoaj)) {
-      eventos.push({ min: g.minuto, tipo: "gol", jugador: g.jugador_nombre, equipo: "rival", asistencia: "", enContra: Boolean(g.en_contra) });
-    }
-    for (const c of sintesis.cambios.filter((x) => x.equipo_abrev !== abrevHacoaj)) {
-      eventos.push({ min: c.minuto, tipo: "cambio", entra: c.jugador_entra, sale: c.jugador_sale, equipo: "rival" });
-    }
-    for (const t of sintesis.tarjetas.filter((x) => x.equipo_abrev !== abrevHacoaj)) {
-      disciplina.push({ tipo: t.tipo.toLowerCase(), jugador: t.jugador_nombre, equipo: "rival" });
-    }
-    // Lo más reciente arriba; los que no tienen minuto, primero (igual que la v1).
-    eventos.sort((a, b) => (a.min === null) !== (b.min === null) ? (a.min === null ? -1 : 1) : (b.min ?? 0) - (a.min ?? 0));
-    detalle[clave] = { eventos, disciplina };
-  }
-
-  cache = { partidos, filasPorFecha, detalle };
-  return cache;
-}
-
-const resultadoDe = (golesHacoaj, golesRival) =>
+export const resultadoDe = (golesHacoaj, golesRival) =>
   golesHacoaj > golesRival ? "score-win" : golesHacoaj === golesRival ? "score-draw" : "score-loss";
 
+function verificar({ data, error }) {
+  if (error) throw new Error(error.message);
+  return data;
+}
+
+// id -> nombre de todos los jugadores (vista `plantel`: solo nombre y posición).
+async function nombresDelPlantel(supabase) {
+  const filas = verificar(await supabase.from("plantel").select("id, nombre"));
+  return new Map(filas.map((f) => [f.id, f.nombre]));
+}
+
 // Lista de todos los partidos de Hacoaj, del más nuevo al más viejo.
-export async function obtenerPartidosHacoaj() {
-  const { partidos } = await base();
-  return partidos.map((p) => ({
-    fecha_raw: p.fecha_raw,
+export async function obtenerPartidosHacoaj(supabase) {
+  const filas = verificar(
+    await supabase
+      .from("partidos_hacoaj")
+      .select("fecha, rival, condicion, goles_hacoaj, goles_rival, formacion")
+      .order("fecha", { ascending: false }),
+  );
+  return filas.map((p) => ({
+    fecha_raw: p.fecha,
     rival: p.rival,
     condicion: p.condicion,
     goles_hacoaj: p.goles_hacoaj,
@@ -182,28 +49,121 @@ export async function obtenerPartidosHacoaj() {
 
 // Detalle de un partido (`fecha` como "2026-05-23"): datos, jugadores, resumen
 // y multimedia. `partido` es null si no existe.
-export async function obtenerDetallePartido(fecha) {
-  const { partidos, filasPorFecha, detalle } = await base();
-  const partido = partidos.find((p) => p.fecha_raw === fecha);
+export async function obtenerDetallePartido(supabase, fecha) {
+  const partido = verificar(
+    await supabase.from("partidos_hacoaj").select("*").eq("fecha", fecha).maybeSingle(),
+  );
   if (!partido) return { partido: null };
 
-  // Un solo partido tiene material de ejemplo (el más reciente).
-  const esElUltimo = partidos[0].fecha_raw === fecha;
+  const [jugadores, goles, cambios, tarjetas, multimedia, nombres] = await Promise.all([
+    supabase.from("partidos_hacoaj_jugadores").select("*").eq("partido_id", partido.id).then(verificar),
+    supabase.from("partidos_hacoaj_goles").select("*").eq("partido_id", partido.id).order("minuto").then(verificar),
+    supabase.from("partidos_hacoaj_cambios").select("*").eq("partido_id", partido.id).order("minuto").then(verificar),
+    supabase.from("partidos_hacoaj_tarjetas").select("*").eq("partido_id", partido.id).order("minuto").then(verificar),
+    supabase.from("partidos_hacoaj_multimedia").select("*").eq("partido_id", partido.id).order("creado_en").then(verificar),
+    nombresDelPlantel(supabase),
+  ]);
+
+  const nombre = (id) => (id ? (nombres.get(id) ?? "") : "");
+
+  // Una fila por jugador, con los totales y textos que armaba la planilla.
+  const jugadores_data = jugadores
+    .map((j) => {
+      const susGoles = goles.filter((g) => g.perfil_id === j.perfil_id && !g.en_contra);
+      const entro = cambios.find((c) => c.jugador_entra_id === j.perfil_id);
+      const salio = cambios.find((c) => c.jugador_sale_id === j.perfil_id);
+      const tarjetasDe = tarjetas.filter((t) => t.perfil_id === j.perfil_id);
+      return {
+        jugador: nombre(j.perfil_id),
+        posicion: j.posicion_partido ?? "",
+        titular: j.titular,
+        minutos: j.minutos_jugados,
+        goles: susGoles.length,
+        asistencias: goles.filter((g) => g.asistencia_de_id === j.perfil_id).length,
+        amarillas: tarjetasDe.filter((t) => t.tipo === "amarilla").length,
+        rojas: tarjetasDe.filter((t) => t.tipo === "roja").length,
+        ingreso_por: nombre(entro?.jugador_sale_id),
+        salio_por: nombre(salio?.jugador_entra_id),
+        asistencia_de: susGoles.map((g) => nombre(g.asistencia_de_id)).join(","),
+        minuto_gol: susGoles.map((g) => g.minuto ?? "").join(","),
+      };
+    })
+    .sort((a, b) => Number(b.titular) - Number(a.titular) || a.jugador.localeCompare(b.jugador, "es"));
+
+  // Línea de tiempo (solo Hacoaj, ver el aviso de arriba).
+  const eventos = [
+    ...goles.map((g) => ({
+      min: g.minuto,
+      tipo: "gol",
+      jugador: nombre(g.perfil_id),
+      // un gol en contra de un jugador de Hacoaj le suma al rival
+      equipo: g.en_contra ? "rival" : "hacoaj",
+      asistencia: nombre(g.asistencia_de_id),
+      enContra: g.en_contra,
+    })),
+    ...cambios.map((c) => ({
+      min: c.minuto,
+      tipo: "cambio",
+      entra: nombre(c.jugador_entra_id),
+      sale: nombre(c.jugador_sale_id),
+      equipo: "hacoaj",
+    })),
+  ].sort((a, b) =>
+    (a.min === null) !== (b.min === null) ? (a.min === null ? -1 : 1) : (b.min ?? 0) - (a.min ?? 0),
+  );
+
+  const disciplina = tarjetas.map((t) => ({
+    tipo: t.tipo,
+    jugador: nombre(t.perfil_id),
+    equipo: "hacoaj",
+  }));
+
   return {
-    partido: { ...partido, resultado_clase: resultadoDe(partido.goles_hacoaj, partido.goles_rival) },
-    jugadores_data: filasPorFecha[fecha],
-    videos: [],
-    links: esElUltimo ? [{ titulo: "Resumen en SoloAscenso", url: "https://www.soloascenso.com.ar" }] : [],
-    resumen_eventos: detalle[fecha].eventos,
-    resumen_disciplina: detalle[fecha].disciplina,
+    partido: {
+      ...partido,
+      fecha_raw: partido.fecha,
+      capitan: nombre(partido.capitan_id),
+      resultado_clase: resultadoDe(partido.goles_hacoaj, partido.goles_rival),
+    },
+    jugadores_data,
+    videos: multimedia
+      .filter((m) => m.tipo === "video")
+      .map((m) => ({ id: m.id, drive_id: m.drive_id, titulo: m.titulo })),
+    links: multimedia
+      .filter((m) => m.tipo === "link")
+      .map((m) => ({ id: m.id, titulo: m.titulo, url: m.url })),
+    resumen_eventos: eventos,
+    resumen_disciplina: disciplina,
   };
 }
 
-// Estadísticas de un jugador en el torneo: cruza los partidos de Hacoaj con lo
-// que hizo en cada uno (misma cuenta que la v1). `resumen` es null si no hay partidos.
-export async function obtenerEstadisticasJugador(nombre, posicion) {
-  const { partidos, filasPorFecha } = await base();
+// Estadísticas del jugador logueado en el torneo: cruza los partidos de Hacoaj
+// con lo que hizo en cada uno (misma cuenta que la v1). `resumen` es null si no
+// hay partidos. Pensada para usarse desde el navegador, con la sesión del jugador.
+export async function obtenerEstadisticasJugador(supabase, posicion) {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { resumen: null, partidos: [] };
+
+  const perfil = verificar(
+    await supabase.from("perfiles").select("id").eq("auth_user_id", user.id).maybeSingle(),
+  );
+  if (!perfil) return { resumen: null, partidos: [] };
+  const yo = perfil.id;
+
+  const [partidos, filas, goles, asistencias, tarjetas] = await Promise.all([
+    supabase.from("partidos_hacoaj").select("id, fecha, rival, condicion, goles_hacoaj, goles_rival").order("fecha", { ascending: false }).then(verificar),
+    supabase.from("partidos_hacoaj_jugadores").select("*").eq("perfil_id", yo).then(verificar),
+    supabase.from("partidos_hacoaj_goles").select("partido_id").eq("perfil_id", yo).eq("en_contra", false).then(verificar),
+    supabase.from("partidos_hacoaj_goles").select("partido_id").eq("asistencia_de_id", yo).then(verificar),
+    supabase.from("partidos_hacoaj_tarjetas").select("partido_id, tipo").eq("perfil_id", yo).then(verificar),
+  ]);
+
   if (partidos.length === 0) return { resumen: null, partidos: [] };
+
+  const cuenta = (lista, partidoId, filtro = () => true) =>
+    lista.filter((x) => x.partido_id === partidoId && filtro(x)).length;
 
   const esArquero = (posicion ?? "").toLowerCase() === "arquero";
   const suma = {
@@ -212,43 +172,50 @@ export async function obtenerEstadisticasJugador(nombre, posicion) {
   };
 
   const detallados = partidos.map((p) => {
-    const fila = filasPorFecha[p.fecha_raw].find((f) => nombresCoinciden(f.jugador, nombre));
+    const fila = filas.find((f) => f.partido_id === p.id);
     const citado = Boolean(fila);
+    const minutos = fila?.minutos_jugados ?? 0;
+    const golesDelPartido = cuenta(goles, p.id);
+    const asistenciasDelPartido = cuenta(asistencias, p.id);
+    const amarillas = cuenta(tarjetas, p.id, (t) => t.tipo === "amarilla");
+    const rojas = cuenta(tarjetas, p.id, (t) => t.tipo === "roja");
+
     if (fila) {
       suma.citaciones++;
-      if (fila.minutos > 0) {
+      if (minutos > 0) {
         suma.partidosJugados++;
         if (fila.titular) {
           suma.titularidades++;
-          suma.minTitular += fila.minutos;
+          suma.minTitular += minutos;
         } else {
           suma.desdeBanco++;
-          suma.minSuplente += fila.minutos;
+          suma.minSuplente += minutos;
         }
       }
-      suma.goles += fila.goles;
-      suma.asistencias += fila.asistencias;
-      suma.amarillas += fila.amarillas;
-      suma.rojas += fila.rojas;
+      suma.goles += golesDelPartido;
+      suma.asistencias += asistenciasDelPartido;
+      suma.amarillas += amarillas;
+      suma.rojas += rojas;
       if (esArquero && fila.titular) {
         suma.partidosArquero++;
         suma.golesRecibidos += p.goles_rival;
       }
     }
+
     return {
-      fecha_raw: p.fecha_raw,
+      fecha_raw: p.fecha,
       rival: p.rival || "—",
       condicion: p.condicion || "—",
       goles_hacoaj: p.goles_hacoaj,
       goles_rival: p.goles_rival,
       resultado_clase: resultadoDe(p.goles_hacoaj, p.goles_rival),
-      posicion: fila?.posicion || "—",
+      posicion: fila?.posicion_partido || "—",
       titular: fila?.titular ?? false,
-      minutos: fila?.minutos ?? 0,
-      goles: fila?.goles ?? 0,
-      asistencias: fila?.asistencias ?? 0,
-      amarillas: fila?.amarillas ?? 0,
-      rojas: fila?.rojas ?? 0,
+      minutos,
+      goles: fila ? golesDelPartido : 0,
+      asistencias: fila ? asistenciasDelPartido : 0,
+      amarillas: fila ? amarillas : 0,
+      rojas: fila ? rojas : 0,
       citado,
     };
   });

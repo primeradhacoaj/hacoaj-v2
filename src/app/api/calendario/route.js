@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { obtenerEventosDelMes } from "@/lib/data/calendario";
+import { createClient } from "@/lib/supabase/server";
 
 // GET /api/calendario?year=2026&month=9 → { year, month, eventos }
 //
@@ -14,6 +15,6 @@ export async function GET(request) {
   const year = Number(searchParams.get("year")) || hoy.getFullYear();
   const month = Number(searchParams.get("month")) || hoy.getMonth() + 1;
 
-  const eventos = await obtenerEventosDelMes(year, month);
+  const eventos = await obtenerEventosDelMes(await createClient(), year, month);
   return NextResponse.json({ year, month, eventos });
 }

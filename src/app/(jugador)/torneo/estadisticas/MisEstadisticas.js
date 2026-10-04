@@ -8,6 +8,7 @@ import { useSesion } from "@/components/SesionProvider";
 import SectionLabel from "@/components/SectionLabel";
 import { cx } from "@/lib/cx";
 import { obtenerEstadisticasJugador } from "@/lib/data/partidos";
+import { createClient } from "@/lib/supabase/client";
 import { fechaLarga } from "@/lib/torneo";
 import styles from "./MisEstadisticas.module.css";
 
@@ -21,7 +22,7 @@ export default function MisEstadisticas() {
 
   useEffect(() => {
     let vigente = true;
-    obtenerEstadisticasJugador(nombre, posicion)
+    obtenerEstadisticasJugador(createClient(), posicion)
       .then((datos) => vigente && setCargado({ nombre, datos }))
       .catch(() => vigente && setCargado({ nombre, datos: { resumen: null, partidos: [] } }));
     return () => {

@@ -20,8 +20,8 @@ import {
   ZONAS_CON_LADO,
   ZONAS_SIN_LADO,
 } from "@/lib/encuestas";
-import { obtenerPartidosHacoaj } from "./partidos";
 import { obtenerJugadoresPanel } from "./plantel";
+import { obtenerEquipos, obtenerPartidosEquipo } from "./torneoDb";
 
 let cache = null;
 
@@ -29,7 +29,13 @@ async function base() {
   if (cache) return cache;
 
   const { jugadores } = await obtenerJugadoresPanel();
-  const partidos = await obtenerPartidosHacoaj();
+  // Partidos de prueba de Hacoaj (del SQLite ficticio): esta vista del plantel sigue
+  // con datos de prueba hasta migrar el panel técnico, así que no depende de la base.
+  const hacoaj = (await obtenerEquipos()).find((e) => e.nombre.toLowerCase().includes("hacoaj"));
+  const partidos = (await obtenerPartidosEquipo(hacoaj.equipo_id, "2026")).map((p) => ({
+    fecha_raw: p.fecha,
+    rival: p.rival,
+  }));
   const azar = generador(8500);
 
   // ── Wellness: una respuesta por semana, últimas 6 semanas, no todos los jugadores cada semana ──

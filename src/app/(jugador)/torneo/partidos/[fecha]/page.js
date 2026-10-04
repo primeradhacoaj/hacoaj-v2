@@ -1,6 +1,7 @@
 import HeroSeccion from "@/components/HeroSeccion";
 import PieVolver from "@/components/PieVolver";
 import { obtenerDetallePartido } from "@/lib/data/partidos";
+import { createClient } from "@/lib/supabase/server";
 import { fechaLarga } from "@/lib/torneo";
 import DetallePartido from "./DetallePartido";
 import styles from "./DetallePartido.module.css";
@@ -15,7 +16,7 @@ const CLASE_MARCADOR = { "score-win": styles.gano, "score-draw": styles.empato, 
 // resumen, las alineaciones, la multimedia y las estadísticas en pestañas.
 export default async function DetallePartidoPage({ params }) {
   const { fecha } = await params;
-  const datos = await obtenerDetallePartido(fecha);
+  const datos = await obtenerDetallePartido(await createClient(), fecha);
   const { partido } = datos;
 
   return (

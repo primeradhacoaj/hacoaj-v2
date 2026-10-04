@@ -2,6 +2,7 @@ import EtiquetaSeccion from "@/components/EtiquetaSeccion";
 import Icono from "@/components/Icono";
 import PantallaPanel from "@/components/PantallaPanel";
 import { obtenerPartidosHacoaj } from "@/lib/data/partidos";
+import { createClient } from "@/lib/supabase/server";
 import { cx } from "@/lib/cx";
 import { fechaLarga } from "@/lib/torneo";
 import VacioPanel from "../../_componentes/VacioPanel";
@@ -14,7 +15,7 @@ export const metadata = {
 const CLASE_MARCADOR = { "score-win": styles.gano, "score-draw": styles.empato, "score-loss": styles.perdio };
 
 export default async function PartidosPanelPage() {
-  const partidos = await obtenerPartidosHacoaj();
+  const partidos = await obtenerPartidosHacoaj(await createClient());
 
   return (
     <PantallaPanel titulo="Partidos de Hacoaj">

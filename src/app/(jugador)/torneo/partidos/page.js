@@ -4,6 +4,7 @@ import PantallaTorneo from "@/components/PantallaTorneo";
 import SectionLabel from "@/components/SectionLabel";
 import { cx } from "@/lib/cx";
 import { obtenerPartidosHacoaj } from "@/lib/data/partidos";
+import { createClient } from "@/lib/supabase/server";
 import { fechaLarga } from "@/lib/torneo";
 import styles from "./Partidos.module.css";
 
@@ -15,7 +16,7 @@ const CLASE_RESULTADO = { "score-win": styles.gano, "score-draw": styles.empato,
 
 // Todos los partidos de Hacoaj en el torneo; cada uno lleva a su detalle.
 export default async function PartidosPage() {
-  const partidos = await obtenerPartidosHacoaj();
+  const partidos = await obtenerPartidosHacoaj(await createClient());
 
   return (
     <PantallaTorneo titulo="Partidos" angosto>

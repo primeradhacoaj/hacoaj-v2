@@ -1,5 +1,6 @@
 import PantallaPanel from "@/components/PantallaPanel";
 import { obtenerDetallePartido } from "@/lib/data/partidos";
+import { createClient } from "@/lib/supabase/server";
 import { fechaLarga } from "@/lib/torneo";
 import DetallePartidoPanel from "./DetallePartidoPanel";
 import styles from "./DetallePartidoPanel.module.css";
@@ -15,7 +16,7 @@ const CLASE_NUMEROS = { "score-win": styles.gano, "score-draw": styles.empato, "
 // Mismo contenido que la vista del jugador, con el diseño del panel.
 export default async function DetallePartidoPanelPage({ params }) {
   const { fecha } = await params;
-  const datos = await obtenerDetallePartido(fecha);
+  const datos = await obtenerDetallePartido(await createClient(), fecha);
   const { partido } = datos;
 
   return (

@@ -32,7 +32,7 @@ function agregar(eventos, clave, evento) {
 // partidos de Hacoaj y testeos (uno por fecha, no uno por jugador — el
 // plantel entero se testea el mismo día). Misma forma que devolvía
 // `/api/calendario` en la v1.
-export async function obtenerEventosDelMes(anio, mes) {
+export async function obtenerEventosDelMes(supabase, anio, mes) {
   const eventos = {};
 
   const { jugadores } = await obtenerJugadoresPanel();
@@ -41,7 +41,7 @@ export async function obtenerEventosDelMes(anio, mes) {
     if (mesNacimiento === mes) agregar(eventos, claveDe(anio, mes, dia), { tipo: "cumple", nombre: j.nombre });
   }
 
-  const partidos = await obtenerPartidosHacoaj();
+  const partidos = await obtenerPartidosHacoaj(supabase);
   for (const p of partidos) {
     const [a, m, d] = p.fecha_raw.split("-").map(Number);
     if (a !== anio || m !== mes) continue;
