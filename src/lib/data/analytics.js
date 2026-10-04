@@ -1,12 +1,7 @@
-// Datos de PRUEBA de Analytics (actividad de los usuarios en la app). En la
-// v1 esto salía de una tabla SQLite (`page_views`) que un script de tracking
-// (`/static/tracker.js`) llenaba con cada visita real. v2 todavía no hace
-// ese tracking (no hay base de datos ni usuarios reales todavía), así que
-// se generan visitas de PRUEBA de los 3 usuarios de prueba
-// (`src/lib/data/usuarios.js`) sobre las páginas que YA existen en v2 —no
-// las rutas de la v1, que no coinciden con las de acá.
-
-import { generador } from "@/lib/azar";
+// CAPA DE DATOS de Analytics (actividad de los usuarios en la app): las visitas a cada
+// pantalla que registra `src/components/Tracker.js` en la tabla `page_views`. En la v1
+// salían de una tabla SQLite que llenaba `static/tracker.js`. Solo el administrador puede
+// leerlas (RLS); con cualquier otro rol la lista vuelve vacía.
 
 // Páginas del lado del jugador, agrupadas como las ve en su menú (para el
 // gráfico "Uso por sección — Jugadores", igual que la v1).
@@ -61,29 +56,6 @@ export const JERARQUIA_JUGADOR = [
 ];
 
 // Páginas del técnico/admin (planas, no se agrupan — igual que la v1).
-const PAGINAS_TECNICO = [
-  "/panel",
-  "/panel/analisis",
-  "/panel/jugadores",
-  "/panel/encuestas",
-  "/panel/encuestas/wellness",
-  "/panel/encuestas/post-partido",
-  "/panel/partidos",
-  "/panel/posiciones",
-  "/panel/fixture",
-  "/panel/goleadores",
-  "/panel/fuerza",
-  "/panel/pliegues",
-  "/panel/calendario",
-  "/panel/configuracion",
-];
-
-const TODAS_LAS_PAGINAS = [
-  "/menu",
-  ...JERARQUIA_JUGADOR.flatMap((s) => [s.hub, ...s.hijos.map((h) => h.path)]),
-  ...PAGINAS_TECNICO,
-];
-
 const ETIQUETAS_TECNICO = {
   "/panel": "Panel técnico (menú)",
   "/panel/analisis": "Dashboard de análisis",
@@ -99,6 +71,7 @@ const ETIQUETAS_TECNICO = {
   "/panel/pliegues": "Historial pliegues (plantel)",
   "/panel/calendario": "Calendario",
   "/panel/configuracion": "Configuración",
+  "/panel/analytics": "Analytics",
 };
 
 // path → nombre para mostrar, igual a como lo ve el usuario en su menú.
@@ -107,63 +80,36 @@ export const ETIQUETA_PAGINA = {
   ...Object.fromEntries(JERARQUIA_JUGADOR.map((s) => [s.hub, s.etiqueta])),
   ...Object.fromEntries(JERARQUIA_JUGADOR.flatMap((s) => s.hijos.map((h) => [h.path, h.etiqueta]))),
   ...ETIQUETAS_TECNICO,
+  "/ajustes/contrasena": "Cambiar contraseña",
 };
 
-const USUARIOS = [
-  { usuario: "jugador", rol: "jugador" },
-  { usuario: "tecnico", rol: "tecnico" },
-  { usuario: "admin", rol: "administrador" },
-];
 
-const DIAS_HISTORIAL = 30;
-const VISITAS_POR_DIA = 22;
-
-let cache = null;
-
-function paginaDe(usuario) {
-  const pool = usuario.rol === "jugador" ? TODAS_LAS_PAGINAS.filter((p) => !p.startsWith("/panel")) : PAGINAS_TECNICO;
-  return pool;
+function verificar({ data, error }) {
+  if (error) throw new Error(error.message);
+  return data;
 }
 
-function base() {
-  if (cache) return cache;
+// El detalle de un partido (`/torneo/partidos/2026-08-29`) se cuenta como la pantalla de
+// partidos, no como una página distinta por cada fecha.
+const normalizarPagina = (pagina) => pagina.replace(/^(\/(?:torneo|panel)\/partidos)\/[^/]+$/, "$1");
 
-  const azar = generador(8800);
-  const visitas = [];
-  const ahora = new Date();
-
-  for (let diasAtras = DIAS_HISTORIAL - 1; diasAtras >= 0; diasAtras--) {
-    const fecha = new Date(ahora);
-    fecha.setDate(fecha.getDate() - diasAtras);
-    const cantidadHoy = Math.max(2, Math.round(VISITAS_POR_DIA * (0.5 + azar())));
-
-    for (let i = 0; i < cantidadHoy; i++) {
-      const usuario = USUARIOS[Math.floor(azar() * USUARIOS.length)];
-      if (usuario.rol === "administrador" && azar() < 0.7) continue; // el admin casi no navega la app
-      const paginas = paginaDe(usuario);
-      const pagina = paginas[Math.floor(azar() * paginas.length)];
-      const hora = 8 + Math.floor(azar() * 14);
-      const minuto = Math.floor(azar() * 60);
-      const marca = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate(), hora, minuto);
-
-      visitas.push({
-        timestamp: marca.toISOString(),
-        usuario: usuario.usuario,
-        rol: usuario.rol,
-        pagina,
-        duracion_seg: 5 + Math.floor(azar() * azar() * 300),
-      });
-    }
-  }
-
-  visitas.sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
-  cache = visitas;
-  return cache;
-}
-
-// Todas las visitas de prueba (más nueva primero). El filtro por fecha lo
-// hace la pantalla (es un dataset chico, no hace falta ida y vuelta al
-// servidor para cambiarlo).
-export async function obtenerVisitas() {
-  return base();
+// Las últimas 2.000 visitas de jugadores y cuerpo técnico (más nueva primero), como la v1. El filtro por fecha lo hace la
+// pantalla. Recibe el cliente de Supabase del servidor.
+export async function obtenerVisitas(supabase) {
+  const filas = verificar(
+    await supabase
+      .from("page_views")
+      .select("momento, rol, pagina, duracion_seg, perfiles(usuario, nombre)")
+      .neq("rol", "administrador") // como la v1: la actividad del administrador no cuenta
+      .order("momento", { ascending: false })
+      .order("id", { ascending: false })
+      .limit(2000),
+  );
+  return filas.map((v) => ({
+    timestamp: v.momento,
+    usuario: v.perfiles?.usuario ?? v.perfiles?.nombre ?? "—",
+    rol: v.rol ?? "—",
+    pagina: normalizarPagina(v.pagina),
+    duracion_seg: v.duracion_seg ?? 0,
+  }));
 }

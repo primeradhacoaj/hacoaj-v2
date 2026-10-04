@@ -119,7 +119,7 @@ export default function AnalyticsPanel({ visitas }) {
     <>
       <p className={styles.descripcion}>
         Actividad de los usuarios en la app: páginas visitadas, duración y frecuencia de uso. Las
-        visitas del rol administrador casi no se incluyen (el admin navega poco la app).
+        visitas del rol administrador no se incluyen en estas estadísticas.
       </p>
 
       <h2 className={styles.rotulo}>Resumen</h2>

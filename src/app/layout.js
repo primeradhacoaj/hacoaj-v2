@@ -1,5 +1,6 @@
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { SesionProvider } from "@/components/SesionProvider";
+import Tracker from "@/components/Tracker";
 import "./globals.css";
 
 // Única tipografía de toda la app. Es una fuente variable: sirve todos los
@@ -29,7 +30,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="es" className={fontSans.variable}>
       <body>
-        <SesionProvider>{children}</SesionProvider>
+        <SesionProvider>
+          <Tracker />
+          {children}
+        </SesionProvider>
       </body>
     </html>
   );
