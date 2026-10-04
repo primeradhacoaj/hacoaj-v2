@@ -54,6 +54,20 @@ export async function obtenerEventosDelMes(supabase, anio, mes) {
     });
   }
 
+  // Eventos propios que cargó el cuerpo técnico (tabla `eventos_calendario`).
+  const primero = claveDe(anio, mes, 1);
+  const ultimo = claveDe(anio, mes, new Date(anio, mes, 0).getDate());
+  const { data: propios, error } = await supabase
+    .from("eventos_calendario")
+    .select("id, fecha, titulo, icono")
+    .gte("fecha", primero)
+    .lte("fecha", ultimo)
+    .order("creado_en");
+  if (error) throw new Error(error.message);
+  for (const e of propios) {
+    agregar(eventos, e.fecha, { tipo: "custom", id: e.id, titulo: e.titulo, icono: e.icono });
+  }
+
   const agregarTesteos = (filas, etiqueta) => {
     const vistas = new Set();
     for (const fila of filas) {

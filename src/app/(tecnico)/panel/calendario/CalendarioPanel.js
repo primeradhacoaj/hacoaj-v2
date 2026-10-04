@@ -4,7 +4,8 @@ import { useState } from "react";
 import Aviso from "@/components/Aviso";
 import Icono from "@/components/Icono";
 import { cx } from "@/lib/cx";
-import { AVISO_MIGRANDO } from "@/lib/menus";
+import { EMOJI_EVENTO, ICONOS_EVENTO, agregarEvento, borrarEvento } from "@/lib/data/eventosCalendario";
+import { createClient } from "@/lib/supabase/client";
 import { useAviso } from "@/lib/useAviso";
 import styles from "./CalendarioPanel.module.css";
 
@@ -23,7 +24,9 @@ function claveDe(anio, mes, dia) {
 // Calendario del panel técnico, copiado de la v1 (`usuario/calendario.html`,
 // la misma pantalla que en la v1 usan técnico y jugador — acá se deja solo
 // en el panel técnico porque es donde la v1 la enlaza): cumpleaños del
-// plantel, partidos de Hacoaj y testeos de fuerza/pliegues del mes.
+// plantel, partidos de Hacoaj, testeos de fuerza/pliegues y los eventos
+// propios que carga el cuerpo técnico (botón "+": se guardan en la base y los
+// ven todos los técnicos).
 //
 // Props: anioInicial, mesInicial, eventosIniciales (ya resueltos en el
 // servidor, para no arrancar en blanco); al cambiar de mes se vuelve a pedir
@@ -34,6 +37,8 @@ export default function CalendarioPanel({ anioInicial, mesInicial, eventosInicia
   const [eventos, setEventos] = useState(eventosIniciales);
   const [cargando, setCargando] = useState(false);
   const [diaElegido, setDiaElegido] = useState(null);
+  const [modal, setModal] = useState(null); // null o { fecha, titulo, icono }
+  const [guardando, setGuardando] = useState(false);
   const { mensaje, visible, mostrar } = useAviso();
 
   const hoy = new Date();
@@ -54,6 +59,46 @@ export default function CalendarioPanel({ anioInicial, mesInicial, eventosInicia
     } finally {
       setCargando(false);
     }
+  };
+
+  // Vuelve a pedir el mes que se está viendo, sin cerrar el día elegido.
+  const recargar = async () => {
+    const resp = await fetch(`/api/calendario?year=${anio}&month=${mes}`);
+    const datos = await resp.json();
+    setEventos(datos.eventos);
+  };
+
+  const abrirModal = () => {
+    const fecha = diaElegido ? claveDe(anio, mes, diaElegido) : (claveHoy ?? claveDe(anio, mes, 1));
+    setModal({ fecha, titulo: "", icono: "reunion" });
+  };
+
+  const guardarEvento = async (e) => {
+    e.preventDefault();
+    if (!modal.fecha || !modal.titulo.trim()) return;
+    setGuardando(true);
+    const resultado = await agregarEvento(createClient(), modal);
+    setGuardando(false);
+    if (!resultado.ok) {
+      mostrar(`No se pudo guardar: ${resultado.error}`, "error");
+      return;
+    }
+    // Si el evento es de otro mes, se pasa a ese mes para que se vea.
+    const [a, m] = modal.fecha.split("-").map(Number);
+    setModal(null);
+    if (a === anio && m === mes) await recargar();
+    else await pedirMes(a, m);
+    mostrar("Evento guardado", "exito");
+  };
+
+  const eliminarEvento = async (id) => {
+    if (!window.confirm("¿Eliminar este evento?")) return;
+    const resultado = await borrarEvento(createClient(), id);
+    if (!resultado.ok) {
+      mostrar(`No se pudo eliminar: ${resultado.error}`, "error");
+      return;
+    }
+    await recargar();
   };
 
   const cambiarMes = (delta) => {
@@ -129,7 +174,7 @@ export default function CalendarioPanel({ anioInicial, mesInicial, eventosInicia
                     {dia}
                     {eventosDia.length > 0 && (
                       <span className={styles.puntos}>
-                        {["partido", "cumple", "testeo"].filter((t) => tipos.has(t)).map((t) => (
+                        {["partido", "cumple", "testeo", "custom"].filter((t) => tipos.has(t)).map((t) => (
                           <span key={t} className={cx(styles.punto, styles[`punto${t}`])} />
                         ))}
                       </span>
@@ -149,7 +194,7 @@ export default function CalendarioPanel({ anioInicial, mesInicial, eventosInicia
                   {diaElegido} de {MESES[mes - 1]} {anio}
                 </div>
                 {eventosDelDia.map((evento, indice) => (
-                  <EventoFila key={indice} evento={evento} />
+                  <EventoFila key={evento.id ?? indice} evento={evento} onBorrar={eliminarEvento} />
                 ))}
               </>
             ) : (
@@ -162,19 +207,93 @@ export default function CalendarioPanel({ anioInicial, mesInicial, eventosInicia
       <button
         type="button"
         className={styles.botonAgregar}
-        onClick={() => mostrar(AVISO_MIGRANDO)}
+        onClick={abrirModal}
         aria-label="Agregar evento"
         title="Agregar evento"
       >
         <Icono nombre="mas" tamano={22} strokeWidth={2.2} />
       </button>
 
+      {modal && (
+        <div className={styles.fondoModal} onClick={(e) => e.target === e.currentTarget && setModal(null)}>
+          <form className={styles.modal} onSubmit={guardarEvento} aria-label="Nuevo evento">
+            <h3 className={styles.tituloModal}>Nuevo evento</h3>
+            <label className={styles.etiquetaCampo} htmlFor="evento-fecha">Fecha</label>
+            <input
+              id="evento-fecha"
+              type="date"
+              className={styles.campo}
+              value={modal.fecha}
+              onChange={(e) => setModal({ ...modal, fecha: e.target.value })}
+              required
+            />
+            <label className={styles.etiquetaCampo} htmlFor="evento-titulo">Título</label>
+            <input
+              id="evento-titulo"
+              type="text"
+              className={styles.campo}
+              value={modal.titulo}
+              onChange={(e) => setModal({ ...modal, titulo: e.target.value })}
+              placeholder="Ej: Reunión de padres"
+              maxLength={80}
+              autoFocus
+              required
+            />
+            <span className={styles.etiquetaCampo}>Ícono</span>
+            <div className={styles.iconos} role="radiogroup" aria-label="Ícono">
+              {ICONOS_EVENTO.map((i) => (
+                <button
+                  type="button"
+                  key={i.valor}
+                  role="radio"
+                  aria-checked={modal.icono === i.valor}
+                  className={cx(styles.opcionIcono, modal.icono === i.valor && styles.opcionElegida)}
+                  onClick={() => setModal({ ...modal, icono: i.valor })}
+                >
+                  <span className={styles.emojiIcono}>{i.emoji}</span>
+                  <span className={styles.rotuloIcono}>{i.etiqueta}</span>
+                </button>
+              ))}
+            </div>
+            <div className={styles.accionesModal}>
+              <button type="button" className={styles.cancelar} onClick={() => setModal(null)}>
+                Cancelar
+              </button>
+              <button type="submit" className={styles.guardar} disabled={guardando || !modal.titulo.trim()}>
+                {guardando ? "Guardando…" : "Guardar"}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
       <Aviso mensaje={mensaje} visible={visible} />
     </>
   );
 }
 
-function EventoFila({ evento }) {
+function EventoFila({ evento, onBorrar }) {
+  if (evento.tipo === "custom") {
+    return (
+      <div className={styles.filaEvento}>
+        <span className={cx(styles.iconoEvento, styles.iconocustom)}>{EMOJI_EVENTO[evento.icono] ?? "📌"}</span>
+        <span className={styles.textoEvento}>
+          <span className={styles.tituloEvento}>{evento.titulo}</span>
+          <span className={styles.subEvento}>Evento</span>
+        </span>
+        <button
+          type="button"
+          className={styles.botonBorrar}
+          onClick={() => onBorrar(evento.id)}
+          aria-label={`Eliminar ${evento.titulo}`}
+          title="Eliminar"
+        >
+          <Icono nombre="cerrar" tamano={14} strokeWidth={2.2} />
+        </button>
+      </div>
+    );
+  }
+
   if (evento.tipo === "partido") {
     const condicionTexto = evento.condicion === "L" ? "Local" : "Visitante";
     const [golesHacoaj, golesRival] = evento.resultado.split("-").map(Number);

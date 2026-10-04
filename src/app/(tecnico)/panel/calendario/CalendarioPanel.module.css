@@ -300,6 +300,153 @@
   background: var(--navy-deep);
 }
 
+.puntocustom {
+  background: var(--gold);
+}
+
+.hoy .puntocustom {
+  background: #e8d28a;
+}
+
+.iconocustom {
+  background: rgba(201, 168, 62, 0.14);
+}
+
+.botonBorrar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 6px;
+  background: var(--red-bg);
+  color: var(--red);
+  cursor: pointer;
+}
+
+.fondoModal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.modal {
+  width: 100%;
+  max-width: 440px;
+  padding: 22px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: var(--card-hover);
+}
+
+.tituloModal {
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.etiquetaCampo {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+
+.campo {
+  width: 100%;
+  margin-bottom: 14px;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fafbfc;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.campo:focus {
+  border-color: var(--navy);
+  outline: none;
+}
+
+.iconos {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.opcionIcono {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 9px 4px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.opcionElegida {
+  border-color: var(--navy);
+  background: rgba(0, 41, 107, 0.05);
+}
+
+.emojiIcono {
+  font-size: 20px;
+}
+
+.rotuloIcono {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-mid);
+}
+
+.accionesModal {
+  display: flex;
+  gap: 10px;
+}
+
+.cancelar,
+.guardar {
+  flex: 1;
+  padding: 11px;
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cancelar {
+  background: #f2f4f9;
+  color: var(--text-mid);
+}
+
+.guardar {
+  background: var(--navy);
+  color: #fff;
+}
+
+.guardar:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
 @media (max-width: 768px) {
   .layout {
     flex-direction: column;
