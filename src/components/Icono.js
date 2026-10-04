@@ -13,6 +13,8 @@ const ICONOS = {
   flechaAbajo: "M6 9l6 6 6-6",
   filtro: "M22 3H2l8 9.5V19l4 2v-8.5L22 3z",
   mas: "M12 5v14 M5 12h14",
+  editar: "M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7 M18.5 2.5a2.1 2.1 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z",
+  papelera: "M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6 M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2",
   cerrar: "M18 6 6 18 M6 6l12 12",
   check: "M20 6 9 17l-5-5",
   buscar: "M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z M21 21l-4.3-4.3",

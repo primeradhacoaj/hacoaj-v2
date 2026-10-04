@@ -258,7 +258,6 @@ const MENU_TECNICO = [
         tono: "purple",
         href: "/panel/cargar-datos",
         etiquetas: ["Fuerza", "Pliegues", "Peso", "Encuestas"],
-        disponible: false,
       },
       {
         id: "calendario",
@@ -311,7 +310,7 @@ export function menuTecnicoParaRol(rol) {
 // que existen y si ya tienen pantalla.
 export const TODOS_LOS_ACCESOS = [
   { id: "dashboard", titulo: "Ver Dashboard", icono: "dashboard", href: "/panel/analisis", disponible: true },
-  { id: "cargar", titulo: "Cargar datos", icono: "flechaArriba", href: "/panel/cargar-datos", disponible: false },
+  { id: "cargar", titulo: "Cargar datos", icono: "flechaArriba", href: "/panel/cargar-datos" },
   { id: "post-partido", titulo: "Post partido", icono: "encuestas", href: "/panel/encuestas/post-partido", disponible: true },
   { id: "wellness", titulo: "Wellness", icono: "corazon", href: "/panel/encuestas/wellness", disponible: true },
   { id: "notificacion", titulo: "Enviar notificación", icono: "campana", href: "/panel/notificaciones", disponible: false },
