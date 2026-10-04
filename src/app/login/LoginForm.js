@@ -138,12 +138,6 @@ export default function LoginForm() {
           )}
         </button>
       </form>
-
-      <p className={styles.ayuda}>
-        Versión de prueba: usuarios <strong>jugador</strong>,{" "}
-        <strong>tecnico</strong> o <strong>admin</strong>, con contraseña{" "}
-        <strong>demo-12345</strong>.
-      </p>
     </div>
   );
 }

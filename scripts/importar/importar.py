@@ -49,7 +49,7 @@ DOMINIO = "hacoaj.test"
 TEMPORADA = 2026
 HACOAJ_EQUIPO_ID = 501  # "Náutico Hacoaj" en el SQLite del scraper
 NS = uuid.UUID("6f1d7c3e-5a40-4f8e-9d42-0f6b1c2a7e11")  # fijo: ids repetibles entre corridas
-CUENTAS_DE_PRUEBA = ("Jugador de Prueba", "Cuerpo Técnico", "Administración")  # se conservan (inactivas)
+CUENTAS_DE_PRUEBA = ("jugador", "tecnico", "admin")  # usuarios de prueba del desarrollo: se eliminan
 LIMITE_SQL = 3_300_000  # el CLI rechaza ~4 MB
 
 ADVERTENCIAS = []
@@ -221,11 +221,6 @@ class Personas:
                 else:
                     h = bcrypt.hashpw(clave.encode(), bcrypt.gensalt(10)).decode()
                     self.cuentas.append((login, perfil["auth_user_id"], h))
-        # Si un usuario real se llama igual que una cuenta de prueba, la de prueba se renombra.
-        self.renombrar_pruebas = sorted({c[0] for c in self.cuentas} & {"jugador", "tecnico", "admin"})
-        for nombre in self.renombrar_pruebas:
-            avisar(f"existe un usuario real '{nombre}': la cuenta de prueba pasa a '{nombre}-prueba'")
-
         # Personas que jugaron pero no son del plantel: perfil inactivo y sin login.
         for n, nombre in self.externos_norm.items():
             if n in self.por_norm:
@@ -656,30 +651,23 @@ def construir_sql(personas, sql, informe, modo):
                        p["fecha_nacimiento"], p["altura"], p["estado"]] for p in personas.perfiles]
     cuentas = [[uid_, login, h] for login, uid_, h in personas.cuentas]
     cuentas_reales = personas.cuentas and [(l, u) for l, u, _ in personas.cuentas] or []
-    nombres_prueba = ", ".join("'" + n.replace("'", "''") + "'" for n in CUENTAS_DE_PRUEBA)
 
     partes = ["begin;\n"]
-    partes.append("-- Limpieza: se vuelve a cargar todo lo importado (datos de prueba incluidos)\n")
+    partes.append("-- Limpieza: se vuelve a cargar todo lo importado (los datos y cuentas de prueba incluidos)\n")
     for t in ("post_partido", "wellness", "fuerza_tests", "pliegues", "pesos", "partidos_hacoaj", "torneo_partidos",
               "torneo_jugadores", "torneo_equipos", "torneo_posiciones", "torneo_goleadores"):
         partes.append(f"delete from public.{t};\n")
     if "eventos" in sql:
         partes.append("delete from public.eventos_calendario;\n")
+    # Todo perfil que no viene de la importación se elimina (los de prueba, por ejemplo).
     partes.append(
-        "delete from public.perfiles where id <> all(array[" + ",".join(f"'{i}'::uuid" for i in ids_perfiles) + "])"
-        f" and nombre not in ({nombres_prueba});\n"
-        f"update public.perfiles set estado = 'inactivo' where nombre in ({nombres_prueba});\n"
+        "delete from public.perfiles where id <> all(array[" + ",".join(f"'{i}'::uuid" for i in ids_perfiles) + "]);\n"
     )
-    # Cuentas de prueba que chocan con un usuario real: se renombran antes de crear las reales.
+    # Cuentas de login de prueba (jugador@, tecnico@ y admin@): se eliminan. Si un usuario real se llama igual
+    # (por ejemplo 'admin'), su cuenta tiene otro id y se crea después, así que no se confunden.
     ids_cuentas = ",".join(f"'{u}'::uuid" for _, u in cuentas_reales) or "null"
-    for nombre in personas.renombrar_pruebas:
-        viejo, nuevo = f"{nombre}@{DOMINIO}", f"{nombre}-prueba@{DOMINIO}"
-        partes.append(
-            f"""update auth.users set email = '{nuevo}' where email = '{viejo}' and id <> all(array[{ids_cuentas}]);
-update auth.identities i set identity_data = i.identity_data || jsonb_build_object('email', '{nuevo}')
-  from auth.users u where u.id = i.user_id and u.email = '{nuevo}';
-"""
-        )
+    emails_prueba = ", ".join(f"'{n}@{DOMINIO}'" for n in CUENTAS_DE_PRUEBA)
+    partes.append(f"delete from auth.users where email in ({emails_prueba}) and id <> all(array[{ids_cuentas}]);\n")
     # Cuentas de login (hash bcrypt: nunca texto plano). Mismo formato que crea el panel de Supabase.
     cuerpo = json.dumps(cuentas, ensure_ascii=False, separators=(",", ":"))
     partes.append(
