@@ -22,7 +22,7 @@ export default function MenuJugador() {
   return (
     <div className={styles.pagina}>
       <Hero subtitulo="Tu panel personal de rendimiento" />
-      <PerfilChip nombre={sesion.nombre} detalle="Plantel Primera D" />
+      <PerfilChip nombre={sesion.nombre} foto={sesion.foto} detalle="Plantel Primera D" />
 
       <main className={styles.contenido}>
         {/* Por cada sección del menú se dibuja un título y sus opciones */}

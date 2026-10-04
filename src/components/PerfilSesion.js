@@ -10,5 +10,5 @@ import { useSesion } from "@/components/SesionProvider";
 //   pildora  texto dorado bajo el nombre
 export default function PerfilSesion({ pildora }) {
   const { sesion } = useSesion();
-  return <PerfilChip compacto saludo="Jugador" nombre={sesion.nombre} pildora={pildora} />;
+  return <PerfilChip compacto saludo="Jugador" nombre={sesion.nombre} foto={sesion.foto} pildora={pildora} />;
 }

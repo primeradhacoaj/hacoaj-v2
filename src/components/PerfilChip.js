@@ -7,12 +7,14 @@ import styles from "./PerfilChip.module.css";
 //
 // Props:
 //   nombre    nombre completo
+//   foto      URL de la foto (opcional): se ve sobre las iniciales
 //   saludo    texto chico sobre el nombre ("Bienvenido" por defecto)
 //   detalle   línea debajo del nombre, en azul con punto dorado
 //   pildora   alternativa a `detalle`: línea en dorado (usada en los submenús)
 //   compacto  versión más chica, para los submenús
 export default function PerfilChip({
   nombre,
+  foto,
   saludo = "Bienvenido",
   detalle,
   pildora,
@@ -25,6 +27,10 @@ export default function PerfilChip({
     >
       <div className={styles.avatar}>
         <div className={styles.iniciales}>{iniciales(nombre)}</div>
+        {foto && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={foto} alt="" className={styles.foto} />
+        )}
       </div>
       <div className={styles.info}>
         <div className={styles.saludo}>{saludo}</div>

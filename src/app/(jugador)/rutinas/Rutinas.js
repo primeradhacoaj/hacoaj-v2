@@ -19,7 +19,7 @@ export default function Rutinas() {
 
   return (
     <PantallaDatos volverHref="/fuerza/ultimo" ancho="ancho">
-      <TarjetaJugador nombre={sesion.nombre} subtitulo="Rutinas disponibles" />
+      <TarjetaJugador nombre={sesion.nombre} foto={sesion.foto} subtitulo="Rutinas disponibles" />
 
       <TituloBloque color="#c9a83e">Planes de entrenamiento</TituloBloque>
 

@@ -185,7 +185,7 @@ export default function PostPartido() {
 
   return (
     <PantallaDatos volverHref="/encuestas" ancho="angosto">
-      <TarjetaJugador nombre={sesion.nombre} subtitulo="Encuesta post partido" />
+      <TarjetaJugador nombre={sesion.nombre} foto={sesion.foto} subtitulo="Encuesta post partido" />
 
       {enviada ? (
         <TarjetaExito

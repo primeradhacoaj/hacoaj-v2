@@ -81,7 +81,7 @@ export default function HistorialPliegues() {
       {listo && (
         <>
           <TarjetaJugador
-            nombre={sesion.nombre}
+            nombre={sesion.nombre} foto={sesion.foto}
             subtitulo="Historial de pliegues"
             posicion={sesion.posicion}
             piernaHabil={sesion.piernaHabil}

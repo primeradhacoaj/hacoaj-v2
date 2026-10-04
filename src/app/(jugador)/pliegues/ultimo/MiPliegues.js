@@ -93,7 +93,7 @@ function Contenido({ sesion, datos }) {
   return (
     <>
       <TarjetaJugador
-        nombre={sesion.nombre}
+        nombre={sesion.nombre} foto={sesion.foto}
         subtitulo="Mis pliegues"
         posicion={sesion.posicion}
         piernaHabil={sesion.piernaHabil}

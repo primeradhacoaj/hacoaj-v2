@@ -40,6 +40,15 @@
   letter-spacing: 0.5px;
 }
 
+.foto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .info {
   flex: 1;
   min-width: 0;

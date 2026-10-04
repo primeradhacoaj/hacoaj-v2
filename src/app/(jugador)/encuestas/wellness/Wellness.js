@@ -74,7 +74,7 @@ export default function Wellness() {
 
   return (
     <PantallaDatos volverHref="/encuestas" ancho="angosto">
-      <TarjetaJugador nombre={sesion.nombre} subtitulo="Encuesta Wellness" />
+      <TarjetaJugador nombre={sesion.nombre} foto={sesion.foto} subtitulo="Encuesta Wellness" />
 
       {enviada ? (
         <TarjetaExito

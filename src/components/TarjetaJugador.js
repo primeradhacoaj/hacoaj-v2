@@ -6,11 +6,13 @@ import styles from "./TarjetaJugador.module.css";
 //
 // Props:
 //   nombre, subtitulo   (ej. "Juan Pérez" / "Mi fuerza")
+//   foto                URL de la foto (opcional): se ve sobre las iniciales
 //   posicion            si existe, muestra 📍 posición
 //   piernaHabil         si existe, muestra 🦶 pierna
 //   peso                si se pasa (aunque sea null), muestra ⚖ peso; null se ve "--"
 export default function TarjetaJugador({
   nombre,
+  foto,
   subtitulo,
   posicion,
   piernaHabil,
@@ -21,7 +23,13 @@ export default function TarjetaJugador({
   return (
     <div className={styles.tarjeta}>
       <div className={styles.interior}>
-        <div className={styles.avatar}>{iniciales(nombre)}</div>
+        <div className={styles.avatar}>
+          {iniciales(nombre)}
+          {foto && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={foto} alt="" className={styles.foto} />
+          )}
+        </div>
         <div className={styles.info}>
           <div className={styles.nombre}>{nombre}</div>
           <div className={styles.subtitulo}>{subtitulo}</div>

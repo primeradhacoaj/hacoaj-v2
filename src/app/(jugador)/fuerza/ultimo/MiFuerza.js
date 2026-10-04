@@ -117,7 +117,7 @@ function Contenido({ sesion, estado }) {
   return (
     <>
       <TarjetaJugador
-        nombre={sesion.nombre}
+        nombre={sesion.nombre} foto={sesion.foto}
         subtitulo="Mi fuerza"
         posicion={sesion.posicion}
         piernaHabil={sesion.piernaHabil}

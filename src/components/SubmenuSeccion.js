@@ -56,6 +56,7 @@ export default function SubmenuSeccion({
         compacto
         saludo="Jugador"
         nombre={sesion.nombre}
+        foto={sesion.foto}
         pildora={
           <>
             {iconoPildora && <Icono nombre={iconoPildora} tamano={13} strokeWidth={2} />}

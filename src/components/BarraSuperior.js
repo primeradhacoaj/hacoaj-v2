@@ -36,6 +36,10 @@ export default function BarraSuperior({ titulo, subtitulo }) {
           <div className={styles.usuario}>
             <div className={styles.avatar} aria-hidden="true">
               {iniciales(sesion.nombre)}
+              {sesion.foto && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={sesion.foto} alt="" className={styles.foto} />
+              )}
             </div>
             <div className={styles.datos}>
               <div className={styles.nombre}>{sesion.nombre}</div>

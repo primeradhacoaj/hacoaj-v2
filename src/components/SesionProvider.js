@@ -29,7 +29,7 @@ async function cargarPerfil(session) {
   const supabase = createClient();
   const { data: perfil, error } = await supabase
     .from("perfiles")
-    .select("nombre, rol, posicion, pierna_habil")
+    .select("nombre, rol, posicion, pierna_habil, foto_path")
     .eq("auth_user_id", session.user.id)
     .maybeSingle();
 
@@ -51,6 +51,10 @@ async function cargarPerfil(session) {
       rol: perfil.rol,
       posicion: perfil.posicion ?? "",
       piernaHabil: perfil.pierna_habil ?? "",
+      // URL pública de la foto (bucket `avatares`), o null si la persona no tiene
+      foto: perfil.foto_path
+        ? supabase.storage.from("avatares").getPublicUrl(perfil.foto_path).data.publicUrl
+        : null,
     },
   });
 }
@@ -96,7 +100,7 @@ export function SesionProvider({ children }) {
 }
 
 // Devuelve { sesion, cargando, cerrar() }.
-//   sesion    { usuario, nombre, rol, posicion, piernaHabil } o null si nadie inició sesión
+//   sesion    { usuario, nombre, rol, posicion, piernaHabil, foto } o null si nadie inició sesión
 //   cargando  true un instante, hasta saber si hay sesión guardada
 // Iniciar sesión se hace con `iniciarSesion` (src/lib/data/usuarios.js): el
 // provider se entera solo cuando Supabase confirma el login.

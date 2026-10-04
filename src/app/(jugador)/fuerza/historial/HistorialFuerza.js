@@ -87,7 +87,7 @@ export default function HistorialFuerza() {
   return (
     <PantallaDatos volverHref="/fuerza">
       <TarjetaJugador
-        nombre={sesion.nombre}
+        nombre={sesion.nombre} foto={sesion.foto}
         subtitulo="Historial de fuerza"
         posicion={sesion.posicion}
         piernaHabil={sesion.piernaHabil}
