@@ -2,6 +2,7 @@ import FuenteDatos from "@/components/FuenteDatos";
 import PanelVacio from "@/components/PanelVacio";
 import PantallaTorneo from "@/components/PantallaTorneo";
 import { obtenerPosiciones } from "@/lib/data/torneo";
+import { createClient } from "@/lib/supabase/server";
 import TablaPosiciones from "./TablaPosiciones";
 
 export const metadata = {
@@ -10,7 +11,7 @@ export const metadata = {
 
 // Pantalla de solo lectura: se arma en el servidor con los datos ya cargados.
 export default async function PosicionesPage() {
-  const { zona_a: zonaA, zona_b: zonaB } = await obtenerPosiciones();
+  const { zona_a: zonaA, zona_b: zonaB } = await obtenerPosiciones(await createClient());
   const hayDatos = zonaA.length > 0 || zonaB.length > 0;
 
   return (

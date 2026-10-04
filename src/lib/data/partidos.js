@@ -9,10 +9,12 @@
 // La forma de las respuestas es la que tenía el mock (que copiaba las hojas
 // "Partidos" y "Partidos-jugador" de la v1), para no tocar las pantallas.
 //
-// PENDIENTE: el resumen del detalle (línea de tiempo) mezclaba los eventos de
-// Hacoaj con los del RIVAL, que venían del scraper de soloascenso. Esos
-// eventos se van a sumar cuando se migre el torneo y se vincule cada partido
-// (`partido_torneo_id`). Mientras tanto el resumen muestra solo lo de Hacoaj.
+// El resumen del detalle (línea de tiempo y disciplina) suma a lo que carga el club los
+// eventos del RIVAL, que salen del scraper de soloascenso (`torneo_*`) a través de
+// `partidos_hacoaj.partido_torneo_id`. Como en la v1, solo se toman los que no son de Hacoaj.
+
+// Cómo figura Hacoaj en los eventos de soloascenso.
+const ABREVIATURA_HACOAJ = "NÁU";
 
 export const resultadoDe = (golesHacoaj, golesRival) =>
   golesHacoaj > golesRival ? "score-win" : golesHacoaj === golesRival ? "score-draw" : "score-loss";
@@ -26,6 +28,18 @@ function verificar({ data, error }) {
 async function nombresDelPlantel(supabase) {
   const filas = verificar(await supabase.from("plantel").select("id, nombre"));
   return new Map(filas.map((f) => [f.id, f.nombre]));
+}
+
+// Goles, cambios y tarjetas del rival según el scraper (vacío si el partido no está vinculado).
+async function eventosDelRival(supabase, partidoTorneoId) {
+  if (!partidoTorneoId) return { goles: [], cambios: [], tarjetas: [] };
+  const delRival = "equipo_abrev.is.null,equipo_abrev.neq." + ABREVIATURA_HACOAJ;
+  const [goles, cambios, tarjetas] = await Promise.all([
+    supabase.from("torneo_goles").select("jugador_nombre, minuto, en_contra").eq("partido_id", partidoTorneoId).or(delRival).then(verificar),
+    supabase.from("torneo_cambios").select("jugador_entra, jugador_sale, minuto").eq("partido_id", partidoTorneoId).or(delRival).then(verificar),
+    supabase.from("torneo_tarjetas").select("jugador_nombre, tipo").eq("partido_id", partidoTorneoId).or(delRival).then(verificar),
+  ]);
+  return { goles, cambios, tarjetas };
 }
 
 // Lista de todos los partidos de Hacoaj, del más nuevo al más viejo.
@@ -55,13 +69,14 @@ export async function obtenerDetallePartido(supabase, fecha) {
   );
   if (!partido) return { partido: null };
 
-  const [jugadores, goles, cambios, tarjetas, multimedia, nombres] = await Promise.all([
+  const [jugadores, goles, cambios, tarjetas, multimedia, nombres, rival] = await Promise.all([
     supabase.from("partidos_hacoaj_jugadores").select("*").eq("partido_id", partido.id).then(verificar),
     supabase.from("partidos_hacoaj_goles").select("*").eq("partido_id", partido.id).order("minuto").then(verificar),
     supabase.from("partidos_hacoaj_cambios").select("*").eq("partido_id", partido.id).order("minuto").then(verificar),
     supabase.from("partidos_hacoaj_tarjetas").select("*").eq("partido_id", partido.id).order("minuto").then(verificar),
     supabase.from("partidos_hacoaj_multimedia").select("*").eq("partido_id", partido.id).order("creado_en").then(verificar),
     nombresDelPlantel(supabase),
+    eventosDelRival(supabase, partido.partido_torneo_id),
   ]);
 
   const nombre = (id) => (id ? (nombres.get(id) ?? "") : "");
@@ -90,7 +105,7 @@ export async function obtenerDetallePartido(supabase, fecha) {
     })
     .sort((a, b) => Number(b.titular) - Number(a.titular) || a.jugador.localeCompare(b.jugador, "es"));
 
-  // Línea de tiempo (solo Hacoaj, ver el aviso de arriba).
+  // Línea de tiempo: lo de Hacoaj más lo del rival.
   const eventos = [
     ...goles.map((g) => ({
       min: g.minuto,
@@ -108,15 +123,29 @@ export async function obtenerDetallePartido(supabase, fecha) {
       sale: nombre(c.jugador_sale_id),
       equipo: "hacoaj",
     })),
+    ...rival.goles.map((g) => ({
+      min: g.minuto,
+      tipo: "gol",
+      jugador: g.jugador_nombre ?? "",
+      equipo: "rival",
+      asistencia: "",
+      enContra: g.en_contra,
+    })),
+    ...rival.cambios.map((c) => ({
+      min: c.minuto,
+      tipo: "cambio",
+      entra: c.jugador_entra ?? "",
+      sale: c.jugador_sale ?? "",
+      equipo: "rival",
+    })),
   ].sort((a, b) =>
     (a.min === null) !== (b.min === null) ? (a.min === null ? -1 : 1) : (b.min ?? 0) - (a.min ?? 0),
   );
 
-  const disciplina = tarjetas.map((t) => ({
-    tipo: t.tipo,
-    jugador: nombre(t.perfil_id),
-    equipo: "hacoaj",
-  }));
+  const disciplina = [
+    ...tarjetas.map((t) => ({ tipo: t.tipo, jugador: nombre(t.perfil_id), equipo: "hacoaj" })),
+    ...rival.tarjetas.map((t) => ({ tipo: t.tipo, jugador: t.jugador_nombre ?? "", equipo: "rival" })),
+  ];
 
   return {
     partido: {

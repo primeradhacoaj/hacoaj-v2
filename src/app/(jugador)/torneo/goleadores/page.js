@@ -4,6 +4,7 @@ import PantallaTorneo from "@/components/PantallaTorneo";
 import SectionLabel from "@/components/SectionLabel";
 import TablaTorneo from "@/components/TablaTorneo";
 import { obtenerGoleadores } from "@/lib/data/torneo";
+import { createClient } from "@/lib/supabase/server";
 
 export const metadata = {
   title: "Goleadores",
@@ -18,7 +19,7 @@ const COLUMNAS = [
 
 // Pantalla de solo lectura: se arma en el servidor con los datos ya cargados.
 export default async function GoleadoresPage() {
-  const goleadores = await obtenerGoleadores();
+  const goleadores = await obtenerGoleadores(await createClient());
 
   return (
     <PantallaTorneo titulo="Goleadores">

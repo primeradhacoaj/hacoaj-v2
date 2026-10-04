@@ -102,7 +102,7 @@ export default function TorneoPlantel({ equipo, stats, jugadores, posiciones, go
         <div className={styles.cabeceraTarjeta}>
           <div>
             <div className={styles.tituloTarjeta}>Minutos jugados</div>
-            <div className={styles.subtituloTarjeta}>Histórico del jugador en {equipo} · todas las temporadas</div>
+            <div className={styles.subtituloTarjeta}>Temporada 2026 · jugadores de {equipo}</div>
           </div>
         </div>
         <BarChart datos={barrasDe("minutos")} color="#00296b" />
@@ -111,12 +111,12 @@ export default function TorneoPlantel({ equipo, stats, jugadores, posiciones, go
       <div className={styles.filaDosColumnas}>
         <div className={styles.tarjeta}>
           <div className={styles.tituloTarjeta}>Goles</div>
-          <div className={styles.subtituloTarjeta}>Histórico del jugador</div>
+          <div className={styles.subtituloTarjeta}>Temporada 2026</div>
           <BarChart datos={barrasDe("goles")} color="#0e8a4f" alto={200} />
         </div>
         <div className={styles.tarjeta}>
           <div className={styles.tituloTarjeta}>Tarjetas amarillas</div>
-          <div className={styles.subtituloTarjeta}>Histórico del jugador</div>
+          <div className={styles.subtituloTarjeta}>Temporada 2026</div>
           <BarChart datos={barrasDe("amarillas")} color="#e5a100" alto={200} />
         </div>
       </div>
@@ -200,7 +200,7 @@ function TablaJugadores({ equipo, jugadores }) {
     <div className={styles.tablaGrande}>
       <div className={styles.cabeceraTablaGrande}>
         <div className={styles.tituloTarjeta}>Plantel en {equipo}</div>
-        <div className={styles.subtituloTarjeta}>{jugadores.length} jugadores · histórico, todas las temporadas</div>
+        <div className={styles.subtituloTarjeta}>{jugadores.length} jugadores · temporada 2026</div>
       </div>
       <div className={styles.scrollTabla}>
         <table>

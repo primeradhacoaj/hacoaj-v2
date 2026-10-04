@@ -1,5 +1,6 @@
 import PantallaPanel from "@/components/PantallaPanel";
 import { obtenerFixture } from "@/lib/data/torneo";
+import { createClient } from "@/lib/supabase/server";
 import VacioPanel from "../../_componentes/VacioPanel";
 import FixturePanel from "./FixturePanel";
 
@@ -8,7 +9,7 @@ export const metadata = {
 };
 
 export default async function FixturePanelPage() {
-  const { fechas, equipos, equipo_zona: equipoZona } = await obtenerFixture();
+  const { fechas, equipos, equipo_zona: equipoZona } = await obtenerFixture(await createClient());
 
   return (
     <PantallaPanel titulo="Fixture">

@@ -1,6 +1,7 @@
 import EtiquetaSeccion from "@/components/EtiquetaSeccion";
 import PantallaPanel from "@/components/PantallaPanel";
 import { obtenerPosiciones } from "@/lib/data/torneo";
+import { createClient } from "@/lib/supabase/server";
 import FuentePanel from "../../_componentes/FuentePanel";
 import TablaPanel from "../../_componentes/TablaPanel";
 import VacioPanel from "../../_componentes/VacioPanel";
@@ -28,7 +29,7 @@ function celdasDe(fila) {
 }
 
 export default async function PosicionesPanelPage() {
-  const { zona_a: zonaA, zona_b: zonaB } = await obtenerPosiciones();
+  const { zona_a: zonaA, zona_b: zonaB } = await obtenerPosiciones(await createClient());
   const hayDatos = zonaA.length > 0 || zonaB.length > 0;
 
   return (

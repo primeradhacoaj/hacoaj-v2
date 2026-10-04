@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Icono from "@/components/Icono";
 import { cx } from "@/lib/cx";
+import { createClient } from "@/lib/supabase/client";
 import { obtenerEquipos, obtenerPlantel } from "@/lib/data/torneoDb";
 import { calcularEdad, formatearNombre } from "@/lib/torneo";
 import HojaJugador from "../_componentes/HojaJugador";
@@ -30,7 +31,7 @@ export default function Planteles() {
 
   useEffect(() => {
     let vigente = true;
-    obtenerEquipos()
+    obtenerEquipos(createClient())
       .then((lista) => vigente && setEquipos(lista))
       .catch(() => vigente && setEquipos("error"));
     return () => {
@@ -43,7 +44,7 @@ export default function Planteles() {
     setAbierto((actual) => (actual === id ? null : id));
     if (planteles[id] && planteles[id] !== "error") return;
     try {
-      const lista = await obtenerPlantel(id);
+      const lista = await obtenerPlantel(createClient(), id);
       setPlanteles((antes) => ({ ...antes, [id]: lista }));
     } catch {
       setPlanteles((antes) => ({ ...antes, [id]: "error" }));

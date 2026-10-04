@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Icono from "@/components/Icono";
+import { createClient } from "@/lib/supabase/client";
 import { cx } from "@/lib/cx";
 import {
   obtenerEquipos,
@@ -40,7 +41,7 @@ export default function Equipos() {
 
   useEffect(() => {
     let vigente = true;
-    obtenerEquipos()
+    obtenerEquipos(createClient())
       .then((lista) => {
         if (!vigente) return;
         setEquipos(lista);
@@ -59,7 +60,8 @@ export default function Equipos() {
     if (equipoId === null) return undefined;
     let vigente = true;
     const clave = `${equipoId}-${temporada}`;
-    Promise.all([obtenerStatsEquipo(equipoId, temporada), obtenerPartidosEquipo(equipoId, temporada)])
+    const supabase = createClient();
+    Promise.all([obtenerStatsEquipo(supabase, equipoId, temporada), obtenerPartidosEquipo(supabase, equipoId, temporada)])
       .then(([stats, partidos]) => vigente && setCargado({ clave, stats, partidos }))
       .catch(() => vigente && setCargado({ clave, error: true }));
     return () => {
@@ -71,7 +73,7 @@ export default function Equipos() {
     setAbierto((actual) => (actual === partidoId ? null : partidoId));
     if (sintesis[partidoId] && sintesis[partidoId] !== "error") return;
     try {
-      const datos = await obtenerSintesisPartido(partidoId);
+      const datos = await obtenerSintesisPartido(createClient(), partidoId);
       setSintesis((antes) => ({ ...antes, [partidoId]: datos }));
     } catch {
       setSintesis((antes) => ({ ...antes, [partidoId]: "error" }));

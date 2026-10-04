@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 import { obtenerJugador } from "@/lib/data/torneoDb";
 import { calcularEdad, fechaCorta, formatearNombre, iconosDeAparicion, resultadoDe } from "@/lib/torneo";
 import InsigniaResultado from "./InsigniaResultado";
@@ -26,7 +27,7 @@ export default function HojaJugador({ jugador, onCerrar }) {
   useEffect(() => {
     if (id === null) return undefined;
     let vigente = true;
-    obtenerJugador(id)
+    obtenerJugador(createClient(), id)
       .then((datos) => vigente && setCargado({ id, datos }))
       .catch(() => vigente && setCargado({ id, datos: null }));
     return () => {

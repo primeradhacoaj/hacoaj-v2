@@ -1,6 +1,7 @@
 import EtiquetaSeccion from "@/components/EtiquetaSeccion";
 import PantallaPanel from "@/components/PantallaPanel";
 import { obtenerGoleadores } from "@/lib/data/torneo";
+import { createClient } from "@/lib/supabase/server";
 import FuentePanel from "../../_componentes/FuentePanel";
 import TablaPanel from "../../_componentes/TablaPanel";
 import VacioPanel from "../../_componentes/VacioPanel";
@@ -17,7 +18,7 @@ const COLUMNAS = [
 ];
 
 export default async function GoleadoresPanelPage() {
-  const goleadores = await obtenerGoleadores();
+  const goleadores = await obtenerGoleadores(await createClient());
 
   return (
     <PantallaPanel titulo="Goleadores">

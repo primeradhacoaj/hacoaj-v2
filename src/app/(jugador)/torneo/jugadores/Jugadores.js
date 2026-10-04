@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { cx } from "@/lib/cx";
+import { createClient } from "@/lib/supabase/client";
 import { obtenerEquipos, obtenerRankings } from "@/lib/data/torneoDb";
 import { formatearNombre } from "@/lib/torneo";
 import HojaJugador from "../_componentes/HojaJugador";
@@ -80,7 +81,7 @@ export default function Jugadores() {
 
   useEffect(() => {
     let vigente = true;
-    obtenerEquipos().then((lista) => vigente && setEquipos(lista));
+    obtenerEquipos(createClient()).then((lista) => vigente && setEquipos(lista));
     return () => {
       vigente = false;
     };
@@ -90,7 +91,7 @@ export default function Jugadores() {
   const clave = `${equipo}|${temporadas.join(",")}`;
   useEffect(() => {
     let vigente = true;
-    obtenerRankings({ equipo, temporadas })
+    obtenerRankings(createClient(), { equipo, temporadas })
       .then((datos) => vigente && setCargado({ clave, datos }))
       .catch(() => vigente && setCargado({ clave, error: true }));
     return () => {

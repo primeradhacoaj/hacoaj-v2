@@ -5,7 +5,8 @@ import { useState } from "react";
 import FuenteDatos from "@/components/FuenteDatos";
 import Icono from "@/components/Icono";
 import { cx } from "@/lib/cx";
-import { obtenerSintesis } from "@/lib/data/torneoDb";
+import { createClient } from "@/lib/supabase/client";
+import { obtenerSintesisPartido } from "@/lib/data/torneoDb";
 import styles from "./Fixture.module.css";
 import SintesisPartido from "./SintesisPartido";
 
@@ -68,7 +69,7 @@ export default function Fixture({ fechas, equipos, equipoZona }) {
 
     setSintesis((antes) => ({ ...antes, [clave]: { estado: "cargando" } }));
     try {
-      const datos = await obtenerSintesis(partido.local, partido.visitante, partido.dia);
+      const datos = await obtenerSintesisPartido(createClient(), partido.partido_id);
       setSintesis((antes) => ({
         ...antes,
         [clave]: datos ? { estado: "listo", datos } : { estado: "vacio" },
