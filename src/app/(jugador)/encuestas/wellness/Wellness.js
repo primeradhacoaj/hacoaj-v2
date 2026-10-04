@@ -57,7 +57,7 @@ export default function Wellness() {
 
     setEnviando(true);
     try {
-      const resultado = await guardarWellness(sesion.usuario, {
+      const resultado = await guardarWellness({
         ...respuestas,
         comentario: comentario.trim(),
       });

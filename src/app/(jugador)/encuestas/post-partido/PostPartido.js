@@ -161,7 +161,7 @@ export default function PostPartido() {
 
     setEnviando(true);
     try {
-      const resultado = await guardarPostPartido(sesion.usuario, {
+      const resultado = await guardarPostPartido({
         fecha_partido: fechaParaGuardar(fecha),
         llegada,
         emocional,
