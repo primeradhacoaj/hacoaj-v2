@@ -13,6 +13,8 @@
 // eventos del RIVAL, que salen del scraper de soloascenso (`torneo_*`) a través de
 // `partidos_hacoaj.partido_torneo_id`. Como en la v1, solo se toman los que no son de Hacoaj.
 
+import { nombreNatural } from "./torneoDb";
+
 // Cómo figura Hacoaj en los eventos de soloascenso.
 const ABREVIATURA_HACOAJ = "NÁU";
 
@@ -277,28 +279,51 @@ export async function obtenerEstadisticasJugador(supabase, posicion) {
 // ── Cargar partido (solo administrador) ─────────────────────────────────────
 
 // Lo que necesita la pantalla "Cargar partido": los rivales posibles (equipos del torneo, sin
-// Hacoaj ni AFA) y los jugadores activos del plantel con su foto (sin la cuenta de prueba).
+// Hacoaj ni AFA) y los jugadores que se pueden elegir, con su foto.
+//
+// Se puede elegir a todo el plantel de Hacoaj en soloascenso (menos el entrenador) y además a los
+// jugadores activos de la app. Los del torneo que todavía no tienen perfil llevan el id
+// "t:<id del jugador del torneo>": la base les crea el perfil recién cuando se guarda un partido
+// con ellos (ver `private.perfil_de_jugador_torneo`). Los que sí tienen perfil usan su id.
 export async function obtenerOpcionesCargarPartido(supabase) {
-  const [equipos, perfiles] = await Promise.all([
-    supabase.from("torneo_equipos").select("nombre").order("nombre").then(verificar),
+  const [equipos, perfiles, plantelTorneo] = await Promise.all([
+    supabase.from("torneo_equipos").select("id, nombre").order("nombre").then(verificar),
     supabase
       .from("perfiles")
-      .select("id, nombre, foto_path, usuario")
+      .select("id, nombre, foto_path, usuario, rol, estado")
       .eq("rol", "jugador")
-      .eq("estado", "activo")
       .order("nombre")
+      .then(verificar),
+    supabase
+      .from("torneo_jugador_equipo")
+      .select("torneo_jugadores(id, nombre_completo, puesto, perfil_id), torneo_equipos!inner(nombre)")
+      .ilike("torneo_equipos.nombre", "%hacoaj%")
       .then(verificar),
   ]);
 
+  const fotoDe = (path) => (path ? supabase.storage.from("avatares").getPublicUrl(path).data.publicUrl : null);
+  const perfilPorId = new Map(perfiles.map((p) => [p.id, p]));
+  const comoOpcion = (p) => ({ id: p.id, nombre: p.nombre, foto: fotoDe(p.foto_path) });
+
+  const opciones = new Map();
+  for (const { torneo_jugadores: j } of plantelTorneo) {
+    if (j.puesto === "Entrenador") continue;
+    if (j.perfil_id) {
+      // Con perfil: se usa el perfil (si no es de un jugador —p. ej. un técnico— no se ofrece).
+      const perfil = perfilPorId.get(j.perfil_id);
+      if (perfil) opciones.set(perfil.id, comoOpcion(perfil));
+    } else {
+      opciones.set(`t:${j.id}`, { id: `t:${j.id}`, nombre: nombreNatural(j.nombre_completo), foto: null });
+    }
+  }
+  // Los activos de la app que todavía no figuran en el plantel de soloascenso (sin la cuenta de prueba).
+  for (const p of perfiles) {
+    if (p.estado === "activo" && p.usuario !== "hacoaj" && !opciones.has(p.id)) opciones.set(p.id, comoOpcion(p));
+  }
+
   return {
     rivales: equipos.map((e) => e.nombre).filter((n) => !/hacoaj/i.test(n) && n !== "AFA"),
-    jugadores: perfiles
-      .filter((p) => p.usuario !== "hacoaj")
-      .map((p) => ({
-        id: p.id,
-        nombre: p.nombre,
-        foto: p.foto_path ? supabase.storage.from("avatares").getPublicUrl(p.foto_path).data.publicUrl : null,
-      })),
+    jugadores: [...opciones.values()].sort((a, b) => a.nombre.localeCompare(b.nombre, "es")),
   };
 }
 

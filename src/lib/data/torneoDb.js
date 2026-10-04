@@ -26,6 +26,9 @@ function nombresDe(nombreCompleto) {
   return { apellido: palabras.at(-1) ?? nombreCompleto, nombreDisplay: nombreCompleto };
 }
 
+// "GAUNA STERIN, TOMÁS" -> "Tomás Gauna Sterin"
+export const nombreNatural = (nombreCompleto) => nombresDe(nombreCompleto).nombreDisplay;
+
 const numero = (v) => (v === null || v === undefined ? v : Number(v));
 
 // Lista de equipos, por orden alfabético.
