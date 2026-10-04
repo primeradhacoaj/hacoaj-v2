@@ -32,6 +32,15 @@ async function leerPliegues({ soloElUltimo = false } = {}) {
   return data;
 }
 
+// Altura vigente (cm) del jugador logueado, o null si no está cargada.
+async function miAltura() {
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return null;
+  const { data } = await supabase.from("perfiles").select("altura").eq("auth_user_id", user.id).maybeSingle();
+  return data?.altura ?? null;
+}
+
 // Devuelve la última medición de pliegues del jugador, o `pliegue: null` con un
 // mensaje si todavía no tiene ninguna.
 export async function obtenerMiPliegue() {
@@ -51,12 +60,16 @@ export async function obtenerMiPliegue() {
   }
 
   const p = filas[0];
+  const talla = await miAltura();
   return {
     status: "success",
     message: null,
     pliegue: {
       Peso: p.peso,
-      Talla: p.talla, // en centímetros
+      // La v1 ignoraba la talla del registro (casi siempre vacía) y mostraba la altura del
+      // perfil, que se mide una vez por año. `perfiles.altura` es esa altura vigente: la
+      // mantiene al día el trigger con la talla del pliegue más reciente.
+      Talla: talla ?? p.talla, // en centímetros
       IMC: p.imc,
       "pl tricipital": p.pl_tricipital,
       "pl subescapular": p.pl_subescapular,
