@@ -1,5 +1,6 @@
 import PantallaPanel from "@/components/PantallaPanel";
 import { obtenerWellnessPlantel } from "@/lib/data/encuestasPlantel";
+import { createClient } from "@/lib/supabase/server";
 import Wellness from "./Wellness";
 
 export const metadata = {
@@ -7,7 +8,7 @@ export const metadata = {
 };
 
 export default async function WellnessPage() {
-  const respuestas = await obtenerWellnessPlantel();
+  const respuestas = await obtenerWellnessPlantel(await createClient());
   return (
     <PantallaPanel
       titulo="Respuestas Wellness"

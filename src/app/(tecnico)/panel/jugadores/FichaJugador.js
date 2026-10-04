@@ -72,7 +72,13 @@ export default function FichaJugador({ jugador: j, esAdmin, historialFuerza, his
           <button ref={botonCerrar} type="button" className={styles.cerrar} onClick={onCerrar} aria-label="Cerrar">
             <Icono nombre="cerrar" tamano={16} strokeWidth={2} />
           </button>
-          <div className={styles.avatar}>{iniciales(j.nombre)}</div>
+          <div className={styles.avatar}>
+            {iniciales(j.nombre)}
+            {j.foto && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={j.foto} alt="" className={styles.foto} />
+            )}
+          </div>
           <div>
             <h2 id="ficha-nombre">{j.nombre}</h2>
             <div className={styles.metaCabecera}>

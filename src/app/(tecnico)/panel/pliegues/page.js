@@ -1,5 +1,6 @@
 import PantallaPanel from "@/components/PantallaPanel";
 import { obtenerHistorialPlieguesPlantel } from "@/lib/data/plantel";
+import { createClient } from "@/lib/supabase/server";
 import TablaHistorialPlantel from "../../_componentes/TablaHistorialPlantel";
 
 export const metadata = {
@@ -10,7 +11,7 @@ const COLUMNAS_PLIEGUES = [
   { key: "jugador", titulo: "Jugador" },
   { key: "fecha", titulo: "Fecha" },
   { key: "peso", titulo: "Peso (kg)", num: true },
-  { key: "talla", titulo: "Talla", num: true, decimales: 2 },
+  { key: "talla", titulo: "Talla (cm)", num: true, decimales: 1 },
   { key: "imc", titulo: "IMC", num: true },
   { key: "plTricipital", titulo: "Pl. Tricipital", num: true },
   { key: "plSubescapular", titulo: "Pl. Subescap.", num: true },
@@ -30,7 +31,7 @@ const COLUMNAS_PESOS = [
 ];
 
 export default async function PliequesPlantelPage() {
-  const { pliegues, pesos } = await obtenerHistorialPlieguesPlantel();
+  const { pliegues, pesos } = await obtenerHistorialPlieguesPlantel(await createClient());
 
   const pestanas = [
     { id: "pliegues", titulo: "Pliegues", columnas: COLUMNAS_PLIEGUES, filas: pliegues, archivo: "historial_pliegues", hoja: "Pliegues" },

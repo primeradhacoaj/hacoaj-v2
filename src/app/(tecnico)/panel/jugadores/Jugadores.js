@@ -105,7 +105,13 @@ export default function Jugadores({ jugadores, posiciones, historialFuerza, hist
                 <span className={cx(styles.insignia, j.estado === "Activo" ? styles.activo : styles.inactivo)}>
                   {j.estado}
                 </span>
-                <span className={styles.avatar}>{iniciales(j.nombre)}</span>
+                <span className={styles.avatar}>
+                  {iniciales(j.nombre)}
+                  {j.foto && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={j.foto} alt="" className={styles.foto} />
+                  )}
+                </span>
                 <span className={styles.info}>
                   <span className={styles.nombre}>{j.nombre}</span>
                   <span className={styles.meta}>

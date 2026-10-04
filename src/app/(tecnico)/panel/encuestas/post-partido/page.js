@@ -1,5 +1,6 @@
 import PantallaPanel from "@/components/PantallaPanel";
 import { obtenerPostPartidoPlantel } from "@/lib/data/encuestasPlantel";
+import { createClient } from "@/lib/supabase/server";
 import PostPartido from "./PostPartido";
 
 export const metadata = {
@@ -7,7 +8,7 @@ export const metadata = {
 };
 
 export default async function PostPartidoPage() {
-  const respuestas = await obtenerPostPartidoPlantel();
+  const respuestas = await obtenerPostPartidoPlantel(await createClient());
   return (
     <PantallaPanel
       titulo="Respuestas Post Partido"

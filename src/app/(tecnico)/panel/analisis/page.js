@@ -1,5 +1,6 @@
 import { obtenerResumenTorneoHacoaj } from "@/lib/data/analisisTorneo";
 import { obtenerJugadoresConHistorial } from "@/lib/data/plantel";
+import { createClient } from "@/lib/supabase/server";
 import AnalisisPanel from "./AnalisisPanel";
 
 export const metadata = {
@@ -7,9 +8,10 @@ export const metadata = {
 };
 
 export default async function AnalisisPage() {
+  const supabase = await createClient();
   const [{ jugadores, posiciones }, torneo] = await Promise.all([
-    obtenerJugadoresConHistorial(),
-    obtenerResumenTorneoHacoaj(),
+    obtenerJugadoresConHistorial(supabase),
+    obtenerResumenTorneoHacoaj(supabase),
   ]);
   return <AnalisisPanel jugadores={jugadores} posiciones={posiciones} torneo={torneo} />;
 }

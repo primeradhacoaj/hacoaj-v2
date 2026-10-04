@@ -1,27 +1,19 @@
-// Datos de PRUEBA del calendario del panel técnico: cumpleaños del plantel,
-// partidos de Hacoaj y testeos de fuerza/pliegues de un mes. En la v1 esto
-// salía de `/api/calendario`, que juntaba la hoja "Usuarios", el fixture y
-// las hojas de fuerza/pliegues. Acá se arma con los mismos datos que ya usan
-// Jugadores, Partidos y los historiales del plantel, así que es consistente
-// entre pantallas.
+// Eventos del calendario del panel técnico: cumpleaños (tabla `perfiles`),
+// partidos de Hacoaj, testeos de fuerza/pliegues y los eventos propios que
+// carga el cuerpo técnico. En la v1 esto salía de `/api/calendario`.
 //
-// Los partidos futuros del fixture (`torneo.js`) son un dataset aparte del
-// SQLite de Hacoaj (`torneoDb.js`, del que sale `obtenerPartidosHacoaj`) y no
-// coinciden entre sí (ver notas de `torneoDb.js`) — para no mostrar dos
-// fechas distintas para lo que se supone es el mismo partido, el calendario
-// solo usa los partidos ya jugados de Hacoaj.
+// Por ahora solo se muestran los partidos YA jugados de Hacoaj; los próximos
+// (goles vacíos en `torneo_partidos`) quedan para cuando se conecte el torneo.
 
-import { obtenerHistorialFuerzaPlantel, obtenerHistorialPlieguesPlantel, obtenerJugadoresPanel } from "./plantel";
 import { obtenerPartidosHacoaj } from "./partidos";
+
+function verificar({ data, error }) {
+  if (error) throw new Error(error.message);
+  return data;
+}
 
 function claveDe(anio, mes, dia) {
   return `${anio}-${String(mes).padStart(2, "0")}-${String(dia).padStart(2, "0")}`;
-}
-
-// "dd/mm/aaaa" → { dia, mes }
-function diaYMes(fechaCorta) {
-  const [dd, mm] = fechaCorta.split("/").map(Number);
-  return { dia: dd, mes: mm };
 }
 
 function agregar(eventos, clave, evento) {
@@ -35,10 +27,13 @@ function agregar(eventos, clave, evento) {
 export async function obtenerEventosDelMes(supabase, anio, mes) {
   const eventos = {};
 
-  const { jugadores } = await obtenerJugadoresPanel();
-  for (const j of jugadores) {
-    const { dia, mes: mesNacimiento } = diaYMes(j.nacimiento);
-    if (mesNacimiento === mes) agregar(eventos, claveDe(anio, mes, dia), { tipo: "cumple", nombre: j.nombre });
+  // Cumpleaños: todas las personas activas con fecha de nacimiento (jugadores, cuerpo técnico y staff).
+  const personas = verificar(
+    await supabase.from("perfiles").select("nombre, fecha_nacimiento").eq("estado", "activo").not("fecha_nacimiento", "is", null),
+  );
+  for (const p of personas) {
+    const [, mesNacimiento, dia] = p.fecha_nacimiento.split("-").map(Number);
+    if (mesNacimiento === mes) agregar(eventos, claveDe(anio, mes, dia), { tipo: "cumple", nombre: p.nombre });
   }
 
   const partidos = await obtenerPartidosHacoaj(supabase);
@@ -68,22 +63,18 @@ export async function obtenerEventosDelMes(supabase, anio, mes) {
     agregar(eventos, e.fecha, { tipo: "custom", id: e.id, titulo: e.titulo, icono: e.icono });
   }
 
-  const agregarTesteos = (filas, etiqueta) => {
-    const vistas = new Set();
-    for (const fila of filas) {
-      const { dia, mes: mesFila } = diaYMes(fila.fecha);
-      if (mesFila !== mes) continue;
-      const clave = claveDe(anio, mes, dia);
-      if (vistas.has(clave)) continue;
-      vistas.add(clave);
-      agregar(eventos, clave, { tipo: "testeo", nombre: etiqueta });
-    }
+  // Testeos: uno por fecha y tipo (el plantel entero se testea el mismo día).
+  const agregarTesteos = (fechas, etiqueta) => {
+    for (const fecha of new Set(fechas)) agregar(eventos, fecha, { tipo: "testeo", nombre: etiqueta });
   };
-  const { sentadilla, pecho } = await obtenerHistorialFuerzaPlantel();
-  const { pliegues } = await obtenerHistorialPlieguesPlantel();
-  agregarTesteos(sentadilla, "Testeo de Sentadilla");
-  agregarTesteos(pecho, "Testeo de Pecho");
-  agregarTesteos(pliegues, "Testeo de Pliegues");
+  const [fuerza, pliegues] = await Promise.all([
+    supabase.from("fuerza_tests").select("tipo, fecha_test").gte("fecha_test", primero).lte("fecha_test", ultimo),
+    supabase.from("pliegues").select("fecha").gte("fecha", primero).lte("fecha", ultimo),
+  ]);
+  const testsFuerza = verificar(fuerza);
+  agregarTesteos(testsFuerza.filter((t) => t.tipo === "sentadilla").map((t) => t.fecha_test), "Testeo de Sentadilla");
+  agregarTesteos(testsFuerza.filter((t) => t.tipo === "pecho").map((t) => t.fecha_test), "Testeo de Pecho");
+  agregarTesteos(verificar(pliegues).map((t) => t.fecha), "Testeo de Pliegues");
 
   return eventos;
 }

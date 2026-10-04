@@ -3,6 +3,7 @@ import {
   obtenerHistorialPlieguesPlantel,
   obtenerJugadoresPanel,
 } from "@/lib/data/plantel";
+import { createClient } from "@/lib/supabase/server";
 import Jugadores from "./Jugadores";
 
 export const metadata = {
@@ -10,10 +11,11 @@ export const metadata = {
 };
 
 export default async function JugadoresPage() {
+  const supabase = await createClient();
   const [{ jugadores, posiciones }, historialFuerza, historialPliegues] = await Promise.all([
-    obtenerJugadoresPanel(),
-    obtenerHistorialFuerzaPlantel(),
-    obtenerHistorialPlieguesPlantel(),
+    obtenerJugadoresPanel(supabase),
+    obtenerHistorialFuerzaPlantel(supabase),
+    obtenerHistorialPlieguesPlantel(supabase),
   ]);
 
   return (

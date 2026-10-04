@@ -18,7 +18,7 @@ const COLUMNAS_EXPORTAR = [
 // Respuestas de wellness de todo el plantel, para el panel técnico.
 export default function Wellness({ respuestas }) {
   const filas = useMemo(
-    () => respuestas.map((r) => ({ ...r, clave: `${r.jugador}|||${r.fecha}` })),
+    () => respuestas.map((r) => ({ ...r, clave: r.id })),
     [respuestas],
   );
 

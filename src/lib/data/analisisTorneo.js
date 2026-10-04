@@ -40,12 +40,12 @@ async function golesPorMinuto(equipoId, nombreHacoaj, temporada) {
 // Resumen del torneo para Hacoaj: estadísticas del equipo, cada jugador con
 // lo que hizo (partidos, titularidades, minutos, goles, tarjetas) y los goles
 // del equipo agrupados por minuto.
-export async function obtenerResumenTorneoHacoaj(temporada = "2026") {
+export async function obtenerResumenTorneoHacoaj(supabase, temporada = "2026") {
   const hacoaj = await equipoHacoaj();
   const [stats, plantelBase, { jugadores: fichas, posiciones }, goles] = await Promise.all([
     obtenerStatsEquipo(hacoaj.equipo_id, temporada),
     obtenerPlantel(hacoaj.equipo_id),
-    obtenerJugadoresPanel(),
+    obtenerJugadoresPanel(supabase),
     golesPorMinuto(hacoaj.equipo_id, hacoaj.nombre, temporada),
   ]);
 

@@ -212,6 +212,7 @@ class Personas:
             perfil = {
                 "id": pid,
                 "auth_user_id": uid("auth", login) if tiene_login else None,
+                "usuario": login if tiene_login else None,
                 "nombre": nombre,
                 "rol": rol,
                 "posicion": (norm(u["posicion"]).capitalize() or None),
@@ -235,7 +236,7 @@ class Personas:
                 avisar(f"'{nombre}' figura como externo pero ya está en Usuarios; se usa el de Usuarios")
                 continue
             perfil = {
-                "id": uid("perfil", n), "auth_user_id": None, "nombre": nombre, "rol": "jugador",
+                "id": uid("perfil", n), "auth_user_id": None, "usuario": None, "nombre": nombre, "rol": "jugador",
                 "posicion": None, "pierna_habil": None, "fecha_nacimiento": None, "altura": None,
                 "estado": "inactivo",
             }
@@ -655,7 +656,7 @@ def vincular_torneo(q, jugadores, personas, equiv, informe):
 # ───────────────────────── Armado del archivo SQL ─────────────────────────
 def construir_sql(personas, sql, informe, modo):
     ids_perfiles = [p["id"] for p in personas.perfiles]
-    perfiles_filas = [[p["id"], p["auth_user_id"], p["nombre"], p["rol"], p["posicion"], p["pierna_habil"],
+    perfiles_filas = [[p["id"], p["auth_user_id"], p["usuario"], p["nombre"], p["rol"], p["posicion"], p["pierna_habil"],
                        p["fecha_nacimiento"], p["altura"], p["estado"]] for p in personas.perfiles]
     cuentas = [[uid_, login, h] for login, uid_, h in personas.cuentas]
     cuentas_reales = personas.cuentas and [(l, u) for l, u, _ in personas.cuentas] or []
@@ -698,10 +699,10 @@ def construir_sql(personas, sql, informe, modo):
     )
     partes.append(insertar(
         "public.perfiles",
-        [("id", "uuid"), ("auth_user_id", "uuid"), ("nombre", "text"), ("rol", "public.rol_usuario"), ("posicion", "text"),
+        [("id", "uuid"), ("auth_user_id", "uuid"), ("usuario", "text"), ("nombre", "text"), ("rol", "public.rol_usuario"), ("posicion", "text"),
          ("pierna_habil", "text"), ("fecha_nacimiento", "date"), ("altura", "numeric"), ("estado", "public.estado_perfil")],
         perfiles_filas,
-        "on conflict (id) do update set auth_user_id = excluded.auth_user_id, nombre = excluded.nombre, rol = excluded.rol, "
+        "on conflict (id) do update set auth_user_id = excluded.auth_user_id, usuario = excluded.usuario, nombre = excluded.nombre, rol = excluded.rol, "
         "posicion = excluded.posicion, pierna_habil = excluded.pierna_habil, fecha_nacimiento = excluded.fecha_nacimiento, "
         "altura = excluded.altura, estado = excluded.estado"))
     # Orden que respeta las claves foráneas

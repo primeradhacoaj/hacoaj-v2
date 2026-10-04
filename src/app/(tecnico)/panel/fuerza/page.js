@@ -1,5 +1,6 @@
 import PantallaPanel from "@/components/PantallaPanel";
 import { obtenerHistorialFuerzaPlantel } from "@/lib/data/plantel";
+import { createClient } from "@/lib/supabase/server";
 import TablaHistorialPlantel from "../../_componentes/TablaHistorialPlantel";
 
 export const metadata = {
@@ -18,7 +19,7 @@ const COLUMNAS = [
 ];
 
 export default async function FuerzaPlantelPage() {
-  const { sentadilla, pecho } = await obtenerHistorialFuerzaPlantel();
+  const { sentadilla, pecho } = await obtenerHistorialFuerzaPlantel(await createClient());
 
   const pestanas = [
     { id: "sentadilla", titulo: "Sentadilla", columnas: COLUMNAS, filas: sentadilla, archivo: "historial_fuerza_sentadilla", hoja: "Sentadilla" },

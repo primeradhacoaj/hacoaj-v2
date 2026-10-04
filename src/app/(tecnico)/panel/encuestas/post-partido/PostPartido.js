@@ -24,7 +24,7 @@ export default function PostPartido({ respuestas }) {
       respuestas.map((r) => ({
         ...r,
         fecha: r.fechaPartido,
-        clave: `${r.jugador}|||${r.fechaPartido}`,
+        clave: r.id,
         golpesTexto: r.golpes.map((g) => g.tipo).join("; ") || "No",
       })),
     [respuestas],

@@ -1,44 +1,25 @@
-// Datos de PRUEBA del plantel de Hacoaj para el panel técnico: ficha de cada
-// jugador (datos personales) y el historial de fuerza, pliegues y pesos de
-// TODO el plantel. En la v1 esto salía de la hoja "Usuarios" y de las hojas
-// de fuerza/pliegues filtradas por jugador; acá se genera una sola vez, de
-// forma determinística, a partir del plantel de Hacoaj que ya arma
-// `torneoDb.js` (mismos 16 jugadores que se ven en Equipos y Planteles).
+// CAPA DE DATOS del plantel para el panel técnico, leída de Supabase: la ficha de
+// cada persona (tabla `perfiles`) y el historial de fuerza, pliegues y pesos de
+// TODO el plantel. En la v1 salía de la hoja "Usuarios" y de las hojas de
+// fuerza/pliegues; devuelve la misma forma que las respuestas de la v1
+// (`/api/jugadores-panel`, `/api/historial-fuerza-raw`, `/api/historial-pliegues-raw`).
 //
-// Devuelve lo mismo que las respuestas `/api/jugadores-panel`,
-// `/api/historial-fuerza-raw` y `/api/historial-pliegues-raw` de la v1.
+// Todas las funciones reciben el cliente de Supabase (el del servidor, ver
+// `@/lib/supabase/server`). Quién puede ver qué lo decide la base con RLS: el
+// técnico y el administrador leen todo; un jugador solo recibiría lo suyo.
 
-import { generador } from "@/lib/azar";
-import { formatearNombre } from "@/lib/torneo";
-import { obtenerEquipos, obtenerPlantel } from "./torneoDb";
+import { leerTodo } from "./leerTodo";
 
-// La v1 tiene 6 posiciones para elegir; el plantel de Hacoaj solo trae 4
-// puestos (Arquero/Defensor/Volante/Delantero), así que a Defensores y
-// Volantes se los reparte entre las dos variantes de la v1.
-const POSICIONES_TECNICO = {
-  Arquero: ["Arquero"],
-  Defensor: ["Central", "Lateral"],
-  Volante: ["Volante", "Mediocampista"],
-  Delantero: ["Delantero"],
-};
-
-const ALTURA_BASE = { Arquero: 188, Defensor: 182, Volante: 175, Delantero: 178 };
-
-function sinAcentos(texto) {
-  return texto
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase();
+// "2026-09-20" -> "20/09/2026" (el formato que usan las pantallas)
+function fechaCorta(iso) {
+  if (!iso) return "";
+  const [anio, mes, dia] = iso.split("T")[0].split("-");
+  return `${dia}/${mes}/${anio}`;
 }
 
-function fechaCorta(fecha) {
-  const dd = String(fecha.getDate()).padStart(2, "0");
-  const mm = String(fecha.getMonth() + 1).padStart(2, "0");
-  return `${dd}/${mm}/${fecha.getFullYear()}`;
-}
-
-function calcularEdad(fechaNacimiento) {
-  const nacimiento = new Date(fechaNacimiento);
+function calcularEdad(fechaIso) {
+  if (!fechaIso) return null;
+  const nacimiento = new Date(`${fechaIso}T00:00:00`);
   const hoy = new Date();
   let edad = hoy.getFullYear() - nacimiento.getFullYear();
   if (
@@ -50,188 +31,155 @@ function calcularEdad(fechaNacimiento) {
   return edad;
 }
 
-let cache = null;
+const numero = (v) => (v === null || v === undefined ? null : Number(v));
 
-async function base() {
-  if (cache) return cache;
+async function miRol(supabase) {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
+  const { data } = await supabase.from("perfiles").select("rol").eq("auth_user_id", user.id).maybeSingle();
+  return data?.rol ?? null;
+}
 
-  const equipos = await obtenerEquipos();
-  const hacoaj = equipos.find((e) => e.nombre.toLowerCase().includes("hacoaj"));
-  const plantelBase = await obtenerPlantel(hacoaj.equipo_id);
-  const azar = generador(4200);
-
-  const usados = new Set();
-  const jugadores = plantelBase.map((j, indice) => {
-    const nombre = formatearNombre(j.nombre_completo);
-    const [apellido] = j.nombre_completo.split(",");
-    let usuario = sinAcentos(apellido.trim()).replace(/[^a-z]/g, "");
-    if (usados.has(usuario)) usuario = `${usuario}${indice}`;
-    usados.add(usuario);
-
-    const variantes = POSICIONES_TECNICO[j.puesto];
-    const posicion = variantes[indice % variantes.length];
-    const altura = ALTURA_BASE[j.puesto] + Math.round(azar() * 14 - 7);
-
-    return {
-      jugador_id: j.jugador_id,
-      nombre,
-      usuario,
-      posicion,
-      piernaHabil: azar() < 0.75 ? "D" : azar() < 0.8 ? "I" : "Ambidiestro",
-      altura,
-      nacimiento: fechaCorta(new Date(j.fecha_nacimiento)),
-      edad: calcularEdad(j.fecha_nacimiento),
-      estado: indice === plantelBase.length - 1 ? "Inactivo" : "Activo",
-      rol_jugador: "jugador",
-    };
+// Lista de personas para la grilla de "Jugadores", con las posiciones presentes
+// (para el filtro). El técnico ve a los jugadores; el administrador ve además al
+// resto (técnico, staff y administradores), igual que en la v1.
+export async function obtenerJugadoresPanel(supabase) {
+  const rol = await miRol(supabase);
+  const perfiles = await leerTodo(() => {
+    let consulta = supabase
+      .from("perfiles")
+      .select("id, usuario, nombre, rol, posicion, pierna_habil, altura, fecha_nacimiento, estado, foto_path")
+      .order("nombre");
+    if (rol !== "administrador") consulta = consulta.eq("rol", "jugador");
+    return consulta;
   });
+  const pesos = await leerTodo(() => supabase.from("pesos").select("perfil_id, fecha, peso").order("fecha"));
 
-  // ── Fuerza: 3 registros de sentadilla y pecho por jugador, cada 6 semanas ──
-  const sentadilla = [];
-  const pecho = [];
-  const comentariosFuerza = [
-    "Buena progresión, seguimos con el plan.",
-    "Costó un poco esta vez, revisar descanso.",
-    "Mejoró la técnica notablemente.",
-    "",
-  ];
-  for (const j of jugadores) {
-    const azarJ = generador(5200 + j.jugador_id);
-    const pesoCorporal = 68 + Math.round(azarJ() * 22);
-    for (let i = 2; i >= 0; i--) {
-      const fecha = new Date();
-      fecha.setDate(fecha.getDate() - i * 42);
-      const fechaTexto = fechaCorta(fecha);
-      const comentario = comentariosFuerza[Math.floor(azarJ() * comentariosFuerza.length)];
-
-      const cargaSent = 60 + Math.round(azarJ() * 60);
-      const vmpSent = Number((0.35 + azarJ() * 0.35).toFixed(2));
-      const rmSent = Math.round(cargaSent * (1 + (0.6 - vmpSent) * 0.5));
-      sentadilla.push({
-        jugador: j.nombre,
-        fecha: fechaTexto,
-        peso: pesoCorporal,
-        carga: cargaSent,
-        vmp: vmpSent,
-        rm: rmSent,
-        fRelativa: Number((rmSent / pesoCorporal).toFixed(2)),
-        comentario,
-      });
-
-      const cargaPecho = 40 + Math.round(azarJ() * 45);
-      const vmpPecho = Number((0.25 + azarJ() * 0.3).toFixed(2));
-      const rmPecho = Math.round(cargaPecho * (1 + (0.45 - vmpPecho) * 0.5));
-      pecho.push({
-        jugador: j.nombre,
-        fecha: fechaTexto,
-        peso: pesoCorporal,
-        carga: cargaPecho,
-        vmp: vmpPecho,
-        rm: rmPecho,
-        fRelativa: Number((rmPecho / pesoCorporal).toFixed(2)),
-        comentario,
-      });
-    }
-  }
-
-  // ── Pliegues: 2 registros por jugador, cada 2 meses ──
-  const pliegues = [];
-  for (const j of jugadores) {
-    const azarJ = generador(6300 + j.jugador_id);
-    const talla = Number((j.altura / 100).toFixed(2));
-    for (let i = 1; i >= 0; i--) {
-      const fecha = new Date();
-      fecha.setDate(fecha.getDate() - i * 60);
-      const peso = 68 + Math.round(azarJ() * 20);
-      const pl = () => Math.round(4 + azarJ() * 14);
-      const seis = [pl(), pl(), pl(), pl(), pl(), pl()];
-      const sumatoria = seis.reduce((total, valor) => total + valor, 0);
-      pliegues.push({
-        jugador: j.nombre,
-        fecha: fechaCorta(fecha),
-        peso,
-        talla,
-        imc: Number((peso / (talla * talla)).toFixed(1)),
-        plTricipital: seis[0],
-        plSubescapular: seis[1],
-        plSupraespinal: seis[2],
-        plAbdominal: seis[3],
-        plMuslo: seis[4],
-        plPantorrilla: seis[5],
-        sumatoria6: sumatoria,
-        pesoIdeal: Math.round(peso - (sumatoria - 45) * 0.15),
-        comentario: "",
-      });
-    }
-  }
-
-  // ── Pesos: pesajes cada 2 semanas, últimos 4 ──
-  const pesos = [];
-  for (const j of jugadores) {
-    const azarJ = generador(7400 + j.jugador_id);
-    let peso = 68 + Math.round(azarJ() * 20);
-    for (let i = 3; i >= 0; i--) {
-      const fecha = new Date();
-      fecha.setDate(fecha.getDate() - i * 14);
-      peso += Math.round(azarJ() * 3 - 1.5);
-      pesos.push({ jugador: j.nombre, fecha: fechaCorta(fecha), peso });
-    }
-  }
-
-  cache = { jugadores, sentadilla, pecho, pliegues, pesos };
-  return cache;
-}
-
-// Lista del plantel para la grilla de "Jugadores", con las posiciones
-// presentes (para el filtro).
-export async function obtenerJugadoresPanel() {
-  const { jugadores, pesos } = await base();
   const ultimoPeso = new Map();
-  for (const p of pesos) ultimoPeso.set(p.jugador, p.peso);
+  for (const p of pesos) ultimoPeso.set(p.perfil_id, numero(p.peso)); // vienen de más viejo a más nuevo
 
-  const conPeso = jugadores.map((j) => ({ ...j, peso: ultimoPeso.get(j.nombre) ?? null }));
-  const posiciones = [...new Set(conPeso.map((j) => j.posicion))].sort((a, b) => a.localeCompare(b, "es"));
-  return { jugadores: conPeso, posiciones };
+  const jugadores = perfiles.map((p) => ({
+    jugador_id: p.id,
+    nombre: p.nombre,
+    usuario: p.usuario ?? "",
+    posicion: p.posicion ?? "",
+    piernaHabil: p.pierna_habil ?? "",
+    altura: numero(p.altura),
+    nacimiento: fechaCorta(p.fecha_nacimiento),
+    edad: calcularEdad(p.fecha_nacimiento),
+    estado: p.estado === "activo" ? "Activo" : "Inactivo",
+    rol_jugador: p.rol,
+    peso: ultimoPeso.get(p.id) ?? null,
+    foto: p.foto_path
+      ? supabase.storage.from("avatares").getPublicUrl(p.foto_path).data.publicUrl
+      : null,
+  }));
+
+  const posiciones = [...new Set(jugadores.map((j) => j.posicion).filter(Boolean))].sort((a, b) =>
+    a.localeCompare(b, "es"),
+  );
+  return { jugadores, posiciones };
 }
 
-// Historial de fuerza de todo el plantel (para la ficha de cada jugador y
-// para el historial completo del plantel).
-export async function obtenerHistorialFuerzaPlantel() {
-  const { sentadilla, pecho } = await base();
-  return { sentadilla, pecho };
+// Historial de fuerza de todo el plantel (para la ficha de cada jugador y para
+// el historial completo del plantel). Del más nuevo al más viejo.
+export async function obtenerHistorialFuerzaPlantel(supabase) {
+  const filas = await leerTodo(() =>
+    supabase
+      .from("fuerza_tests")
+      .select("tipo, fecha_test, peso, carga_externa, vmp, rm_estimado, f_relativa, comentario, perfiles(nombre)")
+      .order("fecha_test", { ascending: false })
+      .order("id"),
+  );
+  const comoFila = (f) => ({
+    jugador: f.perfiles.nombre,
+    fecha: fechaCorta(f.fecha_test),
+    peso: numero(f.peso),
+    carga: numero(f.carga_externa),
+    vmp: numero(f.vmp),
+    rm: numero(f.rm_estimado),
+    fRelativa: numero(f.f_relativa),
+    comentario: f.comentario ?? "",
+  });
+  return {
+    sentadilla: filas.filter((f) => f.tipo === "sentadilla").map(comoFila),
+    pecho: filas.filter((f) => f.tipo === "pecho").map(comoFila),
+  };
 }
 
-// Historial de pliegues y pesos de todo el plantel.
-export async function obtenerHistorialPlieguesPlantel() {
-  const { pliegues, pesos } = await base();
-  return { pliegues, pesos };
+// Historial de pliegues y pesos de todo el plantel. Del más nuevo al más viejo.
+export async function obtenerHistorialPlieguesPlantel(supabase) {
+  const [pliegues, pesos] = await Promise.all([
+    leerTodo(() =>
+      supabase
+        .from("pliegues")
+        .select(
+          "fecha, peso, talla, imc, pl_tricipital, pl_subescapular, pl_supraespinal, pl_abdominal, pl_muslo, pl_pantorrilla, sumatoria_6, peso_ideal, comentario, perfiles(nombre)",
+        )
+        .order("fecha", { ascending: false })
+        .order("id"),
+    ),
+    leerTodo(() =>
+      supabase.from("pesos").select("fecha, peso, perfiles(nombre)").order("fecha", { ascending: false }).order("id"),
+    ),
+  ]);
+  return {
+    pliegues: pliegues.map((p) => ({
+      jugador: p.perfiles.nombre,
+      fecha: fechaCorta(p.fecha),
+      peso: numero(p.peso),
+      talla: numero(p.talla), // en cm
+      imc: numero(p.imc),
+      plTricipital: numero(p.pl_tricipital),
+      plSubescapular: numero(p.pl_subescapular),
+      plSupraespinal: numero(p.pl_supraespinal),
+      plAbdominal: numero(p.pl_abdominal),
+      plMuslo: numero(p.pl_muslo),
+      plPantorrilla: numero(p.pl_pantorrilla),
+      sumatoria6: numero(p.sumatoria_6),
+      pesoIdeal: numero(p.peso_ideal),
+      comentario: p.comentario ?? "",
+    })),
+    pesos: pesos.map((p) => ({ jugador: p.perfiles.nombre, fecha: fechaCorta(p.fecha), peso: numero(p.peso) })),
+  };
 }
 
-// "dd/mm/aaaa" → Date, para ordenar cronológicamente.
+// "dd/mm/aaaa" -> Date, para ordenar cronológicamente.
 function comoFecha(fechaCorta) {
   const [dd, mm, aa] = fechaCorta.split("/").map(Number);
   return new Date(aa, mm - 1, dd);
 }
 
-// Jugadores del plantel con su propio historial de fuerza (sentadilla, pecho)
-// y pliegues, cada uno del más viejo al más nuevo (para el Dashboard de
-// análisis: promedios, evolución y comparar el último registro contra el
-// primero).
-export async function obtenerJugadoresConHistorial() {
-  const { jugadores, posiciones } = await obtenerJugadoresPanel();
-  const { sentadilla, pecho } = await obtenerHistorialFuerzaPlantel();
-  const { pliegues, pesos } = await obtenerHistorialPlieguesPlantel();
+// Jugadores ACTIVOS con su propio historial de fuerza (sentadilla, pecho),
+// pliegues y pesos, cada uno del más viejo al más nuevo (para el Dashboard de
+// análisis: promedios, evolución y comparar el último registro contra el primero).
+// Igual que el dashboard de la v1: solo jugadores activos, sin la cuenta de
+// prueba `hacoaj` ("Primera Hacoaj").
+export async function obtenerJugadoresConHistorial(supabase) {
+  const [{ jugadores, posiciones }, fuerza, composicion] = await Promise.all([
+    obtenerJugadoresPanel(supabase),
+    obtenerHistorialFuerzaPlantel(supabase),
+    obtenerHistorialPlieguesPlantel(supabase),
+  ]);
 
   const porOrden = (a, b) => comoFecha(a.fecha) - comoFecha(b.fecha);
   const de = (lista, nombre) => lista.filter((r) => r.jugador === nombre).sort(porOrden);
 
-  const conHistorial = jugadores.map((j) => ({
+  const activos = jugadores.filter(
+    (j) => j.rol_jugador === "jugador" && j.estado === "Activo" && j.usuario !== "hacoaj",
+  );
+  const conHistorial = activos.map((j) => ({
     ...j,
-    fuerzaSent: de(sentadilla, j.nombre),
-    fuerzaPecho: de(pecho, j.nombre),
-    pliegues: de(pliegues, j.nombre),
-    pesos: de(pesos, j.nombre),
+    fuerzaSent: de(fuerza.sentadilla, j.nombre),
+    fuerzaPecho: de(fuerza.pecho, j.nombre),
+    pliegues: de(composicion.pliegues, j.nombre),
+    pesos: de(composicion.pesos, j.nombre),
   }));
 
-  return { jugadores: conHistorial, posiciones };
+  return {
+    jugadores: conHistorial,
+    posiciones: [...new Set(conHistorial.map((j) => j.posicion).filter(Boolean))].sort((a, b) => a.localeCompare(b, "es")),
+  };
 }
