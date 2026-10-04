@@ -1,0 +1,304 @@
+/* Agregar, editar y eliminar jugadores — copiado del diseño de la v1 (jugadores.html). La carcasa de
+   las ventanas es la de la ficha (FichaJugador.module.css). */
+
+.formulario {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.campo label,
+.etiqueta {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+
+.campo input,
+.campo select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.campo input:focus,
+.campo select:focus {
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(0, 41, 107, 0.08);
+}
+
+.campo input:disabled,
+.campo select:disabled {
+  background: var(--off-white);
+  color: var(--text-mid);
+  cursor: not-allowed;
+}
+
+.ancho {
+  grid-column: 1 / -1;
+}
+
+.pista {
+  margin-top: 4px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--text-light);
+}
+
+/* ── Foto ── */
+.foto {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fotoVista {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--navy);
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.fotoVista img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.elegirFoto {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.elegirFoto:hover,
+.elegirFoto:focus-within {
+  border-color: var(--navy);
+  color: var(--navy);
+}
+
+.elegirFoto input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+/* ── Bloque de acceso a la app ── */
+.acceso {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(0, 41, 107, 0.02);
+}
+
+.tituloAcceso {
+  grid-column: 1 / -1;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.estadoAcceso {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.conAcceso {
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.sinAcceso {
+  background: var(--yellow-bg);
+  color: #92400e;
+}
+
+.error {
+  grid-column: 1 / -1;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--red-bg);
+  font-size: 12.5px;
+  color: var(--red);
+}
+
+/* ── Botones ── */
+.acciones {
+  display: flex;
+  grid-column: 1 / -1;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.boton {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.botonPrimario {
+  background: var(--navy);
+  color: #fff;
+}
+
+.botonPrimario:hover:not(:disabled) {
+  background: var(--navy-mid);
+}
+
+.botonPrimario:disabled,
+.botonPeligro:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.botonSecundario {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+}
+
+.botonSecundario:hover {
+  border-color: var(--navy);
+  color: var(--navy);
+}
+
+.botonPeligro {
+  background: var(--red);
+  color: #fff;
+}
+
+.botonPeligro:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+/* ── Ventanas de agregar / eliminar ── */
+.ventanaEstrecha {
+  max-width: 600px;
+}
+
+.ventanaChica {
+  max-width: 460px;
+}
+
+.cabeceraPeligro {
+  background: linear-gradient(135deg, #7f1d1d, #991b1b) !important;
+}
+
+.cabeceraAgregar .iconoCabecera {
+  background: rgba(5, 150, 105, 0.2);
+  border-color: rgba(5, 150, 105, 0.3);
+}
+
+.iconoCabecera {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.textoCabecera h2 {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.metaCabecera {
+  margin-top: 4px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.cuerpoEliminar {
+  padding: 30px;
+  text-align: center;
+}
+
+.cuerpoEliminar p {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: var(--text-mid);
+}
+
+.nombreEliminar {
+  margin-bottom: 14px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.lista {
+  margin: 0 auto 18px;
+  padding: 0;
+  list-style: none;
+  font-size: 12.5px;
+  color: var(--text-mid);
+}
+
+.lista li {
+  padding: 3px 0;
+}
+
+.advertencia {
+  margin-bottom: 20px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--red-bg);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--red);
+}
+
+.botonesCentro {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+@media (max-width: 500px) {
+  .formulario,
+  .acceso {
+    grid-template-columns: 1fr;
+  }
+}

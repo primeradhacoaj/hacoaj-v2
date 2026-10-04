@@ -35,24 +35,25 @@ function calcularEdad(fechaIso) {
 
 const numero = (v) => (v === null || v === undefined ? null : Number(v));
 
-async function miRol(supabase) {
+// Quién está mirando: su rol y su id de login (para marcar "mi propia cuenta" en la lista).
+async function quienSoy(supabase) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return null;
+  if (!user) return { rol: null, authId: null };
   const { data } = await supabase.from("perfiles").select("rol").eq("auth_user_id", user.id).maybeSingle();
-  return data?.rol ?? null;
+  return { rol: data?.rol ?? null, authId: user.id };
 }
 
 // Lista de personas para la grilla de "Jugadores", con las posiciones presentes
 // (para el filtro). El técnico ve a los jugadores; el administrador ve además al
 // resto (técnico, staff y administradores), igual que en la v1.
 export async function obtenerJugadoresPanel(supabase) {
-  const rol = await miRol(supabase);
+  const { rol, authId } = await quienSoy(supabase);
   const perfiles = await leerTodo(() => {
     let consulta = supabase
       .from("perfiles")
-      .select("id, usuario, nombre, rol, posicion, pierna_habil, altura, fecha_nacimiento, estado, foto_path")
+      .select("id, auth_user_id, usuario, nombre, rol, posicion, pierna_habil, altura, fecha_nacimiento, estado, foto_path")
       .order("nombre");
     if (rol !== "administrador") consulta = consulta.eq("rol", "jugador");
     return consulta;
@@ -74,6 +75,11 @@ export async function obtenerJugadoresPanel(supabase) {
     edad: calcularEdad(p.fecha_nacimiento),
     estado: p.estado === "activo" ? "Activo" : "Inactivo",
     rol_jugador: p.rol,
+    // Para editar (solo lo usa el administrador): fecha en formato ISO, ruta de la foto y si tiene login.
+    fechaNacimiento: p.fecha_nacimiento ?? "",
+    fotoPath: p.foto_path ?? null,
+    tieneAcceso: p.auth_user_id !== null,
+    esMio: p.auth_user_id !== null && p.auth_user_id === authId,
     peso: ultimoPeso.get(p.id) ?? null,
     foto: p.foto_path
       ? supabase.storage.from("avatares").getPublicUrl(p.foto_path).data.publicUrl

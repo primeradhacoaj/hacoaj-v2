@@ -1,12 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useCallback, useMemo, useState } from "react";
 import Aviso from "@/components/Aviso";
 import Icono from "@/components/Icono";
 import { useSesion } from "@/components/SesionProvider";
 import { cx } from "@/lib/cx";
 import { useAviso } from "@/lib/useAviso";
+import AgregarJugador from "./AgregarJugador";
+import EliminarJugador from "./EliminarJugador";
 import FichaJugador from "./FichaJugador";
 import styles from "./Jugadores.module.css";
 
@@ -15,13 +18,20 @@ import styles from "./Jugadores.module.css";
 export default function Jugadores({ jugadores, posiciones, historialFuerza, historialPliegues }) {
   const { sesion } = useSesion();
   const esAdmin = sesion.rol === "administrador";
-  const { mensaje, visible, mostrar } = useAviso();
-  const avisoPronto = () => mostrar("Esta sección se está migrando a la nueva versión");
+  const router = useRouter();
+  const { mensaje, tipo, visible, mostrar } = useAviso();
 
   const [busqueda, setBusqueda] = useState("");
   const [posicion, setPosicion] = useState("");
   const [estado, setEstado] = useState("");
-  const [elegido, setElegido] = useState(null);
+  const [elegidoId, setElegidoId] = useState(null);
+  const [agregando, setAgregando] = useState(false);
+  const [eliminando, setEliminando] = useState(false);
+
+  // La ficha se arma con los datos más nuevos de la lista (se actualizan al guardar un cambio).
+  const elegido = jugadores.find((j) => j.jugador_id === elegidoId) ?? null;
+  const cerrarAgregar = useCallback(() => setAgregando(false), []);
+  const cerrarEliminar = useCallback(() => setEliminando(false), []);
 
   const filtrados = useMemo(() => {
     const texto = busqueda.trim().toLowerCase();
@@ -82,7 +92,7 @@ export default function Jugadores({ jugadores, posiciones, historialFuerza, hist
             {filtrados.length} {filtrados.length === 1 ? "jugador" : "jugadores"}
           </span>
           {esAdmin && (
-            <button type="button" className={styles.botonAgregar} onClick={avisoPronto}>
+            <button type="button" className={styles.botonAgregar} onClick={() => setAgregando(true)}>
               <Icono nombre="mas" tamano={16} strokeWidth={2} />
               Agregar jugador
             </button>
@@ -100,7 +110,7 @@ export default function Jugadores({ jugadores, posiciones, historialFuerza, hist
                 key={j.jugador_id}
                 type="button"
                 className={styles.tarjeta}
-                onClick={() => setElegido(j)}
+                onClick={() => setElegidoId(j.jugador_id)}
               >
                 <span className={cx(styles.insignia, j.estado === "Activo" ? styles.activo : styles.inactivo)}>
                   {j.estado}
@@ -130,12 +140,41 @@ export default function Jugadores({ jugadores, posiciones, historialFuerza, hist
           esAdmin={esAdmin}
           historialFuerza={historialFuerza}
           historialPliegues={historialPliegues}
-          onCerrar={() => setElegido(null)}
-          onAccionPendiente={avisoPronto}
+          esMiPerfil={elegido.esMio}
+          onCerrar={() => setElegidoId(null)}
+          onGuardado={(extra) => {
+            mostrar(`Cambios guardados${extra}`, extra ? "info" : "exito");
+            router.refresh();
+          }}
+          onEliminar={() => setEliminando(true)}
         />
       )}
 
-      <Aviso mensaje={mensaje} visible={visible} />
+      {agregando && (
+        <AgregarJugador
+          alCerrar={cerrarAgregar}
+          alAgregado={(nombre, extra) => {
+            setAgregando(false);
+            mostrar(`${nombre} agregado${extra}`, extra ? "info" : "exito");
+            router.refresh();
+          }}
+        />
+      )}
+
+      {eliminando && elegido && (
+        <EliminarJugador
+          jugador={elegido}
+          alCerrar={cerrarEliminar}
+          alEliminado={(nombre) => {
+            setEliminando(false);
+            setElegidoId(null);
+            mostrar(`${nombre} eliminado`, "exito");
+            router.refresh();
+          }}
+        />
+      )}
+
+      <Aviso mensaje={mensaje} tipo={tipo} visible={visible} />
     </>
   );
 }

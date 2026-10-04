@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Icono from "@/components/Icono";
 import { cx } from "@/lib/cx";
 import { exportarFichaJugador } from "@/lib/exportarFichaJugador";
+import EditarJugador from "./EditarJugador";
 import styles from "./FichaJugador.module.css";
 
 const PESTANAS_BASE = [
@@ -25,10 +26,19 @@ function valorOGuion(valor) {
 }
 
 // Ficha completa de un jugador, copiada de la v1: datos personales y el
-// historial de fuerza, pliegues y pesos, con exportación a Excel. El alta,
-// la edición y la baja (solo administrador) todavía no están disponibles:
-// se hacen junto con las pantallas de carga de datos.
-export default function FichaJugador({ jugador: j, esAdmin, historialFuerza, historialPliegues, onCerrar, onAccionPendiente }) {
+// historial de fuerza, pliegues y pesos, con exportación a Excel. El
+// administrador además puede editar a la persona (y su acceso a la app) y
+// eliminarla.
+export default function FichaJugador({
+  jugador: j,
+  esAdmin,
+  esMiPerfil,
+  historialFuerza,
+  historialPliegues,
+  onCerrar,
+  onGuardado,
+  onEliminar,
+}) {
   const [pestana, setPestana] = useState("info");
   const botonCerrar = useRef(null);
   const alCerrar = useRef(onCerrar);
@@ -126,8 +136,8 @@ export default function FichaJugador({ jugador: j, esAdmin, historialFuerza, his
                   <Icono nombre="descargar" tamano={16} strokeWidth={2} />
                   Descargar Excel
                 </button>
-                {esAdmin && (
-                  <button type="button" className={styles.botonEliminar} onClick={onAccionPendiente}>
+                {esAdmin && !esMiPerfil && (
+                  <button type="button" className={styles.botonEliminar} onClick={onEliminar}>
                     Eliminar jugador
                   </button>
                 )}
@@ -198,10 +208,15 @@ export default function FichaJugador({ jugador: j, esAdmin, historialFuerza, his
           )}
 
           {pestana === "editar" && (
-            <p className={styles.editarAviso}>
-              Agregar, editar y dar de baja jugadores todavía no está disponible: se hace junto con las
-              pantallas de carga de datos.
-            </p>
+            <EditarJugador
+              jugador={j}
+              esMiPerfil={esMiPerfil}
+              alGuardado={(extra) => {
+                setPestana("info");
+                onGuardado(extra);
+              }}
+              alCancelar={() => setPestana("info")}
+            />
           )}
         </div>
       </div>
