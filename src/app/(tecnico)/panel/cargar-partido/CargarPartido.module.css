@@ -1,0 +1,1153 @@
+/* Cargar partido — copiado del diseño original de la v1 (cargar_partido.html). Usa los colores
+   del panel técnico (--navy, --border, --text-mid…, definidos en (tecnico)/layout.module.css). */
+
+/* ── Pasos ── */
+.pasos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 4px 16px 12px;
+}
+
+.paso {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: color 0.2s;
+}
+
+.pasoActivo {
+  color: var(--navy);
+}
+
+.pasoHecho {
+  color: var(--green);
+}
+
+.numeroPaso {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.pasoActivo .numeroPaso {
+  border-color: var(--navy);
+  background: var(--navy);
+  color: #fff;
+}
+
+.pasoHecho .numeroPaso {
+  border-color: var(--green);
+  background: var(--green);
+  color: #fff;
+}
+
+.separadorPaso {
+  width: 40px;
+  height: 2px;
+  margin: 0 6px;
+  background: var(--border);
+}
+
+.separadorHecho {
+  background: var(--green);
+}
+
+/* ── Tarjeta y campos ── */
+.tarjeta {
+  margin-bottom: 16px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: var(--card-shadow);
+}
+
+.tituloTarjeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.subtituloTarjeta {
+  margin-bottom: 18px;
+  font-size: 12px;
+  color: var(--text-mid);
+}
+
+.etiqueta {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-mid);
+}
+
+.campo {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.campo:focus {
+  border-color: var(--navy);
+}
+
+.grupo {
+  margin-bottom: 14px;
+}
+
+.fila {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.filaResultado {
+  display: grid;
+  grid-template-columns: 1fr 80px 80px;
+  gap: 14px;
+  margin-bottom: 4px;
+}
+
+.marcador {
+  padding: 10px 8px;
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.centrado {
+  text-align: center;
+}
+
+.guion {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 14px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-light);
+}
+
+.condicion {
+  display: flex;
+  overflow: hidden;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+}
+
+.botonCondicion {
+  flex: 1;
+  padding: 9px;
+  border: none;
+  background: #fff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-mid);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.botonCondicionActivo {
+  background: var(--navy);
+  color: #fff;
+}
+
+/* ── Estadísticas opcionales ── */
+.alternarEstadisticas {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px 0;
+  border: none;
+  border-top: 1px solid var(--border);
+  background: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy);
+  cursor: pointer;
+  user-select: none;
+}
+
+.flechaEstadisticas {
+  display: inline-flex;
+  transition: transform 0.2s;
+}
+
+.flechaAbierta {
+  transform: rotate(180deg);
+}
+
+.camposEstadisticas {
+  padding-top: 8px;
+}
+
+.rotuloSeccion {
+  margin: 12px 0 6px;
+  padding-top: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-mid);
+}
+
+/* ── Botones ── */
+.botonPrimario {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 8px;
+  padding: 13px;
+  border: none;
+  border-radius: 10px;
+  background: var(--navy);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.botonPrimario:hover:not(:disabled) {
+  background: var(--navy-mid);
+}
+
+.botonPrimario:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.botonSecundario {
+  padding: 10px 20px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.botonSecundario:hover {
+  border-color: var(--navy);
+  color: var(--navy);
+}
+
+.navegacion {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.navegacion .botonPrimario {
+  flex: 1;
+  margin-top: 0;
+}
+
+.navegacion .botonSecundario {
+  flex: 0 0 auto;
+}
+
+/* ── Formación ── */
+.formaciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.botonFormacion {
+  padding: 8px 16px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-mid);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.botonFormacion:hover {
+  border-color: var(--navy);
+  color: var(--navy);
+}
+
+.botonFormacionActivo,
+.botonFormacionActivo:hover {
+  border-color: var(--navy);
+  background: var(--navy);
+  color: #fff;
+}
+
+.contador {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+  font-size: 12px;
+  color: var(--text-mid);
+}
+
+.contador strong {
+  color: var(--navy);
+}
+
+.capitan {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 10px 14px;
+  border: 1.5px solid rgba(251, 191, 36, 0.25);
+  border-radius: 10px;
+  background: rgba(251, 191, 36, 0.06);
+}
+
+.capitan label {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.capitan select {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 12px;
+  outline: none;
+}
+
+.capitan select:focus {
+  border-color: var(--navy);
+}
+
+.armado {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 20px;
+  align-items: start;
+}
+
+/* ── Cancha ── */
+.contenedorCancha {
+  position: relative;
+  max-width: 460px;
+  margin: 0 auto;
+}
+
+.cancha {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 68 / 80;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 10px;
+  background: linear-gradient(180deg, #2e8b47 0%, #2c8343 48%, #30914c 50%, #2c8343 52%, #2e8b47 100%);
+}
+
+.lineaMedia {
+  position: absolute;
+  top: 50%;
+  right: 4%;
+  left: 4%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.circuloCentral {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 22%;
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.areaArriba,
+.areaAbajo,
+.arcoArriba,
+.arcoAbajo {
+  position: absolute;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.areaArriba {
+  top: 0;
+  right: 22%;
+  left: 22%;
+  height: 18%;
+  border-top: none;
+}
+
+.areaAbajo {
+  right: 22%;
+  bottom: 0;
+  left: 22%;
+  height: 18%;
+  border-bottom: none;
+}
+
+.arcoArriba {
+  top: 0;
+  right: 36%;
+  left: 36%;
+  height: 7%;
+  border-top: none;
+}
+
+.arcoAbajo {
+  right: 36%;
+  bottom: 0;
+  left: 36%;
+  height: 7%;
+  border-bottom: none;
+}
+
+.puntoCentral {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+}
+
+.puesto {
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border-radius: 50%;
+  font-family: inherit;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.puestoVacio {
+  border: 2px dashed rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.puestoVacio:hover,
+.resaltado {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.puestoLleno {
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  background: var(--navy);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.puestoLleno:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.etiquetaPuesto {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.etiquetaPuestoVacio {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.nombrePuesto {
+  position: absolute;
+  bottom: -16px;
+  max-width: 70px;
+  overflow: hidden;
+  font-size: 8px;
+  font-weight: 600;
+  color: #fff;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.insigniaCapitan {
+  position: absolute;
+  top: -6px;
+  right: -4px;
+  z-index: 11;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #fff;
+  border-radius: 50%;
+  background: #fbbf24;
+  font-size: 8px;
+  font-weight: 800;
+  color: #000;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.avatarPuesto {
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* ── Banco ── */
+.banco {
+  margin-top: 16px;
+}
+
+.tituloBanco {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-mid);
+}
+
+.lugaresBanco {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.lugarBanco {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 90px;
+  height: 48px;
+  padding: 0;
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  background: none;
+  font-family: inherit;
+  font-size: 11px;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+}
+
+.lugarBanco:hover,
+.lugarBancoResaltado {
+  border-color: var(--navy);
+  background: rgba(0, 41, 107, 0.03);
+  color: var(--navy);
+}
+
+.lugarBancoLleno {
+  border: 2px solid var(--navy);
+  background: rgba(0, 41, 107, 0.05);
+  color: var(--text);
+}
+
+.nombreBanco {
+  max-width: 50px;
+  overflow: hidden;
+  font-size: 10px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.avatarBanco {
+  width: 26px;
+  height: 26px;
+  font-size: 9px;
+}
+
+/* ── Jugadores (lista) ── */
+.listaJugadores {
+  position: sticky;
+  top: 72px;
+  max-height: 520px;
+  padding: 16px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: var(--card-shadow);
+}
+
+.tituloLista {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.cuentaLista {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-light);
+}
+
+.buscador {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 12px;
+  outline: none;
+}
+
+.buscador:focus {
+  border-color: var(--navy);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tarjetaJugador {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background: none;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.12s;
+  touch-action: none;
+  user-select: none;
+}
+
+.tarjetaJugador:hover {
+  background: rgba(0, 41, 107, 0.04);
+}
+
+.jugadorElegido {
+  border-color: var(--navy);
+  background: rgba(0, 41, 107, 0.06);
+}
+
+.jugadorUbicado {
+  opacity: 0.35;
+  cursor: default;
+  pointer-events: none;
+}
+
+.avatar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--navy);
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.avatar img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nombreJugador {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fantasma {
+  position: fixed;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #fff;
+  opacity: 0.85;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+  pointer-events: none;
+}
+
+/* ── Ventana para elegir el jugador de un puesto ── */
+.fondoVentana {
+  position: fixed;
+  inset: 0;
+  z-index: 199;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.ventana {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+  max-height: 420px;
+  padding: 18px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.22);
+  transform: translate(-50%, -50%);
+}
+
+.cabeceraVentana {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.tituloVentana {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.puestoVentana {
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--pink);
+}
+
+.cerrarVentana {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background: var(--off-white);
+  font-size: 20px;
+  color: var(--text-mid);
+  cursor: pointer;
+}
+
+.cerrarVentana:hover {
+  background: #eee;
+  color: var(--text);
+}
+
+.buscadorVentana {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 9px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.buscadorVentana:focus {
+  border-color: var(--navy);
+}
+
+.listaVentana {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.itemVentana {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.itemVentana:hover {
+  background: rgba(0, 41, 107, 0.06);
+}
+
+.vacioVentana {
+  padding: 16px;
+  font-size: 12px;
+  text-align: center;
+  color: var(--text-light);
+}
+
+/* ── Minutos y estadísticas ── */
+.scrollTabla {
+  overflow-x: auto;
+}
+
+.tabla {
+  width: 100%;
+  margin-top: 8px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.tabla th {
+  padding: 8px 10px;
+  border-bottom: 2px solid var(--border);
+  font-size: 10px;
+  font-weight: 600;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  color: var(--text-light);
+}
+
+.tabla td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.tabla tr:last-child td {
+  border-bottom: none;
+}
+
+.filaSuplente td {
+  background: rgba(0, 41, 107, 0.02);
+}
+
+.filaSuplente td:first-child {
+  padding-left: 28px;
+}
+
+.filaSalio td {
+  color: var(--text-mid);
+}
+
+.entradaMinutos {
+  width: 56px;
+  padding: 6px 8px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  text-align: center;
+  outline: none;
+}
+
+.entradaEstadistica {
+  width: 42px;
+  padding: 5px 4px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  text-align: center;
+  outline: none;
+}
+
+.entradaMinutos:focus,
+.entradaEstadistica:focus,
+.entradaMinutoGol:focus,
+.selectAsistencia:focus {
+  border-color: var(--navy);
+}
+
+.datoGol {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.rotuloGol {
+  font-size: 10px;
+  white-space: nowrap;
+  color: var(--text-light);
+}
+
+.entradaMinutoGol {
+  width: 56px;
+  padding: 3px 4px;
+  border: 1.5px solid var(--border);
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 11px;
+  text-align: center;
+  outline: none;
+}
+
+.selectAsistencia {
+  width: 100%;
+  padding: 3px 4px;
+  border: 1.5px solid var(--border);
+  border-radius: 5px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 11px;
+  outline: none;
+}
+
+.insigniaPosicion {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(0, 41, 107, 0.08);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.nombreEntrada {
+  font-weight: 600;
+}
+
+.marcaCapitan {
+  font-size: 10px;
+  font-weight: 700;
+  color: #d97706;
+}
+
+.infoCambio {
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--green);
+}
+
+.casilla {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--navy);
+}
+
+.botonCambiar {
+  padding: 5px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.botonCambiar:hover {
+  border-color: var(--navy);
+  color: var(--navy);
+}
+
+.botonDeshacer {
+  margin-left: 6px;
+  padding: 3px 8px;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  border-radius: 5px;
+  background: rgba(220, 38, 38, 0.06);
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--red);
+  cursor: pointer;
+}
+
+.botonDeshacer:hover {
+  background: rgba(220, 38, 38, 0.12);
+}
+
+.formularioCambio td {
+  padding: 6px 10px;
+  background: rgba(0, 41, 107, 0.03);
+}
+
+.camposCambio {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.camposCambio select {
+  max-width: 140px;
+  padding: 5px 6px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 11px;
+  outline: none;
+}
+
+.confirmarCambio {
+  padding: 4px 10px;
+  border: none;
+  border-radius: 6px;
+  background: var(--green);
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+}
+
+.cancelarCambio {
+  padding: 4px 10px;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  border-radius: 6px;
+  background: rgba(220, 38, 38, 0.08);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--red);
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .tarjeta {
+    padding: 18px 16px;
+  }
+
+  .armado {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .listaJugadores {
+    position: static;
+    max-height: 260px;
+  }
+
+  .puesto {
+    width: 40px;
+    height: 40px;
+  }
+
+  .avatarPuesto {
+    font-size: 11px;
+  }
+
+  .etiquetaPuesto {
+    font-size: 7px;
+  }
+
+  .nombrePuesto {
+    bottom: -14px;
+    font-size: 7px;
+  }
+
+  .lugarBanco {
+    width: 80px;
+    height: 42px;
+  }
+
+  .filaResultado {
+    grid-template-columns: 1fr 70px 70px;
+  }
+
+  .separadorPaso {
+    width: 24px;
+  }
+
+  .tabla th,
+  .tabla td {
+    padding: 6px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 380px) {
+  .puesto {
+    width: 34px;
+    height: 34px;
+  }
+
+  .botonFormacion {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+}

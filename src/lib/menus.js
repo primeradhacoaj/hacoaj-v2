@@ -197,7 +197,6 @@ const MENU_TECNICO = [
         tono: "purple",
         href: "/panel/cargar-partido",
         etiquetas: ["Formación", "Resultado", "Estadísticas"],
-        disponible: false,
         soloAdmin: true,
       },
     ],

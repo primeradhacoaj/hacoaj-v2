@@ -273,3 +273,42 @@ export async function obtenerEstadisticasJugador(supabase, posicion) {
     partidos: detallados,
   };
 }
+
+// ── Cargar partido (solo administrador) ─────────────────────────────────────
+
+// Lo que necesita la pantalla "Cargar partido": los rivales posibles (equipos del torneo, sin
+// Hacoaj ni AFA) y los jugadores activos del plantel con su foto (sin la cuenta de prueba).
+export async function obtenerOpcionesCargarPartido(supabase) {
+  const [equipos, perfiles] = await Promise.all([
+    supabase.from("torneo_equipos").select("nombre").order("nombre").then(verificar),
+    supabase
+      .from("perfiles")
+      .select("id, nombre, foto_path, usuario")
+      .eq("rol", "jugador")
+      .eq("estado", "activo")
+      .order("nombre")
+      .then(verificar),
+  ]);
+
+  return {
+    rivales: equipos.map((e) => e.nombre).filter((n) => !/hacoaj/i.test(n) && n !== "AFA"),
+    jugadores: perfiles
+      .filter((p) => p.usuario !== "hacoaj")
+      .map((p) => ({
+        id: p.id,
+        nombre: p.nombre,
+        foto: p.foto_path ? supabase.storage.from("avatares").getPublicUrl(p.foto_path).data.publicUrl : null,
+      })),
+  };
+}
+
+// Guarda el partido completo (partido, jugadores, goles, cambios y tarjetas) en una sola
+// transacción de la base. Devuelve { ok: true } o { ok: false, error: "mensaje para mostrar" }.
+export async function guardarPartidoHacoaj(supabase, partido) {
+  const { error } = await supabase.rpc("guardar_partido_hacoaj", { p: partido });
+  if (!error) return { ok: true };
+
+  if (error.code === "23505") return { ok: false, error: "Ya hay un partido cargado en esa fecha" };
+  if (error.code === "42501") return { ok: false, error: "Solo el administrador puede cargar partidos" };
+  return { ok: false, error: "No se pudo guardar el partido. Revisá los datos e intentá de nuevo" };
+}
