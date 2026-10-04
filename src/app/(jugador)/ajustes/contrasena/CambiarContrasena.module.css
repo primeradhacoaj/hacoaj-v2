@@ -1,0 +1,7 @@
+.tarjeta {
+  margin-bottom: 12px;
+  padding: 24px 20px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 41, 107, 0.06);
+}

@@ -244,3 +244,8 @@
     transition: none;
   }
 }
+
+.cuerpoContrasena {
+  max-width: 420px;
+  padding: 16px 20px 20px;
+}

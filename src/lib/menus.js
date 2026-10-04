@@ -79,6 +79,14 @@ export const MENU_JUGADOR = [
         disponible: false,
         aviso: "Las notificaciones se activarán en una próxima versión",
       },
+      {
+        id: "contrasena",
+        titulo: "Cambiar contraseña",
+        descripcion: "Elegí una contraseña nueva para tu cuenta",
+        icono: "candado",
+        tono: "navy",
+        href: "/ajustes/contrasena",
+      },
     ],
   },
   {
@@ -267,11 +275,11 @@ const MENU_TECNICO = [
         id: "configuracion",
         titulo: "Configuración",
         descripcion:
-          "Notificaciones push y personalización de los accesos directos del panel principal.",
+          "Notificaciones push, cambio de contraseña y personalización de los accesos directos del panel principal.",
         icono: "config",
         tono: "gris",
         href: "/panel/configuracion",
-        etiquetas: ["Notificaciones", "Accesos rápidos"],
+        etiquetas: ["Notificaciones", "Contraseña", "Accesos rápidos"],
       },
       {
         id: "analytics",

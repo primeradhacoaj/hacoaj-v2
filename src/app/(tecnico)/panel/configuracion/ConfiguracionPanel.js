@@ -1,6 +1,7 @@
 "use client";
 
 import Aviso from "@/components/Aviso";
+import FormularioContrasena from "@/components/FormularioContrasena";
 import IconoPanel from "@/components/IconoPanel";
 import { cx } from "@/lib/cx";
 import { AVISO_MIGRANDO, TODOS_LOS_ACCESOS } from "@/lib/menus";
@@ -22,7 +23,7 @@ export default function ConfiguracionPanel() {
   return (
     <>
       <p className={styles.descripcion}>
-        Notificaciones push y personalización de los accesos directos del panel principal.
+        Notificaciones push, tu contraseña y personalización de los accesos directos del panel principal.
       </p>
 
       <h2 className={styles.rotulo}>Notificaciones</h2>
@@ -36,6 +37,17 @@ export default function ConfiguracionPanel() {
         </span>
         <IconoPanel nombre="flechaSalir" tamano={17} className={styles.flechaEnlace} />
       </button>
+
+      <h2 className={styles.rotulo}>Cuenta</h2>
+      <div className={styles.tarjeta}>
+        <div className={styles.cabeceraTarjeta}>
+          <div className={styles.tituloTarjeta}>Cambiar contraseña</div>
+          <div className={styles.subTarjeta}>Elegí una contraseña nueva para tu cuenta</div>
+        </div>
+        <div className={styles.cuerpoContrasena}>
+          <FormularioContrasena />
+        </div>
+      </div>
 
       <h2 className={styles.rotulo}>Accesos directos del menú</h2>
       <div className={styles.tarjeta}>
