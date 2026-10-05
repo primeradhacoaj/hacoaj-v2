@@ -41,7 +41,8 @@ def cargar_env_local():
 
 
 def conectar():
-    url = os.environ.get("SCRAPER_DB_URL")
+    # Al pegar el secreto en GitHub suele colarse un salto de línea al final: se descarta.
+    url = os.environ.get("SCRAPER_DB_URL", "").strip()
     if not url:
         sys.exit("Falta la variable SCRAPER_DB_URL (la conexión a Supabase del usuario `scraper`).")
     return psycopg2.connect(url, connect_timeout=30)
