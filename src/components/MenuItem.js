@@ -15,6 +15,8 @@ import styles from "./MenuItem.module.css";
 //   destacado        resalta la opción principal (fondo y borde dorados suaves)
 //   grande           versión más alta, usada en los submenús
 //   onNoDisponible   función a ejecutar al tocar una opción no disponible
+//   onClick          en vez de navegar, ejecuta esta función (opciones que son un interruptor, como Notificaciones)
+//   insignia         { texto, tipo: "activo" | "bloqueado" }: píldora de estado que reemplaza a la flecha
 export default function MenuItem({
   icono,
   tono = "oro",
@@ -26,6 +28,8 @@ export default function MenuItem({
   destacado = false,
   grande = false,
   onNoDisponible,
+  onClick,
+  insignia,
 }) {
   const clases = cx(
     styles.item,
@@ -45,6 +49,8 @@ export default function MenuItem({
       </span>
       {pronto ? (
         <span className={styles.etiqueta}>Pronto</span>
+      ) : insignia ? (
+        <span className={cx(styles.insignia, styles[insignia.tipo])}>{insignia.texto}</span>
       ) : (
         <span className={styles.flecha} aria-hidden="true">
           <Icono nombre="flecha" tamano={18} strokeWidth={2.4} />
@@ -53,9 +59,9 @@ export default function MenuItem({
     </>
   );
 
-  if (!disponible) {
+  if (onClick || !disponible) {
     return (
-      <button type="button" className={clases} onClick={onNoDisponible}>
+      <button type="button" className={clases} onClick={onClick ?? onNoDisponible}>
         {contenido}
       </button>
     );

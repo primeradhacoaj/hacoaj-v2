@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useMemo, useSyncExternalStore } from "react";
+import { olvidarDispositivoPush } from "@/lib/push";
 import { createClient } from "@/lib/supabase/client";
 
 // SESIÓN REAL con Supabase Auth.
@@ -91,7 +92,10 @@ export function SesionProvider({ children }) {
   );
 
   const cerrar = useCallback(async () => {
-    await createClient().auth.signOut();
+    const supabase = createClient();
+    // Antes de cerrar (después ya no hay sesión para hacerlo): este dispositivo deja de recibir avisos de la cuenta.
+    await olvidarDispositivoPush(supabase);
+    await supabase.auth.signOut();
   }, []);
 
   const valor = useMemo(() => ({ sesion, cargando, cerrar }), [sesion, cargando, cerrar]);

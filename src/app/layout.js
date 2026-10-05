@@ -1,4 +1,5 @@
 import { Plus_Jakarta_Sans } from "next/font/google";
+import RegistrarServiceWorker from "@/components/RegistrarServiceWorker";
 import { SesionProvider } from "@/components/SesionProvider";
 import Tracker from "@/components/Tracker";
 import "./globals.css";
@@ -18,6 +19,10 @@ export const metadata = {
   },
   description:
     "Panel de rendimiento del plantel de Primera D del Club Náutico Hacoaj.",
+  // Al instalarla en el iPhone: nombre y ícono de la pantalla de inicio, y se abre sin la barra de Safari.
+  applicationName: "Primera D Hacoaj",
+  appleWebApp: { capable: true, title: "Primera D", statusBarStyle: "default" },
+  icons: { icon: "/icons/icon-192.png", apple: "/icons/icon-192.png" },
 };
 
 export const viewport = {
@@ -32,6 +37,7 @@ export default function RootLayout({ children }) {
       <body>
         <SesionProvider>
           <Tracker />
+          <RegistrarServiceWorker />
           {children}
         </SesionProvider>
       </body>

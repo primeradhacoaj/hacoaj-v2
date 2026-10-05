@@ -75,9 +75,7 @@ export const MENU_JUGADOR = [
         descripcion: "Activar avisos del cuerpo técnico",
         icono: "campana",
         tono: "navy",
-        href: "/notificaciones",
-        disponible: false,
-        aviso: "Las notificaciones se activarán en una próxima versión",
+        // Interruptor, no pantalla: lo dibuja `ItemNotificaciones` (menu/ItemNotificaciones.js).
       },
       {
         id: "contrasena",

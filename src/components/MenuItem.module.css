@@ -153,3 +153,22 @@
     transition: none;
   }
 }
+
+/* Píldora de estado (Notificaciones: "Activo" / "Bloqueado"), en lugar de la flecha */
+.insignia {
+  flex-shrink: 0;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.activo {
+  background: var(--gold-100);
+  color: var(--gold-500);
+}
+
+.bloqueado {
+  background: rgba(208, 72, 72, 0.08);
+  color: var(--danger);
+}

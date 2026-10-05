@@ -10,6 +10,7 @@ import { useSesion } from "@/components/SesionProvider";
 import { AVISO_MIGRANDO, AVISO_PRONTO, MENU_JUGADOR } from "@/lib/menus";
 import { cx } from "@/lib/cx";
 import { useAviso } from "@/lib/useAviso";
+import ItemNotificaciones from "./ItemNotificaciones";
 import styles from "./MenuJugador.module.css";
 
 // Menú principal del jugador (diseño original de la v1). Es un componente de
@@ -17,7 +18,7 @@ import styles from "./MenuJugador.module.css";
 // sesión y mostrar avisos al tocar opciones que todavía no tienen pantalla.
 export default function MenuJugador() {
   const { sesion, cerrar } = useSesion();
-  const { mensaje, visible, mostrar } = useAviso();
+  const { mensaje, tipo, visible, mostrar } = useAviso();
 
   return (
     <div className={styles.pagina}>
@@ -32,7 +33,10 @@ export default function MenuJugador() {
               {seccion.seccion}
             </SectionLabel>
             <nav className={styles.lista} aria-label={seccion.seccion}>
-              {seccion.items.map((item) => (
+              {seccion.items.map((item) =>
+                item.id === "notificaciones" ? (
+                  <ItemNotificaciones key={item.id} mostrar={mostrar} />
+                ) : (
                 <MenuItem
                   key={item.id}
                   icono={item.icono}
@@ -46,7 +50,8 @@ export default function MenuJugador() {
                     mostrar(item.aviso ?? (item.pronto ? AVISO_PRONTO : AVISO_MIGRANDO))
                   }
                 />
-              ))}
+                ),
+              )}
             </nav>
           </section>
         ))}
@@ -60,7 +65,7 @@ export default function MenuJugador() {
         </div>
       </main>
 
-      <Aviso mensaje={mensaje} visible={visible} />
+      <Aviso mensaje={mensaje} tipo={tipo} visible={visible} />
     </div>
   );
 }

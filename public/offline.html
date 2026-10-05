@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#00296b" />
+    <title>Sin conexión · Hacoaj</title>
+    <style>
+      * { box-sizing: border-box; margin: 0; }
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        padding: 24px;
+        background: #f8f9fa;
+        color: #0a1535;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        text-align: center;
+      }
+      img { width: 72px; height: auto; }
+      h1 { font-size: 20px; }
+      p { max-width: 320px; font-size: 14px; line-height: 1.5; color: rgba(10, 21, 53, 0.6); }
+      button {
+        margin-top: 6px;
+        padding: 12px 26px;
+        border: none;
+        border-radius: 12px;
+        background: #00296b;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <img src="/escudo.png" alt="Escudo Hacoaj" />
+    <h1>Sin conexión</h1>
+    <p>No se pudo cargar la pantalla. Revisá tu conexión a internet e intentá de nuevo.</p>
+    <button type="button" onclick="location.reload()">Reintentar</button>
+  </body>
+</html>
