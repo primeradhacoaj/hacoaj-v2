@@ -10,11 +10,15 @@ import { createClient } from "@/lib/supabase/server";
 // recargar la página (como en la v1) y el cliente necesita poder volver a
 // pedir datos después de la carga inicial.
 export async function GET(request) {
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getUser();
+  if (!data.user) return NextResponse.json({ error: "Tenés que iniciar sesión." }, { status: 401 });
+
   const { searchParams } = new URL(request.url);
   const hoy = new Date();
   const year = Number(searchParams.get("year")) || hoy.getFullYear();
   const month = Number(searchParams.get("month")) || hoy.getMonth() + 1;
 
-  const eventos = await obtenerEventosDelMes(await createClient(), year, month);
+  const eventos = await obtenerEventosDelMes(supabase, year, month);
   return NextResponse.json({ year, month, eventos });
 }
