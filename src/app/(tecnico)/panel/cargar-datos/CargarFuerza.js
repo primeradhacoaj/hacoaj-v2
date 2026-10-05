@@ -9,6 +9,7 @@ import {
   obtenerUltimoComentario,
   obtenerUltimoPeso,
 } from "@/lib/data/cargarDatos";
+import { enviarNotificacion } from "@/lib/data/notificaciones";
 import { estimarRm, fuerzaRelativa } from "@/lib/estimacionRm";
 import { exportarTabla } from "@/lib/exportarEncuestasPlantel";
 import { createClient } from "@/lib/supabase/client";
@@ -40,6 +41,7 @@ export default function CargarFuerza({ tipo, jugadores: jugadoresIniciales }) {
   const aviso = useAviso();
   const [jugadores, setJugadores] = useState(jugadoresIniciales);
   const [fechaSesion, setFechaSesion] = useState(hoyIso());
+  const [notificar, setNotificar] = useState(true); // como en la v1: viene tildado
 
   const [jugador, setJugador] = useState(null);
   const [ultimoPeso, setUltimoPeso] = useState(null); // { peso, fecha } del último pesaje, o null
@@ -143,6 +145,18 @@ export default function CargarFuerza({ tipo, jugadores: jugadoresIniciales }) {
     if (!resultado.ok) return aviso.mostrar(resultado.error, "error");
     setRegistros((actuales) => actuales.map((r) => ({ ...r, guardado: true })));
     aviso.mostrar(`✓ ${resultado.guardados} registros guardados en la base de datos`, "exito");
+
+    if (notificar) {
+      const envio = await enviarNotificacion({
+        titulo: "Nuevo test disponible 💪",
+        mensaje: `Tu test de ${tipo === "pecho" ? "press de pecho" : "sentadilla"} ya está listo. ¡Chequealo ahora!`,
+        url: "/fuerza",
+        destinatarios: [...new Set(lista.map((r) => r.jugador.id))],
+      });
+      if (!envio.ok) aviso.mostrar(`Notificación no enviada: ${envio.error}`, "error");
+      else if (envio.enviados > 0) aviso.mostrar(`Notificaciones enviadas a ${envio.enviados} dispositivos`, "exito");
+      else aviso.mostrar("Notificación no enviada: ninguno de esos jugadores tiene las notificaciones activadas");
+    }
   }
 
   // ── Edición de un registro de la lista ──
@@ -431,6 +445,8 @@ export default function CargarFuerza({ tipo, jugadores: jugadoresIniciales }) {
             alGuardar={guardarTodo}
             alDescargar={descargar}
             conNotificar
+            notificar={notificar}
+            alCambiarNotificar={setNotificar}
           />
         </div>
       )}

@@ -296,8 +296,17 @@ export function AccionesFila({ guardado, alEditar, alBorrar }) {
   );
 }
 
-// Botones de abajo de la lista: guardar todo, descargar Excel y (cuando existan) notificar.
-export function BotonesRegistros({ todosGuardados, guardando, pendientes, alGuardar, alDescargar, conNotificar }) {
+// Botones de abajo de la lista: guardar todo, descargar Excel y avisar a los jugadores cargados.
+export function BotonesRegistros({
+  todosGuardados,
+  guardando,
+  pendientes,
+  alGuardar,
+  alDescargar,
+  conNotificar,
+  notificar,
+  alCambiarNotificar,
+}) {
   return (
     <div className={styles.accionesRegistros}>
       <button type="button" className={styles.botonGuardarTodo} onClick={alGuardar} disabled={todosGuardados || guardando}>
@@ -312,9 +321,10 @@ export function BotonesRegistros({ todosGuardados, guardando, pendientes, alGuar
         <Icono nombre="descargar" tamano={16} strokeWidth={2} /> Descargar Excel
       </button>
       {conNotificar && (
-        <label className={styles.notificar} title="Las notificaciones se activarán en una próxima versión">
-          <input type="checkbox" disabled />
-          <span>Notificar a los jugadores (próximamente)</span>
+        <label className={styles.notificar}>
+          <input type="checkbox" checked={notificar} onChange={(e) => alCambiarNotificar(e.target.checked)} />
+          <Icono nombre="campana" tamano={14} strokeWidth={2} />
+          <span>Notificar a los jugadores</span>
         </label>
       )}
     </div>

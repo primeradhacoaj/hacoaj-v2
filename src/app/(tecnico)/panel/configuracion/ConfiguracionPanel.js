@@ -1,12 +1,11 @@
 "use client";
 
-import Aviso from "@/components/Aviso";
+import Link from "next/link";
 import FormularioContrasena from "@/components/FormularioContrasena";
 import IconoPanel from "@/components/IconoPanel";
 import { cx } from "@/lib/cx";
-import { AVISO_MIGRANDO, TODOS_LOS_ACCESOS } from "@/lib/menus";
+import { TODOS_LOS_ACCESOS } from "@/lib/menus";
 import { useAccesosRapidos } from "@/lib/useAccesosRapidos";
-import { useAviso } from "@/lib/useAviso";
 import styles from "./ConfiguracionPanel.module.css";
 
 // Configuración del panel técnico, copiada de la v1: enlace a "Enviar
@@ -17,7 +16,6 @@ import styles from "./ConfiguracionPanel.module.css";
 // preferencia en este navegador (useAccesosRapidos.js).
 export default function ConfiguracionPanel() {
   const { config, alternar, mover } = useAccesosRapidos();
-  const { mensaje, visible, mostrar } = useAviso();
   const porId = new Map(TODOS_LOS_ACCESOS.map((a) => [a.id, a]));
 
   return (
@@ -27,7 +25,7 @@ export default function ConfiguracionPanel() {
       </p>
 
       <h2 className={styles.rotulo}>Notificaciones</h2>
-      <button type="button" className={styles.enlaceNotificacion} onClick={() => mostrar(AVISO_MIGRANDO)}>
+      <Link href="/panel/notificaciones" className={styles.enlaceNotificacion}>
         <span className={cx(styles.iconoEnlace, styles.iconoNaranja)}>
           <IconoPanel nombre="campana" tamano={18} />
         </span>
@@ -36,7 +34,7 @@ export default function ConfiguracionPanel() {
           <span className={styles.subEnlace}>Enviá una notificación push a todos los jugadores suscriptos</span>
         </span>
         <IconoPanel nombre="flechaSalir" tamano={17} className={styles.flechaEnlace} />
-      </button>
+      </Link>
 
       <h2 className={styles.rotulo}>Cuenta</h2>
       <div className={styles.tarjeta}>
@@ -109,8 +107,6 @@ export default function ConfiguracionPanel() {
         Esta preferencia se guarda en este navegador (como en la v1): cada técnico/admin ve sus propios
         accesos rápidos, no es algo compartido entre todos.
       </p>
-
-      <Aviso mensaje={mensaje} visible={visible} />
     </>
   );
 }

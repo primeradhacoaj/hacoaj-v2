@@ -80,6 +80,13 @@ const ICONOS = {
   campana: (
     <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" />
   ),
+  enviar: <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />,
+  info: (
+    <>
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 8v4M12 16h.01" />
+    </>
+  ),
   flechaSalir: <path d="M7 17L17 7M7 7h10v10" />,
   salir: <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />,
 };
