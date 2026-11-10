@@ -75,7 +75,20 @@ export async function pedirPermisoPush() {
 
 // Suscribe este dispositivo (si todavía no lo está) y guarda la suscripción a nombre de quien tiene la sesión.
 // Se puede llamar las veces que haga falta: si ya existe, solo la vuelve a registrar.
-export async function activarPush(supabase) {
+//
+// Si ya hay un registro en curso, quien llama espera ese mismo en vez de empezar otro: al aceptar el permiso se
+// disparan dos a la vez (el toque y el registro automático del menú) y, pisándose, el navegador llegaba a crear
+// varias suscripciones para el mismo celular.
+let registroEnCurso = null;
+
+export function activarPush(supabase) {
+  registroEnCurso ??= registrarDispositivo(supabase).finally(() => {
+    registroEnCurso = null;
+  });
+  return registroEnCurso;
+}
+
+async function registrarDispositivo(supabase) {
   const registro = await navigator.serviceWorker.ready;
   const clave = claveABytes(CLAVE_PUBLICA_VAPID);
 
