@@ -55,6 +55,43 @@
   color: var(--yellow);
 }
 
+.enlaceSeparado {
+  margin-top: 10px;
+  font: inherit;
+}
+
+.enlaceSeparado:disabled {
+  cursor: wait;
+}
+
+.iconoAzul {
+  background: #f2f4f9;
+  color: var(--navy);
+}
+
+.iconoVerde {
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.insignia {
+  flex-shrink: 0;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.insigniaActiva {
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.insigniaBloqueada {
+  background: var(--red-bg);
+  color: var(--red);
+}
+
 .textoEnlace {
   display: flex;
   flex: 1;

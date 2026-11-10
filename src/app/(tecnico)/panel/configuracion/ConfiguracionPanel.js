@@ -1,11 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import Aviso from "@/components/Aviso";
 import FormularioContrasena from "@/components/FormularioContrasena";
 import IconoPanel from "@/components/IconoPanel";
 import { cx } from "@/lib/cx";
 import { TODOS_LOS_ACCESOS } from "@/lib/menus";
 import { useAccesosRapidos } from "@/lib/useAccesosRapidos";
+import { useAviso } from "@/lib/useAviso";
+import { useNotificacionesPush } from "@/lib/useNotificacionesPush";
 import styles from "./ConfiguracionPanel.module.css";
 
 // Configuración del panel técnico, copiada de la v1: enlace a "Enviar
@@ -17,6 +20,7 @@ import styles from "./ConfiguracionPanel.module.css";
 export default function ConfiguracionPanel() {
   const { config, alternar, mover } = useAccesosRapidos();
   const porId = new Map(TODOS_LOS_ACCESOS.map((a) => [a.id, a]));
+  const aviso = useAviso();
 
   return (
     <>
@@ -35,6 +39,7 @@ export default function ConfiguracionPanel() {
         </span>
         <IconoPanel nombre="flechaSalir" tamano={17} className={styles.flechaEnlace} />
       </Link>
+      <RecibirAvisos mostrar={aviso.mostrar} />
 
       <h2 className={styles.rotulo}>Cuenta</h2>
       <div className={styles.tarjeta}>
@@ -107,6 +112,43 @@ export default function ConfiguracionPanel() {
         Esta preferencia se guarda en este navegador (como en la v1): cada técnico/admin ve sus propios
         accesos rápidos, no es algo compartido entre todos.
       </p>
+
+      <Aviso mensaje={aviso.mensaje} tipo={aviso.tipo} visible={aviso.visible} />
     </>
+  );
+}
+
+// Avisos push en ESTE dispositivo (p. ej. "Pago recibido" para el administrador). Si el navegador no puede
+// recibirlos, no se muestra.
+function RecibirAvisos({ mostrar }) {
+  const { soportado, activas, bloqueadas, ocupado, activar } = useNotificacionesPush(mostrar);
+  if (!soportado) return null;
+
+  return (
+    <button
+      type="button"
+      className={cx(styles.enlaceNotificacion, styles.enlaceSeparado)}
+      onClick={activar}
+      disabled={ocupado}
+    >
+      <span className={cx(styles.iconoEnlace, activas ? styles.iconoVerde : styles.iconoAzul)}>
+        <IconoPanel nombre="campana" tamano={18} />
+      </span>
+      <span className={styles.textoEnlace}>
+        <span className={styles.tituloEnlace}>Recibir avisos en este dispositivo</span>
+        <span className={styles.subEnlace}>
+          {activas
+            ? "Activados: te llegan los avisos de la app en este navegador"
+            : bloqueadas
+              ? "Bloqueados en el navegador: habilitalos desde su configuración"
+              : "Tocá para activar los avisos de la app (por ejemplo, pagos recibidos)"}
+        </span>
+      </span>
+      {(activas || bloqueadas) && (
+        <span className={cx(styles.insignia, activas ? styles.insigniaActiva : styles.insigniaBloqueada)}>
+          {activas ? "Activo" : "Bloqueado"}
+        </span>
+      )}
+    </button>
   );
 }
