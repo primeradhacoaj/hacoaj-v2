@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { enviarADispositivos } from "@/lib/pushServidor";
+import { rpcConSecreto } from "@/lib/rpcConSecreto";
 
 export const runtime = "nodejs"; // la librería de envío necesita Node
 export const dynamic = "force-dynamic";
@@ -19,23 +20,8 @@ export async function GET(request) {
   }
   const simular = new URL(request.url).searchParams.get("simular") === "1";
 
-  async function rpc(funcion, args) {
-    const respuesta = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/rpc/${funcion}`, {
-      method: "POST",
-      headers: {
-        apikey: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ p_secreto: secreto, ...args }),
-      cache: "no-store",
-    });
-    if (!respuesta.ok) throw new Error(`${funcion}: ${respuesta.status}`);
-    const texto = await respuesta.text(); // algunas funciones no devuelven nada (204)
-    return texto ? JSON.parse(texto) : null;
-  }
-
   try {
-    const hoy = await rpc("tareas_cumples_pendientes", {});
+    const hoy = await rpcConSecreto("tareas_cumples_pendientes");
     if (hoy.ya_hecho) return NextResponse.json({ estado: "ya_hecho", fecha: hoy.fecha });
 
     const { cumpleaneros, destinos } = hoy;
@@ -56,8 +42,8 @@ export async function GET(request) {
       envio.vencidos.forEach((endpoint) => vencidos.add(endpoint));
     }
 
-    if (vencidos.size > 0) await rpc("tareas_quitar_vencidas", { p_endpoints: [...vencidos] });
-    await rpc("tareas_marcar_hecha", { p_tarea: "cumples" });
+    if (vencidos.size > 0) await rpcConSecreto("tareas_quitar_vencidas", { p_endpoints: [...vencidos] });
+    await rpcConSecreto("tareas_marcar_hecha", { p_tarea: "cumples" });
     return NextResponse.json({ estado: "ok", fecha: hoy.fecha, cumpleaneros, enviados, vencidas: vencidos.size });
   } catch (error) {
     console.error("Cron de cumpleaños:", error);

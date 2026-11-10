@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 // Quien no inició sesión y pide una pantalla se manda a /login desde el servidor (antes de armar la página). La
 // protección por rol sigue en <Guardia> y, sobre todo, en las políticas RLS de la base: lo que importa de verdad
 // es que la base no entregue datos ajenos, no la pantalla. Quedan abiertos /login, la raíz (que manda a /login)
-// y /api (cada ruta de la API se protege sola: sesión o secreto).
+// y /api (cada ruta de la API se protege sola: sesión, secreto o firma).
 export async function updateSession(request) {
   let response = NextResponse.next({ request });
 
@@ -41,7 +41,8 @@ export async function updateSession(request) {
   const { data } = await supabase.auth.getClaims();
 
   const ruta = request.nextUrl.pathname;
-  const esPublica = ruta === "/" || ruta === "/login" || ruta.startsWith("/api/");
+  // /pago/resultado es la pantalla a la que Mercado Pago devuelve a quien acaba de pagar (no tiene cuenta).
+  const esPublica = ruta === "/" || ruta === "/login" || ruta.startsWith("/api/") || ruta.startsWith("/pago/");
   if (!data?.claims && !esPublica) {
     const destino = request.nextUrl.clone();
     destino.pathname = "/login";

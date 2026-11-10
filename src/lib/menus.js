@@ -288,6 +288,17 @@ const MENU_TECNICO = [
         etiquetas: ["Page views", "Usuarios", "Actividad"],
         soloAdmin: true,
       },
+      {
+        id: "cobros",
+        titulo: "Cobros",
+        descripcion:
+          "Cobros del plantel con Mercado Pago: conceptos, links de pago por jugador y estado de cada pago.",
+        icono: "tabla",
+        tono: "green",
+        href: "/panel/cobros",
+        etiquetas: ["Mercado Pago", "Pagos", "Conceptos"],
+        soloAdmin: true,
+      },
     ],
   },
 ];

@@ -1,0 +1,531 @@
+/* Cobros del plantel (panel del administrador). Mismo lenguaje visual que el resto del panel. */
+
+.descripcion {
+  margin: -12px 0 24px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-mid);
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.kpi {
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: var(--card-shadow);
+}
+
+.etiquetaKpi {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+}
+
+.valorKpi {
+  margin-top: 6px;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.notaKpi {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.titulo {
+  margin: 32px 0 14px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.encabezadoSeccion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.encabezadoSeccion .titulo {
+  margin-bottom: 14px;
+}
+
+.tarjeta {
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: var(--card-shadow);
+}
+
+.formulario {
+  margin-bottom: 16px;
+}
+
+.sinRelleno {
+  padding: 0;
+  overflow: hidden;
+}
+
+.rotulo {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+}
+
+.grupo {
+  margin-bottom: 20px;
+}
+
+.fila2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.campo {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--off-white);
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  transition: border-color 0.2s;
+}
+
+.campo:focus {
+  outline: none;
+  border-color: var(--navy-mid);
+  background: #fff;
+}
+
+select.campo {
+  cursor: pointer;
+}
+
+/* Botones */
+.primario,
+.secundario {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 16px;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.primario {
+  border: none;
+  background: var(--navy);
+  color: #fff;
+}
+
+.primario:hover {
+  background: var(--navy-mid);
+}
+
+.primario:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.secundario {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+}
+
+.secundario:hover {
+  border-color: var(--navy);
+  color: var(--navy);
+}
+
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.enlace {
+  padding: 4px 8px;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--navy-mid);
+  cursor: pointer;
+}
+
+.enlace:hover {
+  text-decoration: underline;
+}
+
+.peligro {
+  color: #b91c1c;
+}
+
+/* Elegir jugadores */
+.opciones {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.opcion {
+  flex: 1;
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-mid);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.opcion:hover {
+  border-color: var(--navy);
+  color: var(--navy);
+}
+
+.opcionActiva,
+.opcionActiva:hover {
+  border-color: var(--navy);
+  background: var(--navy);
+  color: #fff;
+}
+
+.selector {
+  margin-top: 10px;
+}
+
+.buscador {
+  margin-bottom: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+}
+
+.lista {
+  max-height: 260px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--off-white);
+}
+
+.jugador {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.jugador:last-child {
+  border-bottom: none;
+}
+
+.jugador:hover {
+  background: rgba(0, 41, 107, 0.04);
+}
+
+.jugadorElegido {
+  background: rgba(0, 41, 107, 0.07);
+}
+
+.casilla {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border);
+  border-radius: 5px;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.jugadorElegido .casilla {
+  border-color: var(--navy);
+  background: var(--navy);
+}
+
+.jugadorElegido .casilla::after {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 9px;
+  margin-top: -2px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.jugadorNombre {
+  flex: 1;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.total {
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: var(--text-mid);
+}
+
+.total strong {
+  color: var(--navy);
+}
+
+/* Generar */
+.enviar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: var(--navy);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.enviar:hover {
+  background: var(--navy-mid);
+}
+
+.enviar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.resultado {
+  margin: 16px 0;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.exito {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.aviso {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* Links generados */
+.generados {
+  margin-top: 20px;
+}
+
+.generado {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.generado:last-child {
+  border-bottom: none;
+}
+
+.generadoNombre {
+  flex: 1;
+  font-weight: 500;
+}
+
+.generadoMonto {
+  color: var(--text-mid);
+}
+
+/* Filtros */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.chip {
+  padding: 7px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fff;
+  font: inherit;
+  font-size: 12px;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.chip:hover {
+  border-color: var(--navy);
+  color: var(--navy);
+}
+
+.chipActivo,
+.chipActivo:hover {
+  border-color: var(--navy);
+  background: var(--navy);
+  color: #fff;
+}
+
+/* Tablas */
+.scroll {
+  overflow-x: auto;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.tabla th {
+  padding: 10px 14px;
+  border-bottom: 2px solid var(--border);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--text-mid);
+}
+
+.tabla td {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+}
+
+.tabla tr:last-child td {
+  border-bottom: none;
+}
+
+.num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.detalle {
+  font-size: 11px;
+  color: var(--text-light);
+}
+
+.vacio {
+  padding: 24px;
+  font-size: 13px;
+  text-align: center;
+  color: var(--text-light);
+}
+
+/* Estados */
+.insignia {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.pendiente {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.pagado {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.cancelado {
+  background: #e5e7eb;
+  color: #4b5563;
+}
+
+.reembolsado {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+@media (max-width: 600px) {
+  .tarjeta {
+    padding: 20px 16px;
+  }
+
+  .sinRelleno {
+    padding: 0;
+  }
+
+  .fila2 {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .opciones {
+    flex-direction: column;
+  }
+
+  .generado {
+    flex-wrap: wrap;
+  }
+
+  .generadoNombre {
+    flex-basis: 100%;
+  }
+}
