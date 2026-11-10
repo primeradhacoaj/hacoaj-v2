@@ -11,6 +11,10 @@ function Jugador({ jugador: j, esCapitan, fueSustituido }) {
     <div className={styles.jugador} style={{ left: `${j.x}%`, top: `${j.y}%` }}>
       <div className={styles.circulo}>
         <span className={styles.iniciales}>{iniciales(j.jugador.jugador)}</span>
+        {j.jugador.foto && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={j.jugador.foto} alt="" className={styles.foto} />
+        )}
       </div>
       <span className={styles.nombre}>
         {apellido(j.jugador.jugador)}
@@ -105,7 +109,13 @@ export default function Alineaciones({ formacion, capitan, jugadores }) {
           <div className={styles.grillaBanco}>
             {banco.map((j) => (
               <div key={j.jugador} className={styles.chipBanco}>
-                <div className={styles.avatarBanco}>{iniciales(j.jugador)}</div>
+                <div className={styles.avatarBanco}>
+                  {iniciales(j.jugador)}
+                  {j.foto && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={j.foto} alt="" className={styles.foto} />
+                  )}
+                </div>
                 <div>
                   <div className={styles.nombreBanco}>{apellido(j.jugador)}</div>
                   {j.posicion && <div className={styles.posicionBanco}>{j.posicion}</div>}

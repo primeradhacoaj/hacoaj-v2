@@ -26,10 +26,16 @@ function verificar({ data, error }) {
   return data;
 }
 
-// id -> nombre de todos los jugadores (vista `plantel`: solo nombre y posición).
+// id -> { nombre, foto } de todos los jugadores (vista `plantel`: solo nombre, posición y foto).
+// `foto` es la URL pública de la foto de perfil, o null si la persona no tiene.
 async function nombresDelPlantel(supabase) {
-  const filas = verificar(await supabase.from("plantel").select("id, nombre"));
-  return new Map(filas.map((f) => [f.id, f.nombre]));
+  const filas = verificar(await supabase.from("plantel").select("id, nombre, foto_path"));
+  return new Map(
+    filas.map((f) => [
+      f.id,
+      { nombre: f.nombre, foto: f.foto_path ? supabase.storage.from("avatares").getPublicUrl(f.foto_path).data.publicUrl : null },
+    ]),
+  );
 }
 
 // Goles, cambios y tarjetas del rival según el scraper (vacío si el partido no está vinculado).
@@ -81,7 +87,7 @@ export async function obtenerDetallePartido(supabase, fecha) {
     eventosDelRival(supabase, partido.partido_torneo_id),
   ]);
 
-  const nombre = (id) => (id ? (nombres.get(id) ?? "") : "");
+  const nombre = (id) => (id ? (nombres.get(id)?.nombre ?? "") : "");
 
   // Una fila por jugador, con los totales y textos que armaba la planilla.
   const jugadores_data = jugadores
@@ -92,6 +98,7 @@ export async function obtenerDetallePartido(supabase, fecha) {
       const tarjetasDe = tarjetas.filter((t) => t.perfil_id === j.perfil_id);
       return {
         jugador: nombre(j.perfil_id),
+        foto: nombres.get(j.perfil_id)?.foto ?? null,
         posicion: j.posicion_partido ?? "",
         titular: j.titular,
         minutos: j.minutos_jugados,
