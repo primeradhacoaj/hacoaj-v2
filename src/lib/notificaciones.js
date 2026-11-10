@@ -8,7 +8,7 @@ export const DESTINOS = [
   { url: "/menu", texto: "Menú principal" },
   { url: "/fuerza", texto: "Fuerza" },
   { url: "/pliegues", texto: "Pliegues" },
-  { url: "/encuestas/post-partido", texto: "Encuesta post partido" },
+  { url: "/encuestas", texto: "Encuestas" },
   { url: "/rutinas", texto: "Rutinas" },
 ];
 
@@ -26,7 +26,7 @@ export const PLANTILLAS = [
     nombre: "Encuesta post",
     titulo: "Encuesta post partido",
     mensaje: "Completá la encuesta del último partido.",
-    url: "/encuestas/post-partido",
+    url: "/encuestas",
   },
   {
     nombre: "Testeo programado",

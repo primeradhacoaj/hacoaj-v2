@@ -308,10 +308,10 @@ export function menuTecnicoParaRol(rol) {
 // que existen y si ya tienen pantalla.
 export const TODOS_LOS_ACCESOS = [
   { id: "dashboard", titulo: "Ver Dashboard", icono: "dashboard", href: "/panel/analisis", disponible: true },
-  { id: "cargar", titulo: "Cargar datos", icono: "flechaArriba", href: "/panel/cargar-datos" },
+  { id: "cargar", titulo: "Cargar datos", icono: "flechaArriba", href: "/panel/cargar-datos", disponible: true },
   { id: "post-partido", titulo: "Post partido", icono: "encuestas", href: "/panel/encuestas/post-partido", disponible: true },
   { id: "wellness", titulo: "Wellness", icono: "corazon", href: "/panel/encuestas/wellness", disponible: true },
-  { id: "notificacion", titulo: "Enviar notificación", icono: "campana", href: "/panel/notificaciones" },
+  { id: "notificacion", titulo: "Enviar notificación", icono: "campana", href: "/panel/notificaciones", disponible: true },
   { id: "encuestas", titulo: "Encuestas", icono: "encuestas", href: "/panel/encuestas", disponible: true },
   { id: "fuerza", titulo: "Historial fuerza", icono: "fuerza", href: "/panel/fuerza", disponible: true },
   { id: "pliegues", titulo: "Historial pliegues", icono: "ondas", href: "/panel/pliegues", disponible: true },
