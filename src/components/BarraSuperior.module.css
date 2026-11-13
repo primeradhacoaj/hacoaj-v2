@@ -102,6 +102,45 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
+.volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.volver:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Barra de las pantallas de encuestas de la v1: más baja y con el logo más chico */
+.compacta {
+  height: 56px;
+  padding: 0 32px;
+}
+
+.compacta .imagen {
+  width: 68px;
+  height: 34px;
+  opacity: 0.9;
+}
+
+.compacta .titulo {
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+.compacta .subtitulo {
+  margin-top: 0;
+  color: rgba(255, 255, 255, 0.45);
+}
+
 .barra :focus-visible {
   outline-color: #fff;
 }
@@ -134,5 +173,17 @@
 
   .derecha {
     gap: 10px;
+  }
+
+  .volver {
+    padding: 5px 8px;
+    font-size: 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .volver,
+  .salir {
+    transition: none;
   }
 }

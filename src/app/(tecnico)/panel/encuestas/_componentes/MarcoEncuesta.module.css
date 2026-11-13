@@ -1,0 +1,35 @@
+/* Marco de las pantallas de respuestas de encuestas (diseño original de la v1) */
+
+.contenedor {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 32px 60px;
+  line-height: normal; /* la v1 no fijaba interlineado */
+}
+
+.cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.titulo {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.descripcion {
+  margin-top: 2px;
+  font-size: 13px;
+  color: rgba(10, 21, 53, 0.5);
+}
+
+@media (max-width: 768px) {
+  .contenedor {
+    padding: 16px;
+  }
+}

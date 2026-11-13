@@ -1,4 +1,5 @@
 import ActionCard from "@/components/ActionCard";
+import PiePanel from "../../_componentes/PiePanel";
 import styles from "./Encuestas.module.css";
 
 export const metadata = {
@@ -63,6 +64,7 @@ export default function EncuestasPage() {
           ))}
         </div>
       </div>
+      <PiePanel />
     </>
   );
 }

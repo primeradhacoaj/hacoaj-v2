@@ -1,6 +1,7 @@
-import PantallaPanel from "@/components/PantallaPanel";
 import { obtenerJugadoresParaCargar } from "@/lib/data/cargarDatos";
 import { createClient } from "@/lib/supabase/server";
+import CabeceraCarga from "../_componentes/CabeceraCarga";
+import styles from "../CargarDatos.module.css";
 import CargarFuerza from "../CargarFuerza";
 
 export const metadata = {
@@ -10,8 +11,18 @@ export const metadata = {
 export default async function CargarFuerzaPechoPage() {
   const jugadores = await obtenerJugadoresParaCargar(await createClient());
   return (
-    <PantallaPanel titulo="Fuerza Pecho" volverHref="/panel/cargar-datos" volverTexto="Cargar datos" angosto>
-      <CargarFuerza tipo="pecho" jugadores={jugadores} />
-    </PantallaPanel>
+    <>
+      <CabeceraCarga
+        volverHref="/panel/cargar-datos"
+        volverTexto="Volver a Cargar datos"
+        titulo="Fuerza"
+        resaltado="Pecho"
+        texto="Cargá los resultados de testeos de pecho para cada jugador."
+        chica
+      />
+      <div className={styles.contenidoCarga}>
+        <CargarFuerza tipo="pecho" jugadores={jugadores} />
+      </div>
+    </>
   );
 }

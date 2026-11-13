@@ -764,3 +764,23 @@
     gap: 14px;
   }
 }
+
+/* Columna del menú (v1: .content-wrap) y de cada pantalla de carga (v1: .main) */
+.contenidoMenu {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 40px 60px;
+}
+
+.contenidoCarga {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 40px 60px;
+}
+
+@media (max-width: 768px) {
+  .contenidoMenu,
+  .contenidoCarga {
+    padding: 16px 16px 40px;
+  }
+}

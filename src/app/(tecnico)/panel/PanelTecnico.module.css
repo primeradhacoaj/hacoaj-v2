@@ -163,18 +163,6 @@
 }
 
 /* ── Pie ────────────────────────────────────── */
-.pie {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px 40px 40px;
-  border-top: 1px solid var(--border);
-  font-size: 11px;
-  color: var(--text-light);
-}
-
 @media (max-width: 900px) {
   .tarjetas {
     grid-template-columns: repeat(2, 1fr);
@@ -226,12 +214,6 @@
     height: 14px;
   }
 
-  .pie {
-    flex-direction: column;
-    gap: 4px;
-    padding: 16px;
-    text-align: center;
-  }
 }
 
 @media (max-width: 380px) {

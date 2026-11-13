@@ -132,7 +132,7 @@ export default function DashboardGeneral({ jugadores, posiciones }) {
       )}
 
       <div className={styles.filaInferior}>
-        <div className={styles.tarjeta}>
+        <div className={`${styles.tarjeta} ${styles.tarjetaDonut}`}>
           <div className={styles.tituloTarjeta}>Distribución por posición</div>
           <div className={styles.subtituloTarjeta}>{totalJugadores} jugadores</div>
           <div className={styles.filaDonut}>
@@ -214,7 +214,7 @@ function FilaCambio({ item }) {
     <div className={styles.filaCambio}>
       <span>{sube ? "📈" : "📉"}</span>
       <span className={styles.nombreCambio}>{item.nombre}</span>
-      <span className={sube ? styles.tendenciaSube : styles.tendenciaBaja}>
+      <span className={`${sube ? styles.tendenciaSube : styles.tendenciaBaja} ${styles.deltaCambio}`}>
         {sube ? "+" : ""}
         {item.delta.toFixed(2)}
       </span>

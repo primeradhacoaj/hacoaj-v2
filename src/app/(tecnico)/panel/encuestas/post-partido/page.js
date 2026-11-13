@@ -1,6 +1,6 @@
-import PantallaPanel from "@/components/PantallaPanel";
 import { obtenerPostPartidoPlantel } from "@/lib/data/encuestasPlantel";
 import { createClient } from "@/lib/supabase/server";
+import MarcoEncuesta from "../_componentes/MarcoEncuesta";
 import PostPartido from "./PostPartido";
 
 export const metadata = {
@@ -10,12 +10,11 @@ export const metadata = {
 export default async function PostPartidoPage() {
   const respuestas = await obtenerPostPartidoPlantel(await createClient());
   return (
-    <PantallaPanel
+    <MarcoEncuesta
       titulo="Respuestas Post Partido"
-      volverHref="/panel/encuestas"
-      volverTexto="Encuestas"
+      descripcion="Información cargada por los jugadores después de cada partido"
     >
       <PostPartido respuestas={respuestas} />
-    </PantallaPanel>
+    </MarcoEncuesta>
   );
 }

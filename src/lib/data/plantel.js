@@ -187,8 +187,23 @@ export async function obtenerJugadoresConHistorial(supabase) {
     pesos: de(composicion.pesos, j.nombre),
   }));
 
+  // Jugadores INACTIVOS con mediciones: no se muestran, pero suman a la línea de
+  // tendencia de los gráficos de dispersión (como `regression_extra` en la v1).
+  const regresionExtra = jugadores
+    .filter((j) => j.rol_jugador === "jugador" && j.estado !== "Activo" && j.usuario !== "hacoaj")
+    .map((j) => ({
+      nombre: j.nombre,
+      posicion: j.posicion,
+      altura: j.altura,
+      fuerzaSent: de(fuerza.sentadilla, j.nombre),
+      fuerzaPecho: de(fuerza.pecho, j.nombre),
+      pliegues: de(composicion.pliegues, j.nombre),
+    }))
+    .filter((j) => j.fuerzaSent.length || j.fuerzaPecho.length || j.pliegues.length);
+
   return {
     jugadores: conHistorial,
+    regresionExtra,
     posiciones: [...new Set(conHistorial.map((j) => j.posicion).filter(Boolean))].sort((a, b) => a.localeCompare(b, "es")),
   };
 }

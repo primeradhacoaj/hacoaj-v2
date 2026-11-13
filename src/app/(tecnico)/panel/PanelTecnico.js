@@ -9,6 +9,7 @@ import { AVISO_MIGRANDO, AVISO_PRONTO, menuTecnicoParaRol } from "@/lib/menus";
 import { accesosActivosDe, useAccesosRapidos } from "@/lib/useAccesosRapidos";
 import { useAviso } from "@/lib/useAviso";
 import styles from "./PanelTecnico.module.css";
+import PiePanel from "../_componentes/PiePanel";
 
 // Panel principal de técnico y administrador (diseño original de la v1).
 // Muestra las mismas secciones a los dos roles, salvo las tarjetas marcadas
@@ -88,10 +89,7 @@ export default function PanelTecnico() {
         ))}
       </main>
 
-      <footer className={styles.pie}>
-        <div>© 2026 Club Náutico Hacoaj · Panel Técnico</div>
-        <div>Primera D · Temporada 2026</div>
-      </footer>
+      <PiePanel />
 
       <Aviso mensaje={mensaje} visible={visible} />
     </>

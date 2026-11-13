@@ -151,30 +151,7 @@ export function evolucionPorFecha(jugadores, coleccion, campo) {
   }
   return [...porFecha.entries()]
     .sort(([a], [b]) => fechaCortaADate(a) - fechaCortaADate(b))
-    .map(([fecha, { suma, cantidad }]) => ({ fecha, valor: suma / cantidad }));
-}
-
-// Último registro de sentadilla y pecho de cada jugador, con el cambio contra
-// el anterior, para la tabla completa del plantel.
-export function resumenFuerzaPorJugador(jugadores) {
-  const ultimoYDelta = (arr) => {
-    if (arr.length === 0) return { vmp: null, rm: null, fRelativa: null, fecha: null, delta: null };
-    const ultimo = arr[arr.length - 1];
-    const anterior = arr.length >= 2 ? arr[arr.length - 2] : null;
-    const delta =
-      anterior && ultimo.fRelativa != null && anterior.fRelativa != null
-        ? ultimo.fRelativa - anterior.fRelativa
-        : null;
-    return { vmp: ultimo.vmp, rm: ultimo.rm, fRelativa: ultimo.fRelativa, fecha: ultimo.fecha, delta };
-  };
-
-  return jugadores.map((j) => ({
-    nombre: j.nombre,
-    posicion: j.posicion,
-    peso: j.peso,
-    sentadilla: ultimoYDelta(j.fuerzaSent || []),
-    pecho: ultimoYDelta(j.fuerzaPecho || []),
-  }));
+    .map(([fecha, { suma, cantidad }]) => ({ fecha, valor: suma / cantidad, cantidad }));
 }
 
 // Registros de una colección que son de este año calendario.
@@ -207,69 +184,55 @@ export function evolucionAnioActual(jugadores, coleccion, campo) {
   return evolucionPorFecha(soloEsteAnio, coleccion, campo);
 }
 
-// Ranking por un campo del último registro de este año, de menor a mayor
-// (para Σ6 pliegues, donde menos es mejor).
-export function rankingAnioActualAscendente(jugadores, coleccion, campo) {
-  const lista = [];
-  for (const j of jugadores) {
-    const delAnio = delAnioActual(j[coleccion]);
-    if (delAnio.length === 0) continue;
-    const valor = delAnio[delAnio.length - 1][campo];
-    if (valor != null && valor !== 0) lista.push({ nombre: j.nombre, posicion: j.posicion, valor });
-  }
-  return lista.sort((a, b) => a.valor - b.valor);
+// ── Ayudas de presentación del dashboard (copiadas de la v1) ──────────────
+
+const MESES_CORTOS = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sept", "oct", "nov", "dic"];
+
+// "dd/mm/aaaa" → "12-mar" (como `fmtDate` de la v1, que usaba el formato corto
+// de es-AR del navegador: "02-sept"). Sin fecha: "—".
+export function fechaDiaMes(fechaCorta) {
+  const fecha = fechaCortaADate(fechaCorta);
+  if (!fecha) return fechaCorta || "—";
+  return `${String(fecha.getDate()).padStart(2, "0")}-${MESES_CORTOS[fecha.getMonth()]}`;
 }
 
-// Promedio (del último registro de este año) agrupado por posición, con
-// mínimo y máximo — para el gráfico de barras por posición.
-export function promedioPorPosicion(jugadores, coleccion, campo) {
-  const porPosicion = new Map();
-  for (const j of jugadores) {
-    const delAnio = delAnioActual(j[coleccion]);
-    if (delAnio.length === 0 || !j.posicion) continue;
-    const valor = delAnio[delAnio.length - 1][campo];
-    if (valor == null || valor === 0) continue;
-    const lista = porPosicion.get(j.posicion) ?? [];
-    lista.push(valor);
-    porPosicion.set(j.posicion, lista);
-  }
-  return [...porPosicion.entries()].map(([posicion, valores]) => ({
-    posicion,
-    promedio: valores.reduce((s, v) => s + v, 0) / valores.length,
-    minimo: Math.min(...valores),
-    maximo: Math.max(...valores),
-    cantidad: valores.length,
-  }));
+// "Juan Pérez García" → "Juan P."
+export function nombreCorto(nombre) {
+  const partes = nombre.split(" ");
+  return `${partes[0]} ${(partes[1] || "")[0] ?? ""}.`;
 }
 
-// Último peso e IMC de este año, Σ6 pliegues y peso ideal de cada jugador,
-// con el cambio de peso contra el registro anterior — para la tabla completa
-// de la pestaña Pliegues.
-export function resumenPlieguesPorJugador(jugadores) {
-  return jugadores.map((j) => {
-    const pesosAnio = delAnioActual(j.pesos);
-    const pesoActual = pesosAnio.length ? pesosAnio[pesosAnio.length - 1] : null;
-    const pesoAnterior = pesosAnio.length >= 2 ? pesosAnio[pesosAnio.length - 2] : null;
-    const plieguesAnio = delAnioActual(j.pliegues);
-    const ultimoPliegue = plieguesAnio.length ? plieguesAnio[plieguesAnio.length - 1] : null;
+// Color de fondo del círculo con iniciales: un azul distinto por persona,
+// calculado del nombre igual que en la v1 (siempre el mismo para cada uno).
+export function colorAvatar(nombre) {
+  let hash = 0;
+  for (let i = 0; i < nombre.length; i++) hash = nombre.charCodeAt(i) + ((hash << 5) - hash);
+  const tono = 210 + (hash % 40) - 20;
+  const saturacion = 35 + (hash % 20);
+  const luz = 38 + (hash % 18);
+  return `hsl(${tono},${saturacion}%,${luz}%)`;
+}
 
-    const deltaPeso =
-      pesoActual && pesoAnterior && pesoActual.peso != null && pesoAnterior.peso != null
-        ? pesoActual.peso - pesoAnterior.peso
-        : null;
-    const diferenciaIdeal =
-      pesoActual?.peso != null && ultimoPliegue?.pesoIdeal != null ? pesoActual.peso - ultimoPliegue.pesoIdeal : null;
+// Año de nacimiento de "dd/mm/aaaa" (si el año no se conoce, la ficha trae "dd/mm": null).
+export function anioDeNacimiento(nacimiento) {
+  const partes = (nacimiento || "").split("/");
+  return partes.length === 3 ? Number(partes[2]) || null : null;
+}
 
-    return {
-      nombre: j.nombre,
-      posicion: j.posicion,
-      altura: j.altura,
-      peso: pesoActual?.peso ?? null,
-      fechaPeso: pesoActual?.fecha ?? null,
-      deltaPeso,
-      pesoIdeal: ultimoPliegue?.pesoIdeal ?? null,
-      diferenciaIdeal,
-      sumatoria6: ultimoPliegue?.sumatoria6 ?? null,
-    };
-  });
+// Recta de tendencia (mínimos cuadrados) de puntos { x, y }: y = pendiente·x + ordenada.
+export function regresionLineal(puntos) {
+  const n = puntos.length;
+  let sumaX = 0;
+  let sumaY = 0;
+  let sumaXY = 0;
+  let sumaX2 = 0;
+  for (const p of puntos) {
+    sumaX += p.x;
+    sumaY += p.y;
+    sumaXY += p.x * p.y;
+    sumaX2 += p.x * p.x;
+  }
+  const pendiente = (n * sumaXY - sumaX * sumaY) / (n * sumaX2 - sumaX * sumaX);
+  const ordenada = (sumaY - pendiente * sumaX) / n;
+  return { pendiente, ordenada, valorEn: (x) => pendiente * x + ordenada };
 }

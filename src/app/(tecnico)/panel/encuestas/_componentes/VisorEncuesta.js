@@ -95,7 +95,7 @@ export default function VisorEncuesta({ storageKey, filas, columnas, estadistica
           />
         </Campo>
         <Campo etiqueta="Estado">
-          <select value={estado} onChange={(e) => setEstado(e.target.value)} className={styles.select}>
+          <select value={estado} onChange={(e) => setEstado(e.target.value)} className={styles.fecha}>
             <option value="">Todos</option>
             <option value="nuevo">Nuevos</option>
             <option value="visto">Ya vistos</option>

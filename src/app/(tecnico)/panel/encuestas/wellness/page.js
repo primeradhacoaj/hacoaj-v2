@@ -1,6 +1,6 @@
-import PantallaPanel from "@/components/PantallaPanel";
 import { obtenerWellnessPlantel } from "@/lib/data/encuestasPlantel";
 import { createClient } from "@/lib/supabase/server";
+import MarcoEncuesta from "../_componentes/MarcoEncuesta";
 import Wellness from "./Wellness";
 
 export const metadata = {
@@ -10,12 +10,11 @@ export const metadata = {
 export default async function WellnessPage() {
   const respuestas = await obtenerWellnessPlantel(await createClient());
   return (
-    <PantallaPanel
+    <MarcoEncuesta
       titulo="Respuestas Wellness"
-      volverHref="/panel/encuestas"
-      volverTexto="Encuestas"
+      descripcion="Sueño, estrés, fatiga y dolor muscular cargados por los jugadores"
     >
       <Wellness respuestas={respuestas} />
-    </PantallaPanel>
+    </MarcoEncuesta>
   );
 }

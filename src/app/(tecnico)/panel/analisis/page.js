@@ -9,9 +9,16 @@ export const metadata = {
 
 export default async function AnalisisPage() {
   const supabase = await createClient();
-  const [{ jugadores, posiciones }, torneo] = await Promise.all([
+  const [{ jugadores, regresionExtra, posiciones }, torneo] = await Promise.all([
     obtenerJugadoresConHistorial(supabase),
     obtenerResumenTorneoHacoaj(supabase),
   ]);
-  return <AnalisisPanel jugadores={jugadores} posiciones={posiciones} torneo={torneo} />;
+  return (
+    <AnalisisPanel
+      jugadores={jugadores}
+      regresionExtra={regresionExtra}
+      posiciones={posiciones}
+      torneo={torneo}
+    />
+  );
 }

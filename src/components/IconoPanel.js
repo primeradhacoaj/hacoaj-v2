@@ -17,6 +17,14 @@ const ICONOS = {
   ondas: (
     <path d="M4 8c2-2 5-2 8 0s6 2 8 0M4 12c2-2 5-2 8 0s6 2 8 0M4 16c2-2 5-2 8 0s6 2 8 0" />
   ),
+  torneo: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M8.5 8.5l7 7M15.5 8.5l-7 7M12 3v2M12 19v2M3 12h2M19 12h2" />
+    </>
+  ),
+  menu: <path d="M3 12h18M3 6h18M3 18h18" />,
+  volver: <path d="M19 12H5M12 5l-7 7 7 7" />,
   usuarios: (
     <>
       <circle cx="9" cy="8" r="3.5" />

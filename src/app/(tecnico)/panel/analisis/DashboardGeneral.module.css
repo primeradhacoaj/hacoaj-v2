@@ -15,35 +15,35 @@
 }
 
 .kpi {
-  padding: 16px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  padding: 16px 18px;
+  border: 1px solid #eceef2;
+  border-radius: 10px;
   background: #fff;
-  box-shadow: var(--card-shadow);
+  box-shadow: 0 1px 2px rgba(10, 21, 53, 0.04), 0 2px 8px rgba(10, 21, 53, 0.04);
 }
 
 .etiquetaKpi {
   display: flex;
-  align-items: baseline;
-  gap: 6px;
-  font-size: 11.5px;
-  font-weight: 600;
-  color: rgba(0, 0, 0, 0.5);
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .valorKpi {
-  margin-top: 4px;
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--text);
+  margin-top: 6px;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
 }
 
 .unidadKpi {
-  margin-left: 5px;
-  font-size: 11px;
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.4);
+  margin-left: 6px;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .notaKpi {
@@ -65,13 +65,13 @@
 .tendenciaSube {
   font-size: 11px;
   font-weight: 500;
-  color: var(--green);
+  color: #0e8a4f;
 }
 
 .tendenciaBaja {
   font-size: 11px;
   font-weight: 500;
-  color: var(--red);
+  color: #c2410c;
 }
 
 /* ── Alertas ── */
@@ -81,12 +81,16 @@
 
 .tarjetaVencidas {
   margin-bottom: 16px;
-  padding: 16px;
-  border: 1px solid var(--border);
+  padding: 18px 20px;
+  border: 1px solid #eceef2;
   border-left: 3px solid #f59e0b;
-  border-radius: 12px;
+  border-radius: 10px;
   background: #fff;
-  box-shadow: var(--card-shadow);
+  box-shadow: 0 1px 2px rgba(10, 21, 53, 0.04), 0 2px 8px rgba(10, 21, 53, 0.04);
+}
+
+.tituloVencidas > span:first-child {
+  font-size: 16px;
 }
 
 .tituloVencidas {
@@ -97,12 +101,13 @@
 }
 
 .tituloVencidasTexto {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: #92400e;
 }
 
 .notaVencidas {
+  margin-left: 4px;
   font-size: 11px;
   color: rgba(0, 0, 0, 0.45);
 }
@@ -157,6 +162,11 @@
   font-size: 12px;
 }
 
+.deltaCambio {
+  min-width: 55px;
+  font-weight: 600;
+}
+
 .nombreCambio {
   min-width: 110px;
   overflow: hidden;
@@ -172,15 +182,15 @@
 
 /* ── Tarjetas ── */
 .tarjeta {
-  padding: 16px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  padding: 18px 20px;
+  border: 1px solid #eceef2;
+  border-radius: 10px;
   background: #fff;
-  box-shadow: var(--card-shadow);
+  box-shadow: 0 1px 2px rgba(10, 21, 53, 0.04), 0 2px 8px rgba(10, 21, 53, 0.04);
 }
 
 .tituloTarjeta {
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 600;
 }
 
@@ -191,9 +201,10 @@
 }
 
 .subtituloTarjeta {
+  margin-top: 2px;
   margin-bottom: 12px;
   font-size: 11.5px;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.55);
 }
 
 .sinDatos {
@@ -208,6 +219,13 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 16px;
+  margin-bottom: 20px;
+}
+
+.tarjetaDonut {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .filaDonut {
@@ -219,34 +237,39 @@
 .leyenda {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .filaLeyenda {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 12px;
+  gap: 10px;
+  font-size: 12.5px;
 }
 
 .puntoLeyenda {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
 }
 
 .etiquetaLeyenda {
-  min-width: 90px;
-  color: var(--text);
+  flex: 1;
+  color: rgba(0, 0, 0, 0.75);
 }
 
 .cantidadLeyenda {
   font-weight: 600;
-  color: var(--text);
+  font-variant-numeric: tabular-nums;
 }
 
 .porcentajeLeyenda {
-  color: rgba(0, 0, 0, 0.4);
+  min-width: 32px;
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.5);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 .filaRanking {

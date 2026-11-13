@@ -1,85 +1,314 @@
-/* Dashboard de análisis — copiado del diseño original de la v1 (sidebar propio,
-   distinto del resto del panel técnico: acá adentro hay 4 secciones). */
+/* Dashboard de análisis — copiado del diseño original de la v1
+   (tecnico/dashboard_analisis.html): pantalla completa con barra lateral propia,
+   tipografía Inter y fondo #f8f9fa. */
 
-.contenedor {
+.shell {
   display: flex;
-  min-height: calc(100vh - 64px);
+  height: 100vh;
+  overflow: hidden;
+  background: #f8f9fa;
+  color: #0a1535;
+  font-family: var(--font-inter), "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  line-height: normal; /* la v1 no fijaba interlineado */
+  -webkit-font-smoothing: antialiased;
 }
 
+.shell button,
+.shell input,
+.shell select {
+  font-family: inherit;
+}
+
+.shell ::-webkit-scrollbar {
+  width: 7px;
+}
+
+.shell ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}
+
+.shell ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ── Barra lateral ── */
 .sidebar {
-  position: sticky;
-  top: 64px;
+  display: flex;
+  flex-direction: column;
   flex-shrink: 0;
-  width: 220px;
-  height: calc(100vh - 64px);
-  padding: 16px 10px;
-  background: var(--navy-deep);
+  width: 232px;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  background: #0a1535;
+  color: rgba(255, 255, 255, 0.78);
   overflow-y: auto;
+  transition: width 0.2s ease;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px 12px;
+}
+
+.logoImagen {
+  width: auto;
+  height: 55px;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+}
+
+.sbSub {
+  padding: 0 16px 8px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  text-align: center;
+}
+
+.alternar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  margin: 0 auto 6px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+
+.alternar:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.seccion {
+  padding: 10px 12px 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
 }
 
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
+  padding: 2px 10px;
 }
 
 .navBoton {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
+  gap: 11px;
+  width: 100%;
+  padding: 12px 14px;
   border: none;
-  border-radius: 8px;
-  background: none;
-  color: rgba(255, 255, 255, 0.55);
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 500;
+  border-radius: 7px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 14px;
   text-align: left;
   cursor: pointer;
-  transition: all 0.15s;
 }
 
 .navBoton:hover {
-  background: rgba(255, 255, 255, 0.06);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .navActivo {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(30, 58, 138, 0.25);
   color: #fff;
+  font-weight: 500;
 }
 
-.principal {
+.navActivo::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: -10px;
+  width: 3px;
+  border-radius: 2px;
+  background: #3b82f6;
+}
+
+.pieNav {
+  margin-top: auto;
+  padding: 10px 10px 6px;
+}
+
+.volver {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 7px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 13.5px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.volver:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.usuario {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #1e3a8a;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.datosUsuario {
   flex: 1;
   min-width: 0;
 }
 
+.nombreUsuario {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.rolUsuario {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.salir {
+  display: flex;
+  padding: 4px;
+  border: none;
+  background: none;
+  color: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+}
+
+.salir:hover {
+  color: #fff;
+}
+
+.sidebar :focus-visible {
+  outline-color: #fff;
+}
+
+/* Barra lateral achicada (solo íconos): en escritorio al tocar el botón */
+@media (min-width: 769px) {
+  .alternada {
+    width: 56px;
+  }
+
+  .alternada .logoImagen {
+    height: 28px;
+  }
+
+  .alternada .ocultable,
+  .alternada .navTexto {
+    display: none;
+  }
+
+  .alternada .seccion {
+    padding: 8px 0 2px;
+    font-size: 0;
+    text-align: center;
+  }
+
+  .alternada .seccion::before {
+    content: "·";
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.25);
+  }
+
+  .alternada .nav {
+    padding: 2px 6px;
+  }
+
+  .alternada .navBoton,
+  .alternada .volver {
+    justify-content: center;
+    padding: 9px 0;
+  }
+
+  .alternada .usuario {
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 6px;
+  }
+
+  .alternada .datosUsuario {
+    display: none;
+  }
+}
+
+/* ── Principal ── */
+.principal {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
 .cabecera {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 16px;
+  height: 64px;
+  padding: 0 28px;
+  border-bottom: 1px solid #eceef2;
+  background: #fff;
+}
+
+.marca {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 16px 28px;
-  border-bottom: 1px solid var(--border);
-  background: #fff;
 }
 
 .escudo {
   flex-shrink: 0;
+  width: auto;
+  height: 42px;
 }
 
 .lema {
   font-size: 10px;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
   color: rgba(0, 0, 0, 0.35);
 }
 
 .titulo {
-  margin-top: 2px;
-  font-size: 19px;
-  font-weight: 700;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
   letter-spacing: -0.01em;
 }
 
@@ -90,72 +319,99 @@
 .botonExportar {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  border: 1px solid var(--border);
+  gap: 7px;
+  height: 36px;
+  padding: 0 13px;
+  border: 1px solid #eceef2;
   border-radius: 8px;
   background: #fff;
-  color: var(--text);
-  font-family: inherit;
+  color: #0a1535;
   font-size: 12.5px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.15s;
 }
 
 .botonExportar:hover {
-  border-color: var(--navy);
-  color: var(--navy);
+  background: #fafbfc;
 }
 
 .contenido {
-  padding: 24px 28px 60px;
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 28px;
 }
 
-.proximamente {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  padding: 80px 20px;
-  color: var(--text-light);
-  text-align: center;
-}
-
-@media (max-width: 900px) {
-  .sidebar {
-    position: static;
-    width: 100%;
-    height: auto;
+/* En celular (la v1 no estaba pensada para eso): el lema se esconde
+   para que entre el título. */
+@media (max-width: 768px) {
+  /* En celular arranca achicada; el botón la despliega encima del contenido */
+  .sidebar:not(.alternada) {
+    width: 56px;
   }
 
-  .nav {
-    flex-direction: row;
-    flex-wrap: wrap;
+  .sidebar:not(.alternada) .logoImagen {
+    height: 28px;
   }
 
-  .navBoton {
-    flex: 1;
-    min-width: 140px;
+  .sidebar:not(.alternada) .ocultable,
+  .sidebar:not(.alternada) .navTexto {
+    display: none;
+  }
+
+  .sidebar:not(.alternada) .seccion {
+    padding: 8px 0 2px;
+    font-size: 0;
+    text-align: center;
+  }
+
+  .sidebar:not(.alternada) .seccion::before {
+    content: "·";
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.25);
+  }
+
+  .sidebar:not(.alternada) .nav {
+    padding: 2px 6px;
+  }
+
+  .sidebar:not(.alternada) .navBoton,
+  .sidebar:not(.alternada) .volver {
     justify-content: center;
+    padding: 9px 0;
   }
 
-  .contenedor {
+  .sidebar:not(.alternada) .usuario {
     flex-direction: column;
+    gap: 4px;
+    padding: 10px 6px;
+  }
+
+  .sidebar:not(.alternada) .datosUsuario {
+    display: none;
+  }
+
+  .alternada {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 50;
   }
 
   .cabecera {
-    padding: 16px;
+    padding: 0 14px;
+  }
+
+  .lema {
+    display: none;
   }
 
   .contenido {
-    padding: 16px 16px 40px;
+    padding: 16px 14px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .navBoton,
-  .botonExportar {
+  .sidebar,
+  .volver {
     transition: none;
   }
 }

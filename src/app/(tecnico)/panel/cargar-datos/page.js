@@ -1,6 +1,8 @@
 import ActionCard from "@/components/ActionCard";
 import Icono from "@/components/Icono";
+import PiePanel from "../../_componentes/PiePanel";
 import hero from "../encuestas/Encuestas.module.css";
+import CabeceraCarga from "./_componentes/CabeceraCarga";
 import styles from "./CargarDatos.module.css";
 
 export const metadata = {
@@ -40,20 +42,15 @@ const MODULOS = [
 export default function CargarDatosPage() {
   return (
     <>
-      <section className={hero.hero}>
-        <div className={hero.heroInterior}>
-          <div className={hero.heroInsignia}>
-            <span className={hero.heroPunto} />
-            Panel técnico
-          </div>
-          <h1>
-            Cargar <span>datos</span>
-          </h1>
-          <p className={hero.heroTexto}>Seleccioná el módulo donde querés cargar información al sistema.</p>
-        </div>
-      </section>
+      <CabeceraCarga
+        volverHref="/panel"
+        volverTexto="Volver al menú principal"
+        titulo="Cargar"
+        resaltado="datos"
+        texto="Seleccioná el módulo donde querés cargar información al sistema."
+      />
 
-      <div className={hero.contenido}>
+      <div className={styles.contenidoMenu}>
         <div className={styles.cajaInfo}>
           <Icono nombre="campana" tamano={20} strokeWidth={1.7} />
           <p>
@@ -78,6 +75,7 @@ export default function CargarDatosPage() {
           ))}
         </div>
       </div>
+      <PiePanel />
     </>
   );
 }

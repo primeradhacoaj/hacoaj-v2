@@ -1,0 +1,95 @@
+/* Gráfico de dispersión del dashboard (diseño original de la v1) */
+
+.marco {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #eceef2;
+  border-radius: 6px;
+}
+
+.svg {
+  display: block;
+  overflow: visible;
+  touch-action: none; /* el arrastre mueve el gráfico, no la página */
+  user-select: none; /* arrastrar no selecciona los nombres */
+}
+
+.tip {
+  position: absolute;
+  z-index: 5;
+  padding: 7px 11px;
+  border-radius: 6px;
+  background: rgba(10, 21, 53, 0.92);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  font-size: 11px;
+  line-height: 1.5;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.zoom {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  display: flex;
+  gap: 3px;
+}
+
+.botonZoom,
+.botonReset {
+  height: 24px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.botonZoom {
+  width: 24px;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.botonReset {
+  padding: 0 6px;
+  font-size: 10px;
+}
+
+.pie {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.resumen {
+  font-size: 10px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.tendencia {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.rayaPunteada {
+  width: 16px;
+  height: 0;
+  border-top: 1.5px dashed rgba(0, 0, 0, 0.3);
+}
+
+.ayuda {
+  font-size: 10px;
+  color: rgba(0, 0, 0, 0.35);
+}
+
+.sinDatos {
+  padding: 30px 0;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
